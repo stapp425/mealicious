@@ -107,32 +107,29 @@ export default function NewMealSearchBar() {
                   className="size-full hover:scale-[105%] transition"
                 />
               </div>
-              <div className="col-span-1 flex justify-between items-center gap-2 rounded-md *:flex-1 *:flex *:flex-col *:p-2 *:justify-center *:items-center *:bg-orange-500 *:text-white *:rounded-md">
+              <div className="col-span-1 flex justify-between items-center gap-2 rounded-md *:flex-1 *:flex *:h-full *:flex-col *:p-2 *:justify-center *:items-center *:bg-orange-500 *:text-white *:rounded-md">
                 <div className="flex gap-2">
                   <Clock/>
                   <div className="text-center">
-                    <p className="text-white">
+                    <p className="text-[min(1.75vw,_16px)] leading-[min(1vw,_1.5rem)]">
                       <b>{recipe.time.readyTime}</b> mins
                     </p>
-                    <p className="text-sm">Ready Time</p>
                   </div>
                 </div>
                 <div className="flex gap-2 my-1">
                   <Microwave/>
                   <div className="text-center">
-                    <p className="text-white">
+                    <p className="text-[min(1.75vw,_16px)]">
                       {recipe.time.cookTime > 0 ? <><b>{recipe.time.cookTime}</b> mins</> : <b>-</b>}
                     </p>
-                    <p className="text-sm">Cook Time</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 my-1">
                   <Clipboard/>
                   <div className="text-center">
-                    <p className="text-white">
+                    <p className="text-[min(1.75vw,_16px)]">
                       {recipe.time.prepTime > 0 ? <><b>{recipe.time.prepTime}</b> mins</> : <b>-</b>}
                     </p>
-                    <p className="text-sm">Prep Time</p>
                   </div>
                 </div>
               </div>
