@@ -37,7 +37,7 @@ export function CardSkeleton() {
 
 export function SquareSkeleton() {
   return (
-    <div className="flex flex-col p-[10px] justify-between gap-4 aspect-square w-full sm:w-[225px]">
+    <div className="flex-1 flex flex-col p-[10px] justify-between gap-4 aspect-square w-3/4 md:w-full">
       <div className="flex justify-between gap-4">
         <Skeleton className="aspect-square w-10"/>
         <Skeleton className="flex-1"/>

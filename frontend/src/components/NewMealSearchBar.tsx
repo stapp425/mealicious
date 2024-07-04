@@ -70,17 +70,17 @@ export default function NewMealSearchBar() {
     originalSearchQuery.current = searchInput.query
     setSearchResults(null)
 
-    if(!searchParams.query)
-      return toast({
-        title: "Error!",
-        description: "Search query is empty.",
-        variant: "destructive"
-      })
+    // if(!searchParams.query)
+    //   return toast({
+    //     title: "Error!",
+    //     description: "Search query is empty.",
+    //     variant: "destructive"
+    //   })
 
     try {
       setIsFetching(true)
-      const results = await fetchFromAPI("GET", "/api/meals/search", searchParams)
-      // const results = await fetchTest()
+      // const results = await fetchFromAPI("GET", "/api/meals/search", searchParams)
+      const results = await fetchTest()
       setSearchResults(results)
     } catch (err:any) {
       console.error(err.message)
@@ -97,7 +97,7 @@ export default function NewMealSearchBar() {
   function styleRecipeDetails(recipe: {[key: string]: any}) {
     if(matches) {
       return (
-        <div className="w-[675px] h-[750px]">
+        <div className="aspect-[9/10] min-w-[450px] min-h-[550px] max-w-[675px] max-h-[750px]">
           <div className="overflow-hidden row-span-1 col-span-1 grid grid-rows-1 grid-cols-2 p-2 gap-5 rounded-lg size-full">
             <div className="grid grid-rows-[40%_auto_1fr] grid-cols-[100%] row-span-1 gap-3">
               <div className="overflow-hidden row-span-1 col-span-1 rounded-2xl border-none">
@@ -155,7 +155,7 @@ export default function NewMealSearchBar() {
             </div>
             <div className="grid grid-rows-[minmax(0,_auto)_minmax(40%,_1fr)] grid-cols-1 gap-2">
               <div>
-                <DialogTitle className="font-bold text-4xl">
+                <DialogTitle className="font-bold text-[min(3vw,_36px)] leading-[min(5vh,_2.25rem)]">
                   {recipe.title}
                 </DialogTitle>
                 <div className="flex items-center gap-2">
@@ -170,7 +170,7 @@ export default function NewMealSearchBar() {
                 <div className="group grid grid-cols-2 gap-2 mt-2 *:border *:border-slate-300 *:rounded-sm group-hover:bg-orange-500">
                   {
                     recipe.dish.map((dish: string, index: number) => (
-                      <h1 key={nanoid()} className={`hover:cursor-default border border-slate-400 hover:bg-orange-500 hover:text-white transition text-center py-2 px-3${(index === recipe.dish.length - 1 && index % 2 === 0) && " col-span-2"}`}>
+                      <h1 key={nanoid()} className={`text-[min(1.5vw,_16px)] hover:cursor-default border border-slate-400 hover:bg-orange-500 hover:text-white transition text-center py-[min(2vh,_6px)] px-3${(index === recipe.dish.length - 1 && index % 2 === 0) && " col-span-2"}`}>
                         {dish}
                       </h1>
                     ))
@@ -244,8 +244,8 @@ export default function NewMealSearchBar() {
       )
     } else {
       return (
-        <div>
-          Hi there
+        <div className="w-[350px] h-[600px]">
+
         </div>
       )
     }
@@ -318,7 +318,7 @@ export default function NewMealSearchBar() {
                   <PopoverTrigger>
                     <EllipsisVertical/>
                   </PopoverTrigger>
-                  <PopoverContent className="flex flex-col gap-4 w-40" side="right" align="start" avoidCollisions={false}>
+                  <PopoverContent className="flex flex-col gap-4 w-40" side="right" align="start">
                     <div className="flex gap-2">
                       <Bookmark />
                       <span>Save</span>
@@ -367,43 +367,23 @@ export default function NewMealSearchBar() {
         return searchResults?.map((recipe:any) => (
           <div key={nanoid()} className="overflow-hidden flex flex-col justify-between w-[275px] md:w-[225px] h-[500px] rounded-lg border-2 border-slate-200">
             <div className="group relative overflow-hidden basis-[30%]">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <img 
+              <Dialog>
+                <DialogTrigger>
+                  <div>
+                    <img
                       src={recipe.image}
                       alt={recipe.title}
-                      className="scale-[135%]"
+                      className="scale-[175%] lg:scale-[200%] group-hover:scale-[175%] transition"
                     />
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    <p>{recipe.title}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <div className="absolute top-2 right-2">
-                <Popover>
-                  <PopoverTrigger>
-                    <Button className="opacity-0 pointer-events-none transition group-hover:opacity-100 group-hover:pointer-events-auto p-0 size-8 bg-white hover:bg-white">
-                      <EllipsisVertical size={18} color="#000000"/>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="flex flex-col gap-4 w-40" side="bottom" align="end">
-                    <div className="flex gap-2">
-                      <Bookmark />
-                      <span>Save</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <ExternalLink />
-                      <span>Share</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Flag />
-                      <span>Report</span>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
+                    <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"></div>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <ScrollArea>
+                    {styleRecipeDetails(recipe)}
+                  </ScrollArea>
+                </DialogContent>
+              </Dialog>
             </div>
             <h1 className="text-center font-bold py-3 px-2">{recipe.title}</h1>
             {
@@ -524,6 +504,7 @@ export default function NewMealSearchBar() {
     if(searchResults) {
       return (
         <div className="w-full flex flex-col justify-between">
+          <p className="italic text-muted-foreground text-sm text-center md:text-left">Tip: Click on a recipe's image to show more details!</p>
           <Tabs defaultValue={selectedLayout} value={selectedLayout} onValueChange={(value:string) => setSelectedLayout((!matches && value === "list") ? "square" : value)}>
             <div className="flex flex-col md:flex-row justify-between items-center">
               <h1 className="text-center font-bold text-2xl my-4">
@@ -607,7 +588,7 @@ export default function NewMealSearchBar() {
             alt="Magnifying Glass | Credit: svstudioart (https://www.freepik.com/free-vector/magnifying-glass-vector-illustration_178790648.htm#fromView=search&page=1&position=32&uuid=ee9a7ab1-0bd7-4c7b-b1ab-b3af2f5aee09)"
             className="aspect-square w-1/2"
           />
-          <h1 className="font-bold text-3xl">Your results will appear here</h1>
+          <h1 className="font-bold text-[5vw] md:text-3xl">Your results will appear here</h1>
           <p className="text-lg">Start searching!</p>
         </div>
       )
