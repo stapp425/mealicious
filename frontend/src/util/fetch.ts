@@ -1,4 +1,5 @@
 import searchSample from "@/test"
+import { Recipe } from "@/types/recipe"
 
 export default async function fetchFromAPI(httpMethod: string, path: string, queries: {[key: string]: any} | null = null, headers: any = null, body: any = null) {
 	const backendURL = `http://localhost:3000`
@@ -30,7 +31,7 @@ export default async function fetchFromAPI(httpMethod: string, path: string, que
   }
 }
 
-export function fetchTest(): Promise<{[key:string]: any}[]> {
+export function fetchTest(): Promise<Recipe[]> {
   return new Promise((resolve, _) => {
     setTimeout(() => {
       resolve(searchSample)

@@ -41,10 +41,10 @@ function formatResults(data: {[key:string]: any}) {
         name: result.sourceName,
         url: result.sourceUrl
       },
-      diet: result.diets,
-      dish: result.dishTypes,
+      diets: result.diets,
+      dishTypes: result.dishTypes,
       isHealthy: result.veryHealthy,
-			time: {
+			times: {
 				prepTime: result.preparationMinutes || 0,
 				cookTime: result.cookingMinutes || 0,
 				readyTime: result.readyInMinutes,
