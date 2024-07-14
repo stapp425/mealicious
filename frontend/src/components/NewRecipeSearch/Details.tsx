@@ -107,18 +107,18 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                       {recipe.title}
                     </DialogTitle>
                     <div className="flex items-center gap-2">
-                      <Link to={recipe.source.url} target="_blank" className="flex justify-center items-center size-8 my-2">
+                      <Link to={recipe.source?.url as string} target="_blank" className="flex justify-center items-center size-8 my-2">
                         <Earth size={32} className="text-muted-foreground hover:scale-110 transition"/>
                       </Link>
-                      <p>{recipe.source.name}</p>
+                      <p>{recipe.source?.name}</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
                       {recipe.diets.map((diet: string) => <Badge key={nanoid()} className="line-clamp-1 pointer-events-none bg-orange-500">{diet}</Badge>)}
                     </div>
                     <div className="group grid grid-cols-2 gap-2 mt-2 *:border *:border-slate-300 *:rounded-sm group-hover:bg-orange-500">
                       {
-                        recipe.dishTypes.map((dish: string, index: number) => (
-                          <h1 key={nanoid()} className={`text-[min(1.5vw,_16px)] hover:cursor-default border border-slate-400 hover:bg-orange-500 hover:text-white transition text-center py-2 px-3${(index === recipe.dishTypes.length - 1 && index % 2 === 0) && " col-span-2"}`}>
+                        recipe.dishTypes.map((dish: string) => (
+                          <h1 key={nanoid()} className="text-[min(1.5vw,_16px)] hover:cursor-default border border-slate-400 hover:bg-orange-500 hover:text-white transition text-center py-2 px-3 odd:last:col-span-2">
                             {dish}
                           </h1>
                         ))
@@ -326,10 +326,10 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                   </ScrollArea>
                 </div>
                 <div className="col-span-2 flex justify-center items-center gap-2">
-                  <Link to={recipe.source.url} target="_blank">
+                  <Link to={recipe.source?.url as string} target="_blank">
                     <Earth size={24} className="text-muted-foreground hover:scale-110 transition"/>
                   </Link>
-                  <h1>{recipe.source.name}</h1>
+                  <h1>{recipe.source?.name as string}</h1>
                 </div>
               </div>
             </div>

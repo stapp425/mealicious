@@ -30,7 +30,7 @@ async function searchMeals(req:Request, res:Response) {
 }
 
 function formatResults(data: {[key:string]: any}) {
-	return new Promise((resolve, _) => {
+	return new Promise(resolve => {
 		const results:{[key:string]: any} = data.results
 		
 		const parsedResults = results.length > 0 ? results.map((result:{[key:string]: any}) => ({

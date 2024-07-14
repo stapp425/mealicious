@@ -46,7 +46,7 @@ export default function App() {
       <UserContext.Provider value={currentUser}>
         <Routes>
           <Route path="/" element={<MainLayout/>}>
-            <Route path="dashboard" element={<AllRecipes/>}/>
+            <Route path="dashboard" element={<Dashboard/>}/>
             <Route path="meals">
               <Route path="search" element={<NewRecipeSearch/>}/>
             </Route>
