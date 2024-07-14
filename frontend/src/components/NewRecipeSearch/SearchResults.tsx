@@ -1,12 +1,12 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Recipe from "./Recipe"
 import { type Recipe as RecipeType } from "@/types/recipe"
 import { ScreenContext } from "@/App"
-import { Layout, type Breakpoints, type CurrentUser } from "@/types/other"
+import { Layout, type Breakpoints } from "@/types/other"
 import { nanoid } from "nanoid"
 import searchIcon from "@/img/magnifying-glass.png"
 import noResultsImage from "@/img/no-results.png"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Loading from "./Loading"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -19,7 +19,12 @@ type Props = {
 export default function SearchResults({ results, query, isFetching }: Props): React.ReactElement {
   const matches = useContext<Breakpoints>(ScreenContext)
   const [selectedLayout, setSelectedLayout] = useState<Layout>(matches.md ? "list" : "square")
-
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
+  
+  useEffect(() => {
+    isFetching && setIsFirstRender(false)
+  }, [isFetching])
+  
   function controlSearchState() {
     if(results[0].title) {
       return (
@@ -42,31 +47,19 @@ export default function SearchResults({ results, query, isFetching }: Props): Re
               </TabsList>
             </div>
             <TabsContent value="list">
-              {
-                results.length > 0
-                  ? <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      {results.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} layout="list"/>)}
-                    </div>
-                  : <NoResults/>
-              }
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {results.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} layout="list"/>)}
+              </div>
             </TabsContent>
             <TabsContent value="card">
-              {
-                results.length > 0
-                ? <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 place-items-center gap-4">
-                    {results.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} layout="card"/>)}
-                  </div>
-                : <NoResults/>
-              }
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 place-items-center gap-4">
+                {results.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} layout="card"/>)}
+              </div>
             </TabsContent>
             <TabsContent value="square">
-              {
-                results.length > 0
-                  ? <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 place-items-center gap-6">
-                      {results.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} layout="square"/>)}
-                    </div>
-                  : <NoResults/>
-              }
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 place-items-center gap-6">
+                {results.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} layout="square"/>)}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
@@ -83,15 +76,21 @@ export default function SearchResults({ results, query, isFetching }: Props): Re
       )
     } else {
       return (
-        <div className="aspect-square w-[65%] md:size-[500px] flex flex-col justify-center items-center gap-2 text-center border-2 border-dashed border-slate-400 p-6 rounded-2xl">
-          <img
-            src={searchIcon}
-            alt="Magnifying Glass | Credit: svstudioart (https://www.freepik.com/free-vector/magnifying-glass-vector-illustration_178790648.htm#fromView=search&page=1&position=32&uuid=ee9a7ab1-0bd7-4c7b-b1ab-b3af2f5aee09)"
-            className="aspect-square w-1/2"
-          />
-          <h1 className="font-bold text-[5vw] md:text-3xl">Your results will appear here</h1>
-          <p className="text-lg">Start searching!</p>
-        </div>
+        <>
+        {
+          isFirstRender
+            ? <div className="aspect-square w-[65%] md:size-[500px] flex flex-col justify-center items-center gap-2 text-center border-2 border-dashed border-slate-400 p-6 rounded-2xl">
+                <img
+                  src={searchIcon}
+                  alt="Magnifying Glass | Credit: svstudioart (https://www.freepik.com/free-vector/magnifying-glass-vector-illustration_178790648.htm#fromView=search&page=1&position=32&uuid=ee9a7ab1-0bd7-4c7b-b1ab-b3af2f5aee09)"
+                  className="aspect-square w-1/2"
+                />
+                <h1 className="font-bold text-[5vw] md:text-3xl">Your results will appear here</h1>
+                <p className="text-lg">Start searching!</p>
+              </div>
+            : <NoResults/>
+        }
+        </>
       )
     }
   }

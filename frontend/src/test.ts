@@ -3584,3 +3584,1467 @@ export default [
     ]
   }
 ]
+
+export const firestoreData = [
+  {
+      "title": "Oreo Mini Cheesecake",
+      "source": {
+          "url": "https://www.foodista.com/recipe/RKVM4S32/oreo-mini-cheesecake",
+          "name": "Foodista"
+      },
+      "ingredients": [
+          {
+              "name": "cream cheese",
+              "amount": 20.83,
+              "unit": "g"
+          },
+          {
+              "name": "whipping cream",
+              "amount": 12.5,
+              "unit": "g"
+          },
+          {
+              "unit": "tsp",
+              "amount": 0.08,
+              "name": "vanilla extract"
+          },
+          {
+              "name": "eggs",
+              "amount": 11.67,
+              "unit": "g"
+          },
+          {
+              "name": "cream of tartar",
+              "amount": 0.08,
+              "unit": "pinch"
+          },
+          {
+              "unit": "g",
+              "name": "sugar",
+              "amount": 5
+          },
+          {
+              "name": "oreo",
+              "unit": "g",
+              "amount": 11.42
+          }
+      ],
+      "userId": "Mw1YwOFDXqRHWHE0DIICtdpwhi03",
+      "instructions": [
+          {
+              "number": 1,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/fluid-cream.jpg",
+                      "name": "cream"
+                  },
+                  {
+                      "name": "oreo cookies",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/oreos.png"
+                  }
+              ],
+              "step": "Separate Oreos, leaving 12 pcs without cream intact and round."
+          },
+          {
+              "number": 2,
+              "step": "Put the rest of the biscuits together with the filling into a food processor and pulse in fine.",
+              "ingredients": [
+                  {
+                      "name": "biscuits",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/buttermilk-biscuits.jpg"
+                  }
+              ]
+          },
+          {
+              "step": "Remember to preheat your oven (150C) and boil water after this.",
+              "number": 3,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/water.png",
+                      "name": "water"
+                  }
+              ]
+          },
+          {
+              "step": "Line big muffin tin (100ml capacity each) with 12 paper cups.",
+              "number": 4,
+              "ingredients": []
+          },
+          {
+              "ingredients": [
+                  {
+                      "name": "oreo cookies",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/oreos.png"
+                  }
+              ],
+              "step": "Place 1 heaped teaspoon of oreo crumbs onto paper cups and  lightly press the crumbs to flatten with a mini roller pin. (see pictures)",
+              "number": 5
+          },
+          {
+              "number": 6,
+              "ingredients": [
+                  {
+                      "name": "vanilla extract",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/vanilla-extract.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/fluid-cream.jpg",
+                      "name": "whipping cream"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/cream-cheese.jpg",
+                      "name": "cream cheese"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/egg-yolk.jpg",
+                      "name": "egg yolk"
+                  },
+                  {
+                      "name": "cream",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/fluid-cream.jpg"
+                  },
+                  {
+                      "name": "sugar",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/sugar-in-bowl.png"
+                  }
+              ],
+              "step": "Cream cream cheese  and 30g sugar on low speed until smooth, put in whipping cream, vanilla extract and egg yolks and continue to beat on low speed for another minute until well combined."
+          },
+          {
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/fluid-cream.jpg",
+                      "name": "cream"
+                  }
+              ],
+              "step": "Transfer cream mixtures to a large bowl and set aside.",
+              "number": 7
+          },
+          {
+              "step": "Whisk egg whites until frothy, add in cream of tartar continue to beat until soft peaks.",
+              "ingredients": [
+                  {
+                      "name": "cream of tartar",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/white-powder.jpg"
+                  },
+                  {
+                      "name": "egg whites",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/egg-white.jpg"
+                  }
+              ],
+              "number": 8
+          },
+          {
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/egg-white.jpg",
+                      "name": "egg whites"
+                  },
+                  {
+                      "name": "sugar",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/sugar-in-bowl.png"
+                  }
+              ],
+              "number": 9,
+              "step": "Add in 30g sugar and beat till stiff (as long as egg whites don't fall when overturned, it will be fine, no need to be pointy stiff)."
+          },
+          {
+              "number": 10,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/cream-cheese.jpg",
+                      "name": "cream cheese"
+                  },
+                  {
+                      "name": "egg whites",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/egg-white.jpg"
+                  }
+              ],
+              "step": "Fold in egg whites to cream cheese mixtures with a rubber spatula."
+          },
+          {
+              "ingredients": [
+                  {
+                      "name": "cream cheese",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/cream-cheese.jpg"
+                  },
+                  {
+                      "name": "biscuits",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/buttermilk-biscuits.jpg"
+                  },
+                  {
+                      "name": "oreo cookies",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/oreos.png"
+                  }
+              ],
+              "number": 11,
+              "step": "Spoon cream cheese mixtures into prepared paper cups. Top with an oreo biscuit."
+          },
+          {
+              "number": 12,
+              "step": "Bake for 20 minutes in a water bath.",
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/water.png",
+                      "name": "water"
+                  }
+              ]
+          },
+          {
+              "ingredients": [],
+              "step": "Leave to cool in oven, door ajar. Cool completely before chilling.",
+              "number": 13
+          },
+          {
+              "number": 14,
+              "ingredients": [],
+              "step": "Best chilled for 3 hours or more before serving."
+          }
+      ],
+      "dishTypes": [
+          "dessert"
+      ],
+      "times": {
+          "cookTime": 0,
+          "prepTime": 0,
+          "readyTime": 45
+      },
+      "servingSize": {
+          "unit": "g",
+          "amount": 62
+      },
+      "image": "https://img.spoonacular.com/recipes/654034-312x231.jpg",
+      "diets": [
+          "lacto ovo vegetarian"
+      ],
+      "description": "If you want to add more lacto ovo vegetarian recipes to your recipe box, Oreo Mini Cheesecake might be a recipe you should try. One portion of this dish contains approximately 4g of protein, 15g of fat, and a total of 206 calories. For 51 cents per serving, this recipe covers 4% of your daily requirements of vitamins and minerals. This recipe serves 12. Only a few people made this recipe, and 9 would say it hit the spot. A mixture of cream of tartar, whipping cream, vanillan extract, and a handful of other ingredients are all it takes to make this recipe so flavorful. It works best as a dessert, and is done in approximately 45 minutes. It is brought to you by Foodista. With a spoonacular score of 15%, this dish is not so excellent. Similar recipes are Oreo Mini Cheesecake, Oreo Mini Cheesecake, and Copycat Cheesecake Factory Oreo Cheesecake.",
+      "nutrition": [
+          {
+              "amount": 205.55,
+              "unit": "kcal",
+              "name": "Calories"
+          },
+          {
+              "unit": "g",
+              "amount": 14.99,
+              "name": "Fat"
+          },
+          {
+              "amount": 8.09,
+              "unit": "g",
+              "name": "Saturated Fat"
+          },
+          {
+              "amount": 14.77,
+              "name": "Carbohydrates",
+              "unit": "g"
+          },
+          {
+              "unit": "g",
+              "amount": 14.44,
+              "name": "Net Carbohydrates"
+          },
+          {
+              "unit": "g",
+              "amount": 10.87,
+              "name": "Sugar"
+          },
+          {
+              "amount": 78.57,
+              "name": "Cholesterol",
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "name": "Sodium",
+              "amount": 129.78
+          },
+          {
+              "name": "Alcohol",
+              "amount": 0.12,
+              "unit": "g"
+          },
+          {
+              "amount": 3.7,
+              "name": "Protein",
+              "unit": "g"
+          },
+          {
+              "unit": "IU",
+              "name": "Vitamin A",
+              "amount": 526.77
+          },
+          {
+              "name": "Selenium",
+              "unit": "µg",
+              "amount": 6.37
+          },
+          {
+              "unit": "mg",
+              "name": "Iron",
+              "amount": 1.63
+          },
+          {
+              "name": "Vitamin B2",
+              "unit": "mg",
+              "amount": 0.15
+          },
+          {
+              "name": "Phosphorus",
+              "amount": 63.28,
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "amount": 0.7,
+              "name": "Vitamin E"
+          },
+          {
+              "unit": "mg",
+              "amount": 0.08,
+              "name": "Manganese"
+          },
+          {
+              "unit": "µg",
+              "name": "Vitamin K",
+              "amount": 4
+          },
+          {
+              "amount": 37.48,
+              "unit": "mg",
+              "name": "Calcium"
+          },
+          {
+              "unit": "µg",
+              "name": "Folate",
+              "amount": 14.82
+          },
+          {
+              "amount": 0.36,
+              "unit": "mg",
+              "name": "Vitamin B5"
+          },
+          {
+              "unit": "µg",
+              "amount": 0.43,
+              "name": "Vitamin D"
+          },
+          {
+              "unit": "µg",
+              "name": "Vitamin B12",
+              "amount": 0.17
+          },
+          {
+              "unit": "mg",
+              "name": "Potassium",
+              "amount": 96.56
+          },
+          {
+              "name": "Copper",
+              "amount": 0.05,
+              "unit": "mg"
+          },
+          {
+              "name": "Zinc",
+              "unit": "mg",
+              "amount": 0.37
+          },
+          {
+              "amount": 9.56,
+              "name": "Magnesium",
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "amount": 0.03,
+              "name": "Vitamin B1"
+          },
+          {
+              "amount": 0.04,
+              "unit": "mg",
+              "name": "Vitamin B6"
+          },
+          {
+              "unit": "mg",
+              "name": "Vitamin B3",
+              "amount": 0.33
+          },
+          {
+              "name": "Fiber",
+              "amount": 0.33,
+              "unit": "g"
+          }
+      ],
+      "isHealthy": false,
+      "id": "7JoJejGEPxctmoJBpmgZ"
+  },
+  {
+      "diets": [],
+      "userId": "Mw1YwOFDXqRHWHE0DIICtdpwhi03",
+      "dishTypes": [
+          "lunch",
+          "main course",
+          "main dish",
+          "dinner"
+      ],
+      "description": "The recipe Pork schnitzel with tarragon cream sauce can be made in roughly 45 minutes. This recipe serves 2 and costs $3.92 per serving. One serving contains 1070 calories, 56g of protein, and 78g of fat. It is brought to you by Foodista. Not a lot of people really liked this European dish. This recipe is liked by 4 foodies and cooks. It works well as a main course. If you have cornstarch, breadcrumbs, vegetable stock from, and a few other ingredients on hand, you can make it. Taking all factors into account, this recipe earns a spoonacular score of 53%, which is good. Similar recipes are Pork Medallions with Tarragon Cream Sauce, Pork Schnitzel with Sauce, and Pork Schnitzel With Lemon-Caper Cream.",
+      "source": {
+          "name": "Foodista",
+          "url": "https://www.foodista.com/recipe/ZBY4H35V/pork-schnitzel-with-tarragon-cream-sauce"
+      },
+      "servingSize": {
+          "amount": 492,
+          "unit": "g"
+      },
+      "instructions": [
+          {
+              "step": "Using the side of a rolling pin or a meat tenderiser, gently beat the pork until flattened to a 0.5cm thickness.",
+              "number": 1,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg",
+                      "name": "meat"
+                  },
+                  {
+                      "name": "pork",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/pork-tenderloin-raw.png"
+                  }
+              ]
+          },
+          {
+              "number": 2,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png",
+                      "name": "seasoned flour"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/egg.png",
+                      "name": "egg"
+                  }
+              ],
+              "step": "Sprinkle the seasoned flour onto a plate. Beat the eggs in a bowl."
+          },
+          {
+              "number": 3,
+              "ingredients": [
+                  {
+                      "name": "breadcrumbs",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/breadcrumbs.jpg"
+                  },
+                  {
+                      "name": "parmesan",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/parmesan.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png",
+                      "name": "all purpose flour"
+                  },
+                  {
+                      "image": "",
+                      "name": "dip"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/egg.png",
+                      "name": "egg"
+                  }
+              ],
+              "step": "Mix the breadcrumbs with the grated parmesan and sprinkle the mixture onto another plate.Dredge each escalope lightly in the flour on both sides, shaking off any excess, then dip into the egg, then press into the breadcrumb mixture, to coat on both sides. Chill in the fridge for 20 minutes before cooking."
+          },
+          {
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/vegetable-oil.jpg",
+                      "name": "cooking oil"
+                  }
+              ],
+              "number": 4,
+              "step": "Heat the oil in a frying pan over a medium heat and fry the schnitzels for 2-3 minutes on each side, or until golden-brown on both sides and completely cooked through (there should be no trace of pink in the middle)."
+          },
+          {
+              "step": "Remove from the pan and set aside to drain on kitchen paper.For the sauce, pour the wine into a small saucepan, add the tarragon sprig and bring to the boil. Continue to boil for 1-2 minutes, or until the volume of liquid has almost completely reduced.",
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/tarragon.jpg",
+                      "name": "tarragon"
+                  },
+                  {
+                      "image": "",
+                      "name": "sauce"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/red-wine.jpg",
+                      "name": "wine"
+                  }
+              ],
+              "number": 5
+          },
+          {
+              "number": 6,
+              "ingredients": [
+                  {
+                      "name": "ground black pepper",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/pepper.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/tarragon.jpg",
+                      "name": "tarragon"
+                  },
+                  {
+                      "name": "cream",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/fluid-cream.jpg"
+                  },
+                  {
+                      "name": "sauce",
+                      "image": ""
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/chicken-broth.png",
+                      "name": "stock"
+                  },
+                  {
+                      "name": "pork",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/pork-tenderloin-raw.png"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/salt.jpg",
+                      "name": "salt"
+                  }
+              ],
+              "step": "Pour in the stock and return the mixture to the boil. Boil for 3-4 minutes, or until reduced in volume by half, then add the cream and simmer for 2-3 minutes until thickened. Season, to taste, with salt and freshly ground black pepper, then stir in the chopped tarragon.To serve, place one pork schnitzel onto each of two plates and spoon over the sauce."
+          },
+          {
+              "step": "Garnish with wedges of lemon and serve with your choice of vegetables on the side.",
+              "ingredients": [
+                  {
+                      "name": "vegetable",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/mixed-vegetables.png"
+                  },
+                  {
+                      "name": "lemon",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/lemon.png"
+                  }
+              ],
+              "number": 7
+          }
+      ],
+      "ingredients": [
+          {
+              "amount": 0.25,
+              "unit": "tsp",
+              "name": "pepper"
+          },
+          {
+              "unit": "g",
+              "amount": 35,
+              "name": "breadcrumbs"
+          },
+          {
+              "unit": "g",
+              "name": "cornflour",
+              "amount": 25
+          },
+          {
+              "amount": 0.5,
+              "unit": "tsp",
+              "name": "cornstarch"
+          },
+          {
+              "name": "double cream",
+              "unit": "cup",
+              "amount": 0.38
+          },
+          {
+              "name": "eggs",
+              "amount": 1,
+              "unit": ""
+          },
+          {
+              "amount": 25,
+              "unit": "g",
+              "name": "parmesan cheese"
+          },
+          {
+              "name": "pork escalopes",
+              "unit": "g",
+              "amount": 125
+          },
+          {
+              "name": "sunflower oil",
+              "unit": "Tbs",
+              "amount": 2
+          },
+          {
+              "name": "tarragon",
+              "amount": 0.5,
+              "unit": "tsp"
+          },
+          {
+              "amount": 0.38,
+              "name": "vegetable stock from",
+              "unit": "cup"
+          },
+          {
+              "amount": 0.13,
+              "unit": "cup",
+              "name": "white wine"
+          }
+      ],
+      "image": "https://img.spoonacular.com/recipes/656819-312x231.jpg",
+      "isHealthy": false,
+      "title": "Pork schnitzel with tarragon cream sauce",
+      "nutrition": [
+          {
+              "unit": "kcal",
+              "amount": 1071.57,
+              "name": "Calories"
+          },
+          {
+              "unit": "g",
+              "name": "Fat",
+              "amount": 78.04
+          },
+          {
+              "amount": 30.34,
+              "unit": "g",
+              "name": "Saturated Fat"
+          },
+          {
+              "name": "Carbohydrates",
+              "unit": "g",
+              "amount": 32.89
+          },
+          {
+              "unit": "g",
+              "amount": 30.87,
+              "name": "Net Carbohydrates"
+          },
+          {
+              "unit": "g",
+              "name": "Sugar",
+              "amount": 6.43
+          },
+          {
+              "name": "Cholesterol",
+              "amount": 281.53,
+              "unit": "mg"
+          },
+          {
+              "amount": 10787.59,
+              "name": "Sodium",
+              "unit": "mg"
+          },
+          {
+              "amount": 3.09,
+              "unit": "g",
+              "name": "Alcohol"
+          },
+          {
+              "unit": "g",
+              "amount": 56.07,
+              "name": "Protein"
+          },
+          {
+              "amount": 12.87,
+              "name": "Vitamin E",
+              "unit": "mg"
+          },
+          {
+              "name": "Calcium",
+              "amount": 463.64,
+              "unit": "mg"
+          },
+          {
+              "amount": 30.77,
+              "name": "Selenium",
+              "unit": "µg"
+          },
+          {
+              "amount": 1968.87,
+              "unit": "IU",
+              "name": "Vitamin A"
+          },
+          {
+              "amount": 378.96,
+              "name": "Phosphorus",
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "name": "Vitamin B2",
+              "amount": 0.61
+          },
+          {
+              "amount": 0.53,
+              "unit": "mg",
+              "name": "Manganese"
+          },
+          {
+              "name": "Vitamin B1",
+              "amount": 0.39,
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "name": "Iron",
+              "amount": 3.23
+          },
+          {
+              "name": "Folate",
+              "unit": "µg",
+              "amount": 66.03
+          },
+          {
+              "unit": "µg",
+              "name": "Vitamin D",
+              "amount": 2.43
+          },
+          {
+              "unit": "µg",
+              "amount": 0.96,
+              "name": "Vitamin B12"
+          },
+          {
+              "name": "Zinc",
+              "amount": 2.08,
+              "unit": "mg"
+          },
+          {
+              "amount": 2.59,
+              "name": "Vitamin B3",
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "amount": 1.23,
+              "name": "Vitamin B5"
+          },
+          {
+              "unit": "mg",
+              "amount": 44.49,
+              "name": "Magnesium"
+          },
+          {
+              "name": "Vitamin B6",
+              "amount": 0.21,
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "name": "Potassium",
+              "amount": 291.24
+          },
+          {
+              "amount": 2.02,
+              "name": "Fiber",
+              "unit": "g"
+          },
+          {
+              "name": "Copper",
+              "unit": "mg",
+              "amount": 0.16
+          },
+          {
+              "name": "Vitamin K",
+              "amount": 8.17,
+              "unit": "µg"
+          },
+          {
+              "name": "Vitamin C",
+              "unit": "mg",
+              "amount": 0.94
+          }
+      ],
+      "times": {
+          "prepTime": 0,
+          "cookTime": 0,
+          "readyTime": 45
+      },
+      "id": "7fBQj2qYP01D9n0g2jl7"
+  },
+  {
+      "source": {
+          "url": "http://www.foodista.com/recipe/QJZ2MZTX/lemon-pepper-steak",
+          "name": "Foodista"
+      },
+      "diets": [
+          "gluten free",
+          "dairy free",
+          "paleolithic",
+          "primal",
+          "fodmap friendly",
+          "whole 30",
+          "ketogenic"
+      ],
+      "isHealthy": false,
+      "servingSize": {
+          "amount": 20,
+          "unit": "g"
+      },
+      "description": "Lemon Pepper Steak is a gluten free, dairy free, paleolithic, and primal recipe with 36 servings. This hor d'oeuvre has 35 calories, 3g of protein, and 2g of fat per serving. For 24 cents per serving, this recipe covers 2% of your daily requirements of vitamins and minerals. Not a lot of people made this recipe, and 1 would say it hit the spot. It is brought to you by Foodista. It can be enjoyed any time, but it is especially good for valentin day. From preparation to the plate, this recipe takes about 45 minutes. If you have salt, water, lemon juice, and a few other ingredients on hand, you can make it. Overall, this recipe earns a very bad (but still fixable) spoonacular score of 10%. Similar recipes include Lemon Pepper Steak, Lemon-Pepper Flank Steak Tacos, and Lemon Pepper Chicken Wraps with Lemon Pepper Sauce.",
+      "times": {
+          "prepTime": 0,
+          "cookTime": 0,
+          "readyTime": 45
+      },
+      "nutrition": [
+          {
+              "amount": 34.53,
+              "name": "Calories",
+              "unit": "kcal"
+          },
+          {
+              "name": "Fat",
+              "unit": "g",
+              "amount": 2.46
+          },
+          {
+              "name": "Saturated Fat",
+              "unit": "g",
+              "amount": 1.05
+          },
+          {
+              "amount": 0.15,
+              "name": "Carbohydrates",
+              "unit": "g"
+          },
+          {
+              "name": "Net Carbohydrates",
+              "unit": "g",
+              "amount": 0.13
+          },
+          {
+              "amount": 0.04,
+              "name": "Sugar",
+              "unit": "g"
+          },
+          {
+              "amount": 10.71,
+              "unit": "mg",
+              "name": "Cholesterol"
+          },
+          {
+              "unit": "mg",
+              "amount": 204.61,
+              "name": "Sodium"
+          },
+          {
+              "name": "Alcohol",
+              "unit": "g",
+              "amount": 0
+          },
+          {
+              "amount": 2.98,
+              "unit": "g",
+              "name": "Protein"
+          },
+          {
+              "amount": 1.16,
+              "name": "Zinc",
+              "unit": "mg"
+          },
+          {
+              "unit": "µg",
+              "name": "Vitamin B12",
+              "amount": 0.42
+          },
+          {
+              "unit": "µg",
+              "name": "Selenium",
+              "amount": 3.11
+          },
+          {
+              "name": "Vitamin B3",
+              "unit": "mg",
+              "amount": 0.69
+          },
+          {
+              "amount": 0.06,
+              "unit": "mg",
+              "name": "Vitamin B6"
+          },
+          {
+              "unit": "mg",
+              "name": "Phosphorus",
+              "amount": 29.2
+          },
+          {
+              "name": "Iron",
+              "amount": 0.35,
+              "unit": "mg"
+          },
+          {
+              "amount": 56.39,
+              "name": "Potassium",
+              "unit": "mg"
+          },
+          {
+              "amount": 0.02,
+              "name": "Vitamin B2",
+              "unit": "mg"
+          },
+          {
+              "name": "Vitamin B5",
+              "amount": 0.11,
+              "unit": "mg"
+          }
+      ],
+      "ingredients": [
+          {
+              "unit": "lbs",
+              "name": "chuck arm steak",
+              "amount": 0.03
+          },
+          {
+              "unit": "teaspoon",
+              "amount": 0.01,
+              "name": "dill weed"
+          },
+          {
+              "unit": "cup",
+              "amount": 0.01,
+              "name": "lemon juice"
+          },
+          {
+              "amount": 0.03,
+              "unit": "teaspoon",
+              "name": "cracked pepper"
+          },
+          {
+              "unit": "servings",
+              "name": "salt",
+              "amount": 1
+          },
+          {
+              "name": "water",
+              "unit": "cup",
+              "amount": 0.01
+          }
+      ],
+      "instructions": [
+          {
+              "number": 1,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/ribeye-raw.jpg",
+                      "name": "chuck steak"
+                  },
+                  {
+                      "name": "lemon juice",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/lemon-juice.jpg"
+                  },
+                  {
+                      "name": "dill",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/dill.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/seasoning.png",
+                      "name": "marinade"
+                  },
+                  {
+                      "name": "beef",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/beef-cubes-raw.png"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/salt.jpg",
+                      "name": "salt"
+                  }
+              ],
+              "step": "Combine lemon juice, salt and dill weed. Trim all visible fat and place beef chuck steak in plastic bag or dish; add marinade, turning to coat. Tie bag securely or cover dish and marinade in refrigerator 6 to 8 hours or overnight, turning at least once."
+          },
+          {
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/seasoning.png",
+                      "name": "marinade"
+                  },
+                  {
+                      "name": "pepper",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/pepper.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/ribeye-raw.jpg",
+                      "name": "steak"
+                  },
+                  {
+                      "name": "meat",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg"
+                  }
+              ],
+              "number": 2,
+              "step": "Remove steak from marinade, press pepper into surface of both side of meat."
+          },
+          {
+              "number": 3,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/ribeye-raw.jpg",
+                      "name": "steak"
+                  }
+              ],
+              "step": "Place steak on broiler pan and broil 10 to 12 minutes on each side. Carve steak into thin slices."
+          }
+      ],
+      "title": "Lemon Pepper Steak",
+      "userId": "Mw1YwOFDXqRHWHE0DIICtdpwhi03",
+      "dishTypes": [
+          "antipasti",
+          "starter",
+          "snack",
+          "appetizer",
+          "antipasto",
+          "hor d'oeuvre"
+      ],
+      "image": "https://img.spoonacular.com/recipes/649722-312x231.jpg",
+      "id": "WYDRAZIjoPZc1LCcVolX"
+  },
+  {
+      "title": "Chicken Adobo & Coconut Ginger Rice",
+      "userId": "Mw1YwOFDXqRHWHE0DIICtdpwhi03",
+      "instructions": [
+          {
+              "number": 1,
+              "ingredients": [
+                  {
+                      "name": "chicken thighs",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/chicken-thigh.jpg"
+                  },
+                  {
+                      "name": "brown sugar",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/dark-brown-sugar.png"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/black-pepper.png",
+                      "name": "peppercorns"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/bay-leaves.jpg",
+                      "name": "bay leaves"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/olive-oil.jpg",
+                      "name": "olive oil"
+                  },
+                  {
+                      "name": "soy sauce",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/soy-sauce.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/seasoning.png",
+                      "name": "marinade"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg",
+                      "name": "chicken"
+                  },
+                  {
+                      "name": "vinegar",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/vinegar-(white).jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/garlic.png",
+                      "name": "garlic"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/vegetable-oil.jpg",
+                      "name": "cooking oil"
+                  }
+              ],
+              "step": "In a large bowl or flat dish, combine soy sauce, vinegar, garlic, peppercorns, brown sugar and bay leaves with chicken. Marinate for at least an hour or overnight.When ready to cook, swirl a bit of olive oil in a pan. When the oil is hot, lay chicken thighs down, leaving marinade in the dish. Brown chicken on both sides, approximately 2-3 minutes on each side."
+          },
+          {
+              "step": "Remove chicken from the pan and set aside.",
+              "number": 2,
+              "ingredients": [
+                  {
+                      "name": "chicken",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg"
+                  }
+              ]
+          },
+          {
+              "number": 3,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/chicken-broth.png",
+                      "name": "chicken broth"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/seasoning.png",
+                      "name": "marinade"
+                  },
+                  {
+                      "name": "chicken",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg"
+                  }
+              ],
+              "step": "Pour in marinade and chicken broth and cook until it begins to boil.Once boiling, add chicken again and cover. Cook for about 10 minutes."
+          },
+          {
+              "number": 4,
+              "step": "Whisk 1/4 cup water with cornstarch and add to chicken. Turn chicken pieces over, cover again and cook until juices run clear (approximately 6-9 minutes).For rice, set 3 cups of water to boiling.",
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/chicken-parts.jpg",
+                      "name": "chicken pieces"
+                  },
+                  {
+                      "name": "corn starch",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/white-powder.jpg"
+                  },
+                  {
+                      "name": "chicken",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/water.png",
+                      "name": "water"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/uncooked-white-rice.png",
+                      "name": "rice"
+                  }
+              ]
+          },
+          {
+              "ingredients": [
+                  {
+                      "name": "green onions",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/spring-onions.jpg"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/coconut.jpg",
+                      "name": "coconut"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/parsley.jpg",
+                      "name": "parsley"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/ginger.png",
+                      "name": "ginger"
+                  },
+                  {
+                      "name": "water",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/water.png"
+                  },
+                  {
+                      "name": "rice",
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/uncooked-white-rice.png"
+                  },
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/salt.jpg",
+                      "name": "salt"
+                  }
+              ],
+              "step": "Sprinkle a little salt into the water. When water begins to boil, add rice and cook according to directions. Once done, toss with scallions, parsley, ginger and coconut.",
+              "number": 5
+          },
+          {
+              "step": "Serve chicken over chicken and drizzle with a little sauce.",
+              "number": 6,
+              "ingredients": [
+                  {
+                      "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg",
+                      "name": "chicken"
+                  },
+                  {
+                      "name": "sauce",
+                      "image": ""
+                  }
+              ]
+          }
+      ],
+      "dishTypes": [
+          "lunch",
+          "main course",
+          "main dish",
+          "dinner"
+      ],
+      "times": {
+          "cookTime": 0,
+          "readyTime": 90,
+          "prepTime": 0
+      },
+      "description": "Chicken Adobo & Coconut Ginger Rice is a gluten free and dairy free recipe with 4 servings. One serving contains 730 calories, 33g of protein, and 34g of fat. For $1.92 per serving, this recipe covers 26% of your daily requirements of vitamins and minerals. Head to the store and pick up rice, ginger, brown sugar, and a few other things to make it today. This recipe from Foodista has 3 fans. It works well as a main course. From preparation to the plate, this recipe takes about 1 hour and 30 minutes. Taking all factors into account, this recipe earns a spoonacular score of 58%, which is solid. If you like this recipe, take a look at these similar recipes: Chicken Adobo & Coconut Ginger Rice, Thai Chicken Satay and Peanut Sauce + Ginger Coconut Rice, and Mango, Chicken & Brown Rice Salad with Coconut-Ginger Dressing.",
+      "servingSize": {
+          "amount": 720,
+          "unit": "g"
+      },
+      "diets": [
+          "gluten free",
+          "dairy free"
+      ],
+      "image": "https://img.spoonacular.com/recipes/637883-312x231.jpg",
+      "nutrition": [
+          {
+              "amount": 1057.65,
+              "name": "Calories",
+              "unit": "kcal"
+          },
+          {
+              "name": "Fat",
+              "unit": "g",
+              "amount": 58.48
+          },
+          {
+              "unit": "g",
+              "name": "Saturated Fat",
+              "amount": 16.15
+          },
+          {
+              "amount": 72.76,
+              "name": "Carbohydrates",
+              "unit": "g"
+          },
+          {
+              "unit": "g",
+              "amount": 70.51,
+              "name": "Net Carbohydrates"
+          },
+          {
+              "unit": "g",
+              "name": "Sugar",
+              "amount": 10.1
+          },
+          {
+              "amount": 284.39,
+              "unit": "mg",
+              "name": "Cholesterol"
+          },
+          {
+              "name": "Sodium",
+              "amount": 1824.9,
+              "unit": "mg"
+          },
+          {
+              "unit": "g",
+              "amount": 0,
+              "name": "Alcohol"
+          },
+          {
+              "amount": 56.06,
+              "name": "Protein",
+              "unit": "g"
+          },
+          {
+              "amount": 154.53,
+              "name": "Vitamin K",
+              "unit": "µg"
+          },
+          {
+              "unit": "µg",
+              "amount": 66.76,
+              "name": "Selenium"
+          },
+          {
+              "name": "Vitamin B3",
+              "amount": 15.27,
+              "unit": "mg"
+          },
+          {
+              "amount": 1.35,
+              "name": "Manganese",
+              "unit": "mg"
+          },
+          {
+              "amount": 616.56,
+              "unit": "mg",
+              "name": "Phosphorus"
+          },
+          {
+              "name": "Vitamin B6",
+              "amount": 1.23,
+              "unit": "mg"
+          },
+          {
+              "name": "Vitamin B5",
+              "unit": "mg",
+              "amount": 3.87
+          },
+          {
+              "amount": 5,
+              "name": "Zinc",
+              "unit": "mg"
+          },
+          {
+              "unit": "mg",
+              "name": "Vitamin B2",
+              "amount": 0.55
+          },
+          {
+              "name": "Vitamin B12",
+              "amount": 1.86,
+              "unit": "µg"
+          },
+          {
+              "amount": 111.43,
+              "name": "Magnesium",
+              "unit": "mg"
+          },
+          {
+              "amount": 952.77,
+              "name": "Potassium",
+              "unit": "mg"
+          },
+          {
+              "name": "Iron",
+              "unit": "mg",
+              "amount": 3.98
+          },
+          {
+              "amount": 0.43,
+              "unit": "mg",
+              "name": "Copper"
+          },
+          {
+              "unit": "mg",
+              "name": "Vitamin B1",
+              "amount": 0.31
+          },
+          {
+              "unit": "mg",
+              "name": "Vitamin E",
+              "amount": 3.02
+          },
+          {
+              "unit": "IU",
+              "name": "Vitamin A",
+              "amount": 984.52
+          },
+          {
+              "unit": "mg",
+              "amount": 13.2,
+              "name": "Vitamin C"
+          },
+          {
+              "name": "Folate",
+              "unit": "µg",
+              "amount": 48.62
+          },
+          {
+              "unit": "mg",
+              "name": "Calcium",
+              "amount": 94.16
+          },
+          {
+              "name": "Fiber",
+              "unit": "g",
+              "amount": 2.25
+          },
+          {
+              "amount": 0.29,
+              "name": "Vitamin D",
+              "unit": "µg"
+          }
+      ],
+      "ingredients": [
+          {
+              "name": "apple cider vinegar",
+              "amount": 0.13,
+              "unit": "cup"
+          },
+          {
+              "name": "bay leaves",
+              "amount": 0.75,
+              "unit": ""
+          },
+          {
+              "unit": "",
+              "name": "chicken thighs",
+              "amount": 1
+          },
+          {
+              "amount": 1,
+              "name": "chicken thighs",
+              "unit": ""
+          },
+          {
+              "name": "brown sugar",
+              "amount": 0.25,
+              "unit": "tablespoon"
+          },
+          {
+              "amount": 0.25,
+              "name": "brown sugar",
+              "unit": "tablespoon"
+          },
+          {
+              "unit": "cup",
+              "name": "chicken broth",
+              "amount": 0.25
+          },
+          {
+              "name": "cornstarch",
+              "amount": 0.25,
+              "unit": "tablespoon"
+          },
+          {
+              "amount": 0.5,
+              "name": "ginger",
+              "unit": "tablespoons"
+          },
+          {
+              "amount": 0.75,
+              "unit": "cloves",
+              "name": "garlic"
+          },
+          {
+              "name": "grapeseed oil",
+              "amount": 0.5,
+              "unit": "tablespoons"
+          },
+          {
+              "amount": 1,
+              "name": "kosher salt",
+              "unit": "servings"
+          },
+          {
+              "amount": 0.13,
+              "unit": "cup",
+              "name": "soy sauce"
+          },
+          {
+              "name": "parsley",
+              "amount": 0.13,
+              "unit": "cup"
+          },
+          {
+              "unit": "",
+              "name": "peppercorns",
+              "amount": 3
+          },
+          {
+              "unit": "cups",
+              "amount": 0.38,
+              "name": "rice"
+          },
+          {
+              "unit": "",
+              "name": "scallions",
+              "amount": 1
+          },
+          {
+              "unit": "cup",
+              "amount": 0.08,
+              "name": "coconut"
+          },
+          {
+              "unit": "cup",
+              "amount": 0.06,
+              "name": "water"
+          },
+          {
+              "amount": 0.75,
+              "name": "water",
+              "unit": "cups"
+          }
+      ],
+      "source": {
+          "url": "https://www.foodista.com/recipe/PLHMWYCP/chicken-adobo-coconut-ginger-rice",
+          "name": "foodista.com"
+      },
+      "isHealthy": false,
+      "id": "fkJiddhFGttZIy4mVDD0"
+  }
+]

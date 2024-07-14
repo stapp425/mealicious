@@ -7,10 +7,11 @@ import { useMediaQuery } from "usehooks-ts"
 import { type CurrentUser, type Breakpoints } from "@/types/other"
 import Login from "./components/Login"
 import MainLayout from "./layouts/MainLayout"
-import Meals from "./components/Meals"
-import NewMealSearch from "./components/NewRecipeSearch/NewRecipeSearch"
+import Dashboard from "./components/Meals/Dashboard"
+import NewRecipeSearch from "./components/NewRecipeSearch/NewRecipeSearch"
 import AuthLayout from "./layouts/AuthLayout"
 import Register from "./components/Register"
+import AllRecipes from "./components/AllRecipes/AllRecipes"
 
 export const UserContext = createContext<CurrentUser>(null)
 export const ScreenContext = createContext<Breakpoints>({
@@ -34,7 +35,7 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       setCurrentUser(user)
-      navigate(user ? "/meals" : "/")
+      navigate(user ? "/dashboard" : "/")
     })
 
     return unsubscribe
@@ -45,10 +46,11 @@ export default function App() {
       <UserContext.Provider value={currentUser}>
         <Routes>
           <Route path="/" element={<MainLayout/>}>
+            <Route path="dashboard" element={<AllRecipes/>}/>
             <Route path="meals">
-              <Route index element={<Meals/>}/>
-              <Route path="search" element={<NewMealSearch/>}/>
+              <Route path="search" element={<NewRecipeSearch/>}/>
             </Route>
+            <Route path="recipes" element={<AllRecipes/>}/>
           </Route>
           <Route path="/auth" element={<AuthLayout/>}>
             <Route path="login" element={<Login/>}/>

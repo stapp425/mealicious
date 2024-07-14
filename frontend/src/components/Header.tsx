@@ -65,9 +65,9 @@ export default function Header() {
                     My Profile
                   </Link>
                 </Button>
-                <Link to="/settings" className="transition hover:translate-x-1 hover:font-bold">Settings</Link>
-                <Link to="/calendar" className="transition hover:translate-x-1 hover:font-bold">Calendar</Link>
                 <Link to="/meals" className="transition hover:translate-x-1 hover:font-bold">My Meals</Link>
+                <Link to="/calendar" className="transition hover:translate-x-1 hover:font-bold">Calendar</Link>
+                <Link to="/settings" className="transition hover:translate-x-1 hover:font-bold">Settings</Link>
                 <Separator className="my-2 bg-slate-400"/>
                 <AlertDialog>
                   <AlertDialogTrigger>

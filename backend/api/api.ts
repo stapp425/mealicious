@@ -32,8 +32,8 @@ async function searchMeals(req:Request, res:Response) {
 function formatResults(data: {[key:string]: any}) {
 	return new Promise((resolve, _) => {
 		const results:{[key:string]: any} = data.results
-		const parsedResults = results.map((result:{[key:string]: any}, index:number) => ({
-			resultIndex: index + 1,
+		
+		const parsedResults = results.length > 0 ? results.map((result:{[key:string]: any}) => ({
       title: result.title,
       image: result.image,
 			description: result.summary?.replace(/<[^>]*>/g, ""),
@@ -64,8 +64,32 @@ function formatResults(data: {[key:string]: any}) {
 				number: step.number,
 				step: step.step,
 				ingredients: step.ingredients?.map((i:{[key:string]: any}) => ({ name: i.name, image: i.image }))
-			})) || []
-    }))
+			}))
+    })) : [{
+			resultIndex: 0,
+			title: "",
+			image: "",
+			description: "",
+			source: {
+				name: "",
+				url: ""
+			},
+			diets: [],
+			dishTypes: [],
+			isHealthy: false,
+			times: {
+				prepTime: 0,
+				cookTime: 0,
+				readyTime: 0
+			},
+			servingSize: {
+				amount: 0,
+				unit: ""
+			},
+			nutrition: [],
+			ingredients: [],
+			instructions: []
+		}]
 
 		resolve(parsedResults)
 	})

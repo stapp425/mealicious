@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { type Recipe, type Ingredient } from "@/types/recipe"
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -10,14 +10,14 @@ import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { type Breakpoints, type Layout } from "@/types/other"
 import { ScreenContext } from "@/App"
-import { DesktopDetails, MobileDetails } from "./Details"
+import Details from "./Details"
 
 type Props = {
   layout?: Layout
   recipe: Recipe
 }
 
-export default function Recipe({ layout, recipe, }: Props) {
+export default function Recipe({ layout, recipe }: Props): React.ReactElement {
   switch(layout) {
     case "list":
       return <List recipe={recipe}/>
@@ -25,10 +25,12 @@ export default function Recipe({ layout, recipe, }: Props) {
       return <Card recipe={recipe}/>
     case "square":
       return <Square recipe={recipe}/>
+    default:
+      return <List recipe={recipe}/>
   }
 }
 
-function List({ recipe }: Props) {
+function List({ recipe }: Props): React.ReactElement {
   const matches = useContext<Breakpoints>(ScreenContext)
   
   return (
@@ -47,7 +49,8 @@ function List({ recipe }: Props) {
           </DialogTrigger>
           <DialogContent>
             <ScrollArea>
-              {matches.md ? <DesktopDetails recipe={recipe}/> : <MobileDetails recipe={recipe}/>}
+              <Details recipe={recipe} matches={matches.md}/>
+              <ScrollBar/>
             </ScrollArea>
           </DialogContent>
         </Dialog>
@@ -140,7 +143,7 @@ function Card({ recipe }: Props) {
           </DialogTrigger>
           <DialogContent>
             <ScrollArea>
-              {matches.md ? <DesktopDetails recipe={recipe}/> : <MobileDetails recipe={recipe}/>}
+              <Details recipe={recipe} matches={matches.md}/>
             </ScrollArea>
           </DialogContent>
         </Dialog>
@@ -205,7 +208,7 @@ function Card({ recipe }: Props) {
   )
 }
 
-function Square({ recipe }: Props) {
+function Square({ recipe }: Props): React.ReactElement {
   const matches = useContext<Breakpoints>(ScreenContext)
 
   return (
@@ -223,7 +226,7 @@ function Square({ recipe }: Props) {
         </DialogTrigger>
         <DialogContent>
           <ScrollArea>
-            {matches.md ? <DesktopDetails recipe={recipe}/> : <MobileDetails recipe={recipe}/>}
+            <Details recipe={recipe} matches={matches.md}/>
           </ScrollArea>
         </DialogContent>
       </Dialog>
