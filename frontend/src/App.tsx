@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from "react"
-import { Routes, Route, useNavigate } from "react-router-dom"
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
 import { auth } from "../../firebaseConfig"
@@ -12,6 +12,7 @@ import NewRecipeSearch from "./components/NewRecipeSearch/NewRecipeSearch"
 import AuthLayout from "./layouts/AuthLayout"
 import Register from "./components/Register"
 import AllRecipes from "./components/AllRecipes/AllRecipes"
+import RecipeDetails from "./components/RecipeDetails"
 
 export const UserContext = createContext<CurrentUser>(null)
 export const ScreenContext = createContext<Breakpoints>({
@@ -23,6 +24,7 @@ export const ScreenContext = createContext<Breakpoints>({
 export default function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>(null)
   const navigate = useNavigate()
+  const location = useLocation()
   const matches: Breakpoints = {
     any: useMediaQuery("(min-width: 0px)"),
     sm: useMediaQuery("(min-width: 640px)"),
@@ -34,8 +36,13 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
-      setCurrentUser(user)
-      navigate(user ? "/dashboard" : "/")
+      if(user) {
+        setCurrentUser(user)
+        location.pathname.match(/^\/(auth\/.+)?$/) && navigate("/dashboard")
+      } else {
+        setCurrentUser(null)
+        navigate("/")
+      }
     })
 
     return unsubscribe
@@ -50,7 +57,10 @@ export default function App() {
             <Route path="meals">
               <Route path="search" element={<NewRecipeSearch/>}/>
             </Route>
-            <Route path="recipes" element={<AllRecipes/>}/>
+            <Route path="recipes">
+              <Route index element={<AllRecipes/>}/>
+              <Route path=":recipeId" element={<RecipeDetails/>}/>
+            </Route>
           </Route>
           <Route path="/auth" element={<AuthLayout/>}>
             <Route path="login" element={<Login/>}/>

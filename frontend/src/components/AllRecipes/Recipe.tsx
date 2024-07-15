@@ -24,7 +24,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
   const activeRecipe = useContext<string>(ActiveRecipeContext)
 
   return (
-    <label className="overflow-hidden min-h-[225px] w-[calc(100%-16px)] border border-slate-400 flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all">
+    <label className="overflow-hidden min-h-[225px] w-full border border-slate-400 flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all">
       <input
         type="radio"
         name="recipe"
@@ -116,7 +116,7 @@ function Square({ recipe, onChange }: Props): React.ReactElement {
   const activeRecipe = useContext<string>(ActiveRecipeContext)
 
   return (
-    <label className="relative overflow-hidden aspect-square min-h-[225px] w-[calc(100%-16px)] border border-slate-400 flex flex-col justify-between p-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all">
+    <label className="relative overflow-hidden aspect-square min-h-[225px] w-full border border-slate-400 flex flex-col justify-between p-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all">
       <input
         type="radio"
         name="recipe"

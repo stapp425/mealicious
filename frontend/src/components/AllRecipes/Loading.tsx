@@ -14,9 +14,9 @@ export default function Loading(): React.ReactElement {
 }
 
 function List(): React.ReactElement {
-  return <Skeleton className="min-h-[225px] w-[calc(100%-16px)] rounded-lg bg-slate-300"/>
+  return <Skeleton className="min-h-[225px] w-full rounded-lg bg-slate-300"/>
 }
 
 function Square(): React.ReactElement {
-  return <Skeleton className="aspect-square min-h-[225px] w-[calc(100%-16px)] rounded-lg bg-slate-300"/>
+  return <Skeleton className="aspect-square min-h-[225px] w-full rounded-lg bg-slate-300"/>
 }

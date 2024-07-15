@@ -5048,3 +5048,240 @@ export const firestoreData = [
       "id": "fkJiddhFGttZIy4mVDD0"
   }
 ]
+
+export const sampleFullRecipe = {
+  "source": {
+    "url": "http://www.foodista.com/recipe/QJZ2MZTX/lemon-pepper-steak",
+    "name": "Foodista"
+  },
+  "diets": [
+    "gluten free",
+    "dairy free",
+    "paleolithic",
+    "primal",
+    "fodmap friendly",
+    "whole 30",
+    "ketogenic"
+  ],
+  "isHealthy": false,
+  "servingSize": {
+    "amount": 20,
+    "unit": "g"
+  },
+  "description": "Lemon Pepper Steak is a gluten free, dairy free, paleolithic, and primal recipe with 36 servings. This hor d'oeuvre has 35 calories, 3g of protein, and 2g of fat per serving. For 24 cents per serving, this recipe covers 2% of your daily requirements of vitamins and minerals. Not a lot of people made this recipe, and 1 would say it hit the spot. It is brought to you by Foodista. It can be enjoyed any time, but it is especially good for valentin day. From preparation to the plate, this recipe takes about 45 minutes. If you have salt, water, lemon juice, and a few other ingredients on hand, you can make it. Overall, this recipe earns a very bad (but still fixable) spoonacular score of 10%. Similar recipes include Lemon Pepper Steak, Lemon-Pepper Flank Steak Tacos, and Lemon Pepper Chicken Wraps with Lemon Pepper Sauce.",
+  "times": {
+    "prepTime": 0,
+    "cookTime": 0,
+    "readyTime": 45
+  },
+  "nutrition": [
+    {
+      "amount": 34.53,
+      "name": "Calories",
+      "unit": "kcal"
+    },
+    {
+      "name": "Fat",
+      "unit": "g",
+      "amount": 2.46
+    },
+    {
+      "name": "Saturated Fat",
+      "unit": "g",
+      "amount": 1.05
+    },
+    {
+      "amount": 0.15,
+      "name": "Carbohydrates",
+      "unit": "g"
+    },
+    {
+      "name": "Net Carbohydrates",
+      "unit": "g",
+      "amount": 0.13
+    },
+    {
+      "amount": 0.04,
+      "name": "Sugar",
+      "unit": "g"
+    },
+    {
+      "amount": 10.71,
+      "unit": "mg",
+      "name": "Cholesterol"
+    },
+    {
+      "unit": "mg",
+      "amount": 204.61,
+      "name": "Sodium"
+    },
+    {
+      "name": "Alcohol",
+      "unit": "g",
+      "amount": 0
+    },
+    {
+      "amount": 2.98,
+      "unit": "g",
+      "name": "Protein"
+    },
+    {
+      "amount": 1.16,
+      "name": "Zinc",
+      "unit": "mg"
+    },
+    {
+      "unit": "µg",
+      "name": "Vitamin B12",
+      "amount": 0.42
+    },
+    {
+      "unit": "µg",
+      "name": "Selenium",
+      "amount": 3.11
+    },
+    {
+      "name": "Vitamin B3",
+      "unit": "mg",
+      "amount": 0.69
+    },
+    {
+      "amount": 0.06,
+      "unit": "mg",
+      "name": "Vitamin B6"
+    },
+    {
+      "unit": "mg",
+      "name": "Phosphorus",
+      "amount": 29.2
+    },
+    {
+      "name": "Iron",
+      "amount": 0.35,
+      "unit": "mg"
+    },
+    {
+      "amount": 56.39,
+      "name": "Potassium",
+      "unit": "mg"
+    },
+    {
+      "amount": 0.02,
+      "name": "Vitamin B2",
+      "unit": "mg"
+    },
+    {
+      "name": "Vitamin B5",
+      "amount": 0.11,
+      "unit": "mg"
+    }
+  ],
+  "ingredients": [
+    {
+      "unit": "lbs",
+      "name": "chuck arm steak",
+      "amount": 0.03
+    },
+    {
+      "unit": "teaspoon",
+      "amount": 0.01,
+      "name": "dill weed"
+    },
+    {
+      "unit": "cup",
+      "amount": 0.01,
+      "name": "lemon juice"
+    },
+    {
+      "amount": 0.03,
+      "unit": "teaspoon",
+      "name": "cracked pepper"
+    },
+    {
+      "unit": "servings",
+      "name": "salt",
+      "amount": 1
+    },
+    {
+      "name": "water",
+      "unit": "cup",
+      "amount": 0.01
+    }
+  ],
+  "instructions": [
+    {
+      "number": 1,
+      "ingredients": [
+        {
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/ribeye-raw.jpg",
+          "name": "chuck steak"
+        },
+        {
+          "name": "lemon juice",
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/lemon-juice.jpg"
+        },
+        {
+          "name": "dill",
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/dill.jpg"
+        },
+        {
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/seasoning.png",
+          "name": "marinade"
+        },
+        {
+          "name": "beef",
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/beef-cubes-raw.png"
+        },
+        {
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/salt.jpg",
+          "name": "salt"
+        }
+      ],
+      "step": "Combine lemon juice, salt and dill weed. Trim all visible fat and place beef chuck steak in plastic bag or dish; add marinade, turning to coat. Tie bag securely or cover dish and marinade in refrigerator 6 to 8 hours or overnight, turning at least once."
+    },
+    {
+      "ingredients": [
+        {
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/seasoning.png",
+          "name": "marinade"
+        },
+        {
+          "name": "pepper",
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/pepper.jpg"
+        },
+        {
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/ribeye-raw.jpg",
+          "name": "steak"
+        },
+        {
+          "name": "meat",
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/whole-chicken.jpg"
+        }
+      ],
+      "number": 2,
+      "step": "Remove steak from marinade, press pepper into surface of both side of meat."
+    },
+    {
+      "number": 3,
+      "ingredients": [
+        {
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/ribeye-raw.jpg",
+          "name": "steak"
+        }
+      ],
+      "step": "Place steak on broiler pan and broil 10 to 12 minutes on each side. Carve steak into thin slices."
+    }
+  ],
+  "title": "Lemon Pepper Steak",
+  "userId": "Mw1YwOFDXqRHWHE0DIICtdpwhi03",
+  "dishTypes": [
+    "antipasti",
+    "starter",
+    "snack",
+    "appetizer",
+    "antipasto",
+    "hor d'oeuvre"
+  ],
+  "image": "https://img.spoonacular.com/recipes/649722-312x231.jpg",
+  "id": "WYDRAZIjoPZc1LCcVolX"
+}

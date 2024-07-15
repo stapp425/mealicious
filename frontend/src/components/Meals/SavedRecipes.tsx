@@ -7,7 +7,7 @@ import Recipe from "./Recipe"
 import { SquareArrowUpRight } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { collection } from "@firebase/firestore"
-import { useFirestoreFetch } from "@/util/hooks"
+import { useFirestoreFetch, useFirestoreTest } from "@/util/hooks"
 import { firestore } from "../../../../firebaseConfig"
 import { limit, query, where } from "firebase/firestore"
 import { CurrentUser } from "@/types/other"
@@ -15,7 +15,7 @@ import { UserContext } from "@/App"
 
 export default function SavedRecipes(): React.ReactElement {
   const currentUser = useContext<CurrentUser>(UserContext)
-  const { isFetching, data } = useFirestoreFetch()
+  const { isFetching, data } = useFirestoreTest()
   
   // useFirestoreFetch(query(collection(firestore, "recipes"), where("userId", "==", currentUser?.uid), limit(2)), defaultRecipe)
 
