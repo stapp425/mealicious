@@ -73,15 +73,12 @@ export default function AllRecipes(): React.ReactElement {
               </SelectContent>
             </Select>
           </div>
-          <ScrollArea type="always" className="h-[calc(100vh-300px)]">
-            <div className="overflow-auto w-full grid 2xl:grid-cols-2 gap-6">
-              { isFetching ? <Loading/> : data?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidateInitialState}/>) }
-            </div>
-            <ScrollBar/>
-          </ScrollArea>
+          <div className="overflow-auto w-full grid 2xl:grid-cols-2 gap-6">
+            { isFetching ? <Loading/> : data?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidateInitialState}/>) }
+          </div>
         </div>
-        <div className="flex items-center col-start-2 size-full p-4">
-          <div className="h-[80vh] size-full grid grid-rows-2 grid-cols-2 gap-4 p-4 rounded-lg bg-white">
+        <div className="flex items-center col-start-2 size-full p-4 place-self-start">
+          <div className="h-[80vh] size-full grid grid-rows-2 grid-cols-2 gap-4 rounded-lg bg-white">
             { 
               isFirstRender
                 ? <div className="text-slate-500 row-span-2 col-span-2 flex flex-col justify-center items-center gap-3 bg-slate-200 rounded-lg">
