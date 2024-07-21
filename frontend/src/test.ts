@@ -5064,6 +5064,7 @@ export const sampleFullRecipe = {
     "ketogenic"
   ],
   "isHealthy": false,
+  "isFavorite": false,
   "servingSize": {
     "amount": 20,
     "unit": "g"

@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { type CurrentUser } from "@/types/other"
+import { type CurrentUser } from "@/types/app"
 import { UserContext } from "@/App"
 import { signOut } from "@/util/auth"
 import defaultProfilePicture from "@/img/default-pfp.svg"

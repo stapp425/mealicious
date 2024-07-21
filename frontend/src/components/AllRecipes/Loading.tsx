@@ -1,5 +1,5 @@
 import { ScreenContext } from "@/App"
-import { Breakpoints } from "@/types/other"
+import { Breakpoints } from "@/types/app"
 import { useContext } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { nanoid } from "nanoid"

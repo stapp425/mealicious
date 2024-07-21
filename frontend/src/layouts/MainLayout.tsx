@@ -4,7 +4,7 @@ import Footer from "@/components/Footer"
 
 export default function MainLayout() {
   return (
-    <div className="overflow-x-hidden relative max-w-screen min-h-screen flex flex-col justify-between">
+    <div className="relative max-w-screen min-h-screen flex flex-col">
       <Header/>
       <Outlet/>
     </div>

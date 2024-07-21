@@ -17,6 +17,9 @@ module.exports = {
       },
     },
     extend: {
+      boxShadow: {
+        "scroll-t": "0 15px 10px -5px white"
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

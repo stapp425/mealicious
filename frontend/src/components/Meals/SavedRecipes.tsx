@@ -10,7 +10,7 @@ import { collection } from "@firebase/firestore"
 import { useFirestoreFetch, useFirestoreTest } from "@/util/hooks"
 import { firestore } from "../../../../firebaseConfig"
 import { limit, query, where } from "firebase/firestore"
-import { CurrentUser } from "@/types/other"
+import { type CurrentUser } from "@/types/app"
 import { UserContext } from "@/App"
 
 export default function SavedRecipes(): React.ReactElement {

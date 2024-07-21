@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
 import { auth } from "../../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
-import { type CurrentUser, type Breakpoints } from "@/types/other"
+import { type CurrentUser, type Breakpoints } from "@/types/app"
 import Login from "./components/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/Meals/Dashboard"
@@ -12,7 +12,8 @@ import NewRecipeSearch from "./components/NewRecipeSearch/NewRecipeSearch"
 import AuthLayout from "./layouts/AuthLayout"
 import Register from "./components/Register"
 import AllRecipes from "./components/AllRecipes/AllRecipes"
-import RecipeDetails from "./components/RecipeDetails"
+import RecipeDetails from "./components/RecipeDetails/RecipeDetails"
+import CreateRecipe from "./components/CreateRecipe/CreateRecipe"
 
 export const UserContext = createContext<CurrentUser>(null)
 export const ScreenContext = createContext<Breakpoints>({
@@ -53,12 +54,13 @@ export default function App() {
       <UserContext.Provider value={currentUser}>
         <Routes>
           <Route path="/" element={<MainLayout/>}>
-            <Route path="dashboard" element={<Dashboard/>}/>
+            <Route path="dashboard" element={<CreateRecipe/>}/>
             <Route path="meals">
               <Route path="search" element={<NewRecipeSearch/>}/>
             </Route>
             <Route path="recipes">
               <Route index element={<AllRecipes/>}/>
+              <Route path="create" element={<CreateRecipe/>}/>
               <Route path=":recipeId" element={<RecipeDetails/>}/>
             </Route>
           </Route>

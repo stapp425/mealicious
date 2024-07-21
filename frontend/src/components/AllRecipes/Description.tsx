@@ -20,7 +20,7 @@ export default function Description({ activeRecipe }: Props) {
   const [count, setCount] = useState<number>(1)
   
   return (
-    <>
+    <div className="size-full grid grid-rows-2 grid-cols-2 gap-4 rounded-lg">
       <div className="row-start-1 col-start-1 row-span-1 col-span-1 flex flex-col gap-2">
         <h1 className="text-3xl font-bold line-clamp-2">{activeRecipe.title}</h1>
         <div className="flex gap-2 *:flex-1">
@@ -39,14 +39,19 @@ export default function Description({ activeRecipe }: Props) {
         <div className="flex flex-wrap gap-1">
           {activeRecipe.diets.map((diet: string) => <Badge key={nanoid()} className="bg-orange-500 pointer-events-none select-none">{diet}</Badge>)}
         </div>
-        <div className="flex-1 grid grid-cols-2 gap-2">
+        <div className="flex-1 flex flex-wrap justify-between gap-2">
           {
-            activeRecipe.dishTypes.map((dish: string) => (
-              <div key={nanoid()} className="text-center flex-1 border border-slate-400 rounded-md flex justify-center items-center hover:bg-orange-500 hover:text-white transition odd:last:col-span-2">
-                {dish}
-              </div>
-            ))
+            activeRecipe.dishTypes.length > 0 ?
+              activeRecipe.dishTypes.map((dish: string) => (
+                <div key={nanoid()} className="text-nowrap flex-1 text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 hover:bg-orange-500 hover:text-white transition">
+                  {dish}
+                </div>
+              )) :
+            <div className="size-full flex justify-center items-center border-2 border-dashed border-slate-400 rounded-md">
+              <h1 className="font-bold text-xl text-slate-400">No diet types found!</h1>
+            </div>
           }
+          
         </div>
         <div className="flex items-center gap-2 group">
           <Link to={activeRecipe.source?.url as string} target="_blank">
@@ -133,6 +138,6 @@ export default function Description({ activeRecipe }: Props) {
           </ScrollArea>
         </TabsContent>
       </Tabs>
-    </>
+    </div>
   )
 }

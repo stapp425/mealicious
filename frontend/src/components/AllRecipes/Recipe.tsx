@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { type Breakpoints } from "@/types/other"
+import { type Breakpoints } from "@/types/app"
 import { Badge } from "../ui/badge"
 import { ScreenContext } from "@/App"
 import { Ingredient, type Recipe } from "@/types/recipe"
@@ -24,7 +24,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
   const activeRecipe = useContext<string>(ActiveRecipeContext)
 
   return (
-    <label className="overflow-hidden min-h-[225px] w-full border border-slate-400 flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all">
+    <label className={`overflow-hidden min-h-[225px] w-full border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
       <input
         type="radio"
         name="recipe"
@@ -34,13 +34,12 @@ function List({ recipe, onChange }: Props): React.ReactElement {
         className="hidden"
       />
       <div className="relative group overflow-hidden flex justify-center items-center basis-1/3 shadow-lg">
-        <div>
+        <div className="h-full relative flex justify-center items-center border border-red-700">
           <img
             src={recipe.image}
             alt={recipe.title}
             className="scale-[150%] lg:scale-[200%] group-hover:scale-[175%] transition"
           />
-          <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
         </div>
       </div>
       <div className="relative flex flex-col justify-between gap-1 basis-2/3 py-3 px-4">
@@ -116,7 +115,7 @@ function Square({ recipe, onChange }: Props): React.ReactElement {
   const activeRecipe = useContext<string>(ActiveRecipeContext)
 
   return (
-    <label className="relative overflow-hidden aspect-square min-h-[225px] w-full border border-slate-400 flex flex-col justify-between p-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all">
+    <label className={`relative overflow-hidden aspect-square min-h-[225px] w-full border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex flex-col justify-between p-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
       <input
         type="radio"
         name="recipe"

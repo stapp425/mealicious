@@ -111,7 +111,7 @@ export default function Header() {
   }
   
   return (
-    <div className="sticky top-0 z-50 bg-white shadow-md">
+    <div className="sticky top-0 left-0 z-50 bg-white shadow-md h-[150px]">
       <div className="relative flex justify-between items-center py-8 px-8">
         <Drawer>
           <DrawerTrigger className="w-14 block md:invisible md:disabled">

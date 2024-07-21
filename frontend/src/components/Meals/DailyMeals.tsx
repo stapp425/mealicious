@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import { ScreenContext } from "@/App"
-import { Breakpoints } from "@/types/other"
+import { type Breakpoints } from "@/types/app"
 
 export default function DailyMeals(): React.ReactElement {
   const matches = useContext<Breakpoints>(ScreenContext)

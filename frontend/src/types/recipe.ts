@@ -57,7 +57,7 @@ export type RecipeQuery = {
   maxSugar?: number
 }
 
-export type RecipeSort = "title" | "calories" | "time"
+export type RecipeSort = "favorite" | "title" | "calories" | "time"
 
 export const defaultQueryValues: RecipeQuery = {
   query: "",
@@ -84,6 +84,7 @@ export type Recipe = {
   title: string
   image: string
   description: string
+  isFavorite?: boolean
   source?: {
     name: string
     url: string
@@ -130,3 +131,12 @@ export const defaultRecipe: Recipe[] = [{
   ingredients: [],
   instructions: []
 }]
+
+export type Weight = 
+  "ml" | "l" | "mg" | "g" | "kg" | "lb" | "oz"
+
+export type Dry = 
+  "tsp" | "tbsp" | "cup" | "pc"
+
+export type Liquid = 
+  "fl oz" | "cup" | "pt" | "qt" | "gal"

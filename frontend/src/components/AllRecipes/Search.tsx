@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/collapsible"
 import { Minus, Plus, Search as SearchIcon } from "lucide-react"
 import { defaultQueryValues, type Diet, type Dish, type RecipeQuery } from "@/types/recipe"
-import { Breakpoints } from "@/types/other"
+import { type Breakpoints } from "@/types/app"
 import { ScreenContext } from "@/App"
 
 export default function Search(): React.ReactElement {
