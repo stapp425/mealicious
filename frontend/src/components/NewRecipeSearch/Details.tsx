@@ -14,7 +14,7 @@ import {
 } from "lucide-react"
 import { nanoid } from "nanoid"
 import { UserContext } from "@/App"
-import { type CurrentUser } from "@/types/other"
+import { type CurrentUser } from "@/types/app"
 import { collection, addDoc } from "firebase/firestore"
 import { firestore } from "../../../../firebaseConfig"
 import { type CollectionReference } from "firebase/firestore"

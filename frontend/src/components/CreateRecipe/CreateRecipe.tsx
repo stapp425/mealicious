@@ -20,6 +20,11 @@ type Ingredient = {
   unit: string
 }
 
+type Instruction = {
+  number: number
+  step: string
+}
+
 type Form = {
   image?: File
   imageURL: string
@@ -27,14 +32,14 @@ type Form = {
   description: string
   diets: string[]
   dishTypes: string[]
-  ingredients: Ingredient[]
+  ingredients: Ingredient[],
+  instructions: Instruction[]
 }
 
 const descriptionPlaceholder = 
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh. Nec nam aliquam sem et tortor consequat id. Eu sem integer vitae justo. Eget mi proin sed libero enim sed faucibus turpis. Nibh nisl condimentum id venenatis a. Aliquam nulla facilisi cras fermentum odio. Arcu risus quis varius quam quisque id. Metus vulputate eu scelerisque felis imperdiet proin. Commodo sed egestas egestas fringilla phasellus faucibus."
 
 
-// TODO: Refactor code
 export default function CreateRecipe() {
   const [userInput, setUserInput] = useState<Form & {[key: string]: any}>({
     image: undefined,
@@ -43,12 +48,8 @@ export default function CreateRecipe() {
     description: "",
     diets: [],
     dishTypes: [],
-    ingredient: {
-      name: "",
-      amount: 0,
-      unit: ""
-    },
-    ingredients: []
+    ingredients: [],
+    instructions: []
   })
 
   const [ingredient, setIngredient] = useState<Ingredient>({
@@ -56,6 +57,8 @@ export default function CreateRecipe() {
     amount: 0,
     unit: ""
   })
+
+  const [instruction, setInstruction] = useState<Partial<Instruction>>({ step: "" })
 
   const [ingredientsEditActive, setIngredientsEditActive] = useState<boolean>(false)
   const [instructionsEditActive, setInstructionsEditActive] = useState<boolean>(false)
@@ -75,9 +78,10 @@ export default function CreateRecipe() {
   const titleInput = useRef<HTMLTextAreaElement>(null)
   const dietInput = useRef<HTMLInputElement>(null)
   const dishInput = useRef<HTMLInputElement>(null)
+  const instructionInput = useRef<HTMLTextAreaElement>(null)
   const dietButton = useRef<HTMLButtonElement>(null)
   const dishButton = useRef<HTMLButtonElement>(null)
-
+  
   function handleImageInsert(event: React.ChangeEvent<HTMLInputElement>) {
     const addedImage = event.target.files?.[0]
 
@@ -203,6 +207,7 @@ export default function CreateRecipe() {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event, setUserInput)}
                 onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(event, dietButton)}
                 placeholder="Diet"
+                autoComplete="off"
                 className="text-lg py-5"
               />
               <button 
@@ -221,7 +226,7 @@ export default function CreateRecipe() {
                         <div key={nanoid()} className="flex justify-between gap-4 rounded-md">
                           <Badge className="flex-1 flex justify-center items-center select-none pointer-events-none bg-orange-500 text-white text-base rounded-md">{diet}</Badge>
                           <button 
-                            onClick={() => removeInput("diets", dietInput.current?.value)}
+                            onClick={() => removeInput("diets", diet)}
                             className="hover:bg-red-500 hover:text-white p-2 transition-all rounded-md"
                           >
                             <Trash/>
@@ -246,6 +251,7 @@ export default function CreateRecipe() {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event, setUserInput)}
               onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(event, dishButton)}
               placeholder="Dish Type..."
+              autoComplete="off"
               className="text-lg py-5"
             />
             <button 
@@ -264,7 +270,7 @@ export default function CreateRecipe() {
                       <div key={nanoid()} className="flex justify-between gap-4 rounded-md">
                         <Badge className="flex-1 flex justify-center items-center select-none pointer-events-none bg-orange-500 text-white text-base rounded-md">{dish}</Badge>
                         <button 
-                          onClick={() => removeInput("dishTypes", dishInput.current?.value)}
+                          onClick={() => removeInput("dishTypes", dish)}
                           className="hover:bg-red-500 hover:text-white p-2 transition-all rounded-md"
                         >
                           <Trash/>
@@ -288,7 +294,6 @@ export default function CreateRecipe() {
                 </button> 
             }
           </div>
-          
           {
             userInput.ingredients.length > 0 &&
             <div>
@@ -368,10 +373,59 @@ export default function CreateRecipe() {
                   <Plus size={18}/>
                 </button>
           }
-
         </div>
-        <div className="row-start-5 col-start-1 xl:row-start-3 xl:col-start-2">
-          Instructions
+        <div className="flex flex-col gap-2 row-start-5 col-start-1 xl:row-start-3 xl:col-start-2">
+          <div className="flex justify-between">
+            <h1 className="text-2xl font-bold">Instructions</h1>
+            { 
+              instructionsEditActive && 
+                <button onClick={() => setInstructionsEditActive(false)} className="text-red-600 hover:text-red-500 transition-colors font-[600]">
+                  Cancel
+                </button> 
+            }
+          </div>
+          {
+            userInput.instructions.length > 0 &&
+            <div className="flex flex-col gap-4">
+              { 
+                userInput.instructions.map((instruction: Instruction, index: number) => (
+                  <div key={nanoid()} className="flex flex-col gap-2 bg-orange-200 text-ellipsis rounded-md p-3">
+                    <div className="size-10 flex justify-center items-center text-white bg-orange-500 p-3 rounded-full">
+                      {index + 1}
+                    </div>
+                    <p>{instruction.step}</p>
+                  </div>
+                ))
+              }
+            </div>
+          }
+          {
+            instructionsEditActive
+              ? <div className="h-fit flex justify-between gap-3 bg-blue-300">
+                  <textarea
+                    ref={instructionInput}
+                    name="step"
+                    value={instruction.step}
+                    placeholder="Step here..."
+                    autoComplete="off"
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => handleChange(event, setInstruction)}
+                    className="flex-1 h-10 resize-none focus:resize-y"
+                    autoFocus
+                  />
+                  <button 
+                    onClick={() => instruction.step && addInput("instructions", instruction)}
+                    className="aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+                  >
+                    <Plus size={18}/>
+                  </button>
+                </div>
+              : <button 
+                  onClick= {() => setInstructionsEditActive(true)}
+                  className="w-full h-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+                >
+                  <Plus size={18}/>
+                </button>
+          }
         </div>
       </div>
     </div>
