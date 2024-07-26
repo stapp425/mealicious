@@ -5,10 +5,10 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Clock, Earth, Wheat, Zap } from "lucide-react"
+import { Clock, Earth, Zap } from "lucide-react"
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
-import { type Breakpoints, type Layout } from "@/types/other"
+import { type Breakpoints, type Layout } from "@/types/app"
 import { ScreenContext } from "@/App"
 import Details from "./Details"
 
@@ -85,13 +85,6 @@ function List({ recipe }: Props): React.ReactElement {
               <b>{recipe.times.readyTime}</b> mins
             </span>
           </div>
-          {
-            recipe.isHealthy &&
-            <div className="flex gap-2 my-1">
-              <Wheat/>
-              <span>Healthy</span>
-            </div>
-          }
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {
@@ -105,18 +98,22 @@ function List({ recipe }: Props): React.ReactElement {
         <div>
         <div className="flex justify-between items-center">
           <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes.slice(0, 5).join(" · ")}</p>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-              <Link to={recipe.source.url} target="_blank">
-                <Earth color="#1e293b"/>
-              </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                {recipe.source.name}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {
+            recipe.source &&
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                <Link to={recipe.source.url} target="_blank">
+                  <Earth color="#1e293b"/>
+                </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {recipe.source.name}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          }
+          
         </div>
         </div>
       </div>
@@ -191,18 +188,23 @@ function Card({ recipe }: Props) {
       </ScrollArea>
       <div className="flex justify-between items-end px-3 py-2">
         <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes.slice(0, 5).join(" · ")}</p>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-            <Link to={recipe.source.url} target="_blank">
-              <Earth color="#1e293b"/>
-            </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              {recipe.source.name}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        {
+          recipe.source &&
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                <Link to={recipe.source.url} target="_blank">
+                  <Earth color="#1e293b"/>
+                </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {recipe.source.name}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+        }
+        
+        
       </div>
     </div>
   )
@@ -230,22 +232,26 @@ function Square({ recipe }: Props): React.ReactElement {
           </ScrollArea>
         </DialogContent>
       </Dialog>
-      <div className="absolute top-2 left-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button className="opacity-75 p-0 size-10 bg-white hover:bg-white hover:opacity-100">
-                <Link to={recipe.source.url} target="_blank">
-                  <Earth color="#000000"/>
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              {recipe.source.name}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+      {
+        recipe.source &&
+          <div className="absolute top-2 left-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button className="opacity-75 p-0 size-10 bg-white hover:bg-white hover:opacity-100">
+                    <Link to={recipe.source.url} target="_blank">
+                      <Earth color="#000000"/>
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {recipe.source.name}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+      }
+      
       <div className="absolute w-[calc(100%-12px)] bottom-2 left-1/2 -translate-x-1/2 opacity-85 backdrop-blur-sm group group-hover:opacity-15 transition flex justify-center items-center min-h-[60px] p-2 bg-white rounded-md">
         <span className="text-center text-sm font-bold">
           {recipe.title}

@@ -19,16 +19,19 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Clipboard, Plus } from "lucide-react"
 import Description from "./Description"
 import Loading from "./Loading"
+import { Link } from "react-router-dom"
 
-export const ActiveRecipeContext = createContext<string>(defaultRecipe[0].title)
+export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
   const currentUser = useContext<CurrentUser>(UserContext)
-  const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe[0])
+  const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   // const { isFetching, data, setData } = useFirestoreTest()
   const q = useMemo(() => query(collection(firestore, "recipes"), where("userId", "==", currentUser?.uid)), [])
-  const { isFetching, data, setData } = useFirestoreFetch<RecipeType>(q, defaultRecipe)
+  const { isFetching, data, setData } = useFirestoreFetch<RecipeType>(q, [defaultRecipe])
+  
+  data && console.log(data)
   
   function invalidateInitialState(recipe: RecipeType) {
     setIsFirstRender(false)
@@ -59,10 +62,13 @@ export default function AllRecipes(): React.ReactElement {
           <div className="z-20 flex flex-col gap-3 p-4 shadow-scroll-t">
             <div className="flex justify-between">
               <h1 className="font-bold text-2xl xl:text-4xl">All Recipes</h1>
-              <button className="flex justify-center items-center gap-2 aspect-square xl:aspect-auto h-full max-h-[50px] xl:w-[175px] xl:px-3 text-white font-[600] bg-orange-500 hover:bg-orange-700 transition rounded-md">
+              <Link
+                to="/recipes/create"
+                className="flex justify-center items-center gap-2 aspect-square xl:aspect-auto h-full max-h-[50px] xl:w-[175px] xl:px-3 text-white font-[600] bg-orange-500 hover:bg-orange-700 transition rounded-md"
+              >
                 <span className="hidden xl:inline">Add New Recipe</span>
                 <Plus size={20}/>
-              </button>
+              </Link>
             </div>
             <div className="flex justify-between gap-4 w-full">
               <Search/>

@@ -44,5 +44,5 @@ export function firestoreTest(): Promise<Recipe[]> {
     setTimeout(() => {
       resolve(firestoreData)
     }, 1500)
-  }) 
+  })
 }

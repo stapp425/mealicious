@@ -13,7 +13,8 @@ import AuthLayout from "./layouts/AuthLayout"
 import Register from "./components/Register"
 import AllRecipes from "./components/AllRecipes/AllRecipes"
 import RecipeDetails from "./components/RecipeDetails/RecipeDetails"
-import CreateRecipe from "./components/CreateRecipe/CreateRecipe"
+import CreateRecipe from "./components/RecipeTools/CreateRecipe"
+import EditRecipe from "./components/RecipeTools/EditRecipe"
 
 export const UserContext = createContext<CurrentUser>(null)
 export const ScreenContext = createContext<Breakpoints>({
@@ -54,13 +55,16 @@ export default function App() {
       <UserContext.Provider value={currentUser}>
         <Routes>
           <Route path="/" element={<MainLayout/>}>
-            <Route path="dashboard" element={<CreateRecipe/>}/>
+            <Route path="dashboard" element={<Dashboard/>}/>
             <Route path="meals">
               <Route path="search" element={<NewRecipeSearch/>}/>
             </Route>
             <Route path="recipes">
               <Route index element={<AllRecipes/>}/>
               <Route path="create" element={<CreateRecipe/>}/>
+              <Route path="edit">
+                <Route path=":recipeId" element={<EditRecipe/>}/>
+              </Route>
               <Route path=":recipeId" element={<RecipeDetails/>}/>
             </Route>
           </Route>

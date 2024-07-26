@@ -4,7 +4,7 @@ import { Badge } from "../ui/badge"
 import { ScreenContext } from "@/App"
 import { Ingredient, type Recipe } from "@/types/recipe"
 import { ActiveRecipeContext } from "./AllRecipes"
-import { Clock, Earth, Wheat, Zap } from "lucide-react"
+import { Clock, Earth, Zap } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
@@ -72,13 +72,6 @@ function List({ recipe, onChange }: Props): React.ReactElement {
               <b>{recipe.times.readyTime}</b> mins
             </span>
           </div>
-          {
-            recipe.isHealthy &&
-            <div className="flex gap-2 my-1">
-              <Wheat/>
-              <span>Healthy</span>
-            </div>
-          }
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {
@@ -92,18 +85,23 @@ function List({ recipe, onChange }: Props): React.ReactElement {
         <div>
         <div className="flex justify-between items-center">
           <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes.slice(0, 5).join(" · ")}</p>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-              <Link to={recipe.source?.url as string} target="_blank">
-                <Earth color="#1e293b"/>
-              </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                {recipe.source?.name}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {
+            recipe.source &&
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                  <Link to={recipe.source?.url as string} target="_blank">
+                    <Earth color="#1e293b"/>
+                  </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {recipe.source?.name}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+          }
+          
+          
         </div>
         </div>
       </div>
@@ -115,7 +113,7 @@ function Square({ recipe, onChange }: Props): React.ReactElement {
   const activeRecipe = useContext<string>(ActiveRecipeContext)
 
   return (
-    <label className={`relative overflow-hidden aspect-square min-h-[225px] w-full border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex flex-col justify-between p-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
+    <label className={`relative overflow-hidden aspect-square min-h-[225px] w-full border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex flex-col justify-between p-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
       <input
         type="radio"
         name="recipe"

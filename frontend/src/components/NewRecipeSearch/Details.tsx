@@ -176,13 +176,13 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                   <h1 className="font-bold text-2xl">Instructions</h1>
                   <ScrollArea className="flex-1" type="scroll">
                     <div className="flex flex-col gap-5">
-                      {recipe.instructions.map((instruction: {[key: string]: any}) => (
+                      {recipe.instructions.map((instruction: string, index: number) => (
                         <div key={nanoid()} className="flex items-start gap-3">
                           <div className="sticky top-0 flex justify-center items-center size-8 bg-orange-500 p-4 text-white rounded-full">
-                            {instruction.number}
+                            {index + 1}
                           </div>
                           <p>
-                            {instruction.step}
+                            {instruction}
                           </p>
                         </div>
                       ))}
@@ -311,16 +311,18 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                   <h1 className="font-bold text-lg">Instructions</h1>
                   <ScrollArea className="flex-1" type="scroll">
                     <div className="flex flex-col gap-2">
-                      {recipe.instructions.map((instruction: {[key: string]: any}) => (
-                        <div key={nanoid()} className="flex flex-col items-center gap-2">
-                          <div className="flex justify-center items-center size-4 p-3 bg-orange-500 text-white rounded-full">
-                            {instruction.number}
+                      {
+                        recipe.instructions.map((instruction: string, index: number) => (
+                          <div key={nanoid()} className="flex flex-col items-center gap-2">
+                            <div className="flex justify-center items-center size-4 p-3 bg-orange-500 text-white rounded-full">
+                              {index + 1}
+                            </div>
+                            <p className="text-sm">
+                              {instruction}
+                            </p>
                           </div>
-                          <p className="text-sm">
-                            {instruction.step}
-                          </p>
-                        </div>
-                      ))}
+                        ))
+                      }
                     </div>
                     <ScrollBar/>
                   </ScrollArea>

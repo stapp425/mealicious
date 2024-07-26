@@ -43,7 +43,6 @@ function formatResults(data: {[key:string]: any}) {
       },
       diets: result.diets,
       dishTypes: result.dishTypes,
-      isHealthy: result.veryHealthy,
 			times: {
 				prepTime: result.preparationMinutes || 0,
 				cookTime: result.cookingMinutes || 0,
@@ -60,11 +59,7 @@ function formatResults(data: {[key:string]: any}) {
         amount: i.amount,
         unit: i.unit
       })),
-      instructions: result.analyzedInstructions[0]?.steps?.map((step:{[key:string]: any}) => ({
-				number: step.number,
-				step: step.step,
-				ingredients: step.ingredients?.map((i:{[key:string]: any}) => ({ name: i.name, image: i.image }))
-			}))
+      instructions: result.analyzedInstructions[0]?.steps?.map((step:{[key:string]: any}) => step.step)
     })) : [{
 			resultIndex: 0,
 			title: "",
@@ -76,7 +71,6 @@ function formatResults(data: {[key:string]: any}) {
 			},
 			diets: [],
 			dishTypes: [],
-			isHealthy: false,
 			times: {
 				prepTime: 0,
 				cookTime: 0,

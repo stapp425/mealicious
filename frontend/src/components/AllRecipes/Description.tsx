@@ -1,4 +1,4 @@
-import { Ingredient, Instruction, Nutrition, type Recipe } from "@/types/recipe"
+import { Ingredient, Nutrition, type Recipe } from "@/types/recipe"
 import {
   Tabs,
   TabsContent,
@@ -85,7 +85,7 @@ export default function Description({ activeRecipe }: Props) {
           <ScrollArea className="h-[33vh] rounded-md pr-4" type="always">
             <div>
               <div className="flex justify-between items-center">
-                <h1 className="font-bold text-lg">Serving Size: {`${activeRecipe.servingSize.amount}${activeRecipe.servingSize.unit}`}</h1>
+                <h1 className="font-bold text-lg">Serving Size: {`${activeRecipe.servingSize.amount} ${activeRecipe.servingSize.unit}`}</h1>
                 <div className="flex justify-between items-center gap-3">
                   <button onClick={() => count > 1 && setCount(c => c - 1)} className="size-6 bg-orange-500 rounded-sm text-white flex justify-center items-center"><Minus size={14}/></button>
                   <span className="text-xl font-[600]">{count}</span>
@@ -126,10 +126,10 @@ export default function Description({ activeRecipe }: Props) {
           <ScrollArea className="h-[33vh] w-full rounded-md" type="always">
             <div className="flex flex-col gap-2">
               {
-                activeRecipe.instructions.map((instruction: Instruction) => (
+                activeRecipe.instructions.map((instruction: string, index: number) => (
                   <div key={nanoid()} className="p-4 rounded-md bg-orange-100">
-                    <h1 className="size-8 font-[600] flex justify-center items-center bg-orange-500 text-white rounded-full mb-2">{instruction.number}</h1>
-                    <p>{instruction.step}</p>
+                    <h1 className="size-8 font-[600] flex justify-center items-center bg-orange-500 text-white rounded-full mb-2">{index + 1}</h1>
+                    <p>{instruction}</p>
                   </div>
                 ))
               }

@@ -14,15 +14,15 @@ export type Ingredient = {
   unit: string
 }
 
-export type InstructionIngredient = {
-  name: string
-  image: string
+export type Serving = {
+  amount: number
+  unit: string
 }
 
-export type Instruction = {
-  number: number,
-  step: string
-  ingredients: InstructionIngredient[]
+export type Time = {
+  prepTime: number
+  cookTime: number
+  readyTime: number
 }
 
 export type Diet = 
@@ -91,52 +91,31 @@ export type Recipe = {
   }
   diets: string[]
   dishTypes: string[]
-  isHealthy: boolean
-  times: {
-    prepTime: number
-    cookTime: number
-    readyTime: number
-  }
-  servingSize: {
-    amount: number,
-    unit: string
-  }
+  times: Time
+  servingSize: Serving
   nutrition: Nutrition[]
   ingredients: Ingredient[]
-  instructions: Instruction[]
+  instructions: string[]
   id?: string
 }
 
-export const defaultRecipe: Recipe[] = [{
-  title: "",
+export const defaultRecipe: Recipe = {
   image: "",
+  title: "",
   description: "",
-  source: {
-    name: "",
-    url: ""
-  },
-  diets: [],
-  dishTypes: [],
-  isHealthy: false,
   times: {
     prepTime: 0,
     cookTime: 0,
     readyTime: 0
   },
   servingSize: {
-    amount: 0,
+    amount: 1,
     unit: ""
   },
+  diets: [],
+  dishTypes: [],
   nutrition: [],
   ingredients: [],
-  instructions: []
-}]
-
-export type Weight = 
-  "ml" | "l" | "mg" | "g" | "kg" | "lb" | "oz"
-
-export type Dry = 
-  "tsp" | "tbsp" | "cup" | "pc"
-
-export type Liquid = 
-  "fl oz" | "cup" | "pt" | "qt" | "gal"
+  instructions: [],
+  id: ""
+}

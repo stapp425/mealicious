@@ -3,24 +3,23 @@ import { useFirestoreGet, useFirestoreUpdate, useScroll } from "@/util/hooks"
 import { Link, useParams } from "react-router-dom"
 // import { sampleFullRecipe as data } from "@/test"
 import { type Section } from "@/types/app"
-import { Recipe, type Ingredient, type Instruction, type Nutrition } from "@/types/recipe"
+import { Recipe, type Ingredient, type Nutrition } from "@/types/recipe"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { ArrowDownToLine, ArrowUp, Clock, ExternalLink, Heart, Microwave, Clipboard, Plus, Earth, Minus, Info } from "lucide-react"
+import { ArrowDownToLine, ArrowUp, Clock, Heart, Microwave, Clipboard, Plus, Earth, Minus, Info, Pencil } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { nanoid } from "nanoid"
 import { useReactToPrint } from "react-to-print"
 
 type SectionRefs = {[key in Section]: HTMLDivElement | null}
 
-// TODO: Add functionality to favorite button and display favorite icon
 export default function RecipeDetails(): React.ReactElement {
   const { recipeId } = useParams()
   const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string)
-  const { isWorking, updateFirestoreDoc } = useFirestoreUpdate(recipeId as string, { isFavorite: !data?.isFavorite })
+  const { isWorking, updateFirestoreDoc } = useFirestoreUpdate()
   const [count, setCount] = useState<number>(1)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const [isPrinterWindowOpen, setIsPrinterWindowOpen] = useState<boolean>(false)
@@ -47,7 +46,7 @@ export default function RecipeDetails(): React.ReactElement {
   
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target
-    const position: number = (sectionRefs.current[value as Section]?.getBoundingClientRect().top ?? 0) + scrollY - 150
+    const position: number = (sectionRefs.current[value as Section]?.getBoundingClientRect().top || 0) + scrollY - 150
 
     scrollTo({ top: position, behavior: "smooth" })
   }
@@ -125,6 +124,13 @@ export default function RecipeDetails(): React.ReactElement {
         <div className="px-3">
           <h1 className="hidden md:flex md:flex-col font-bold text-2xl py-2 mb-2">Options</h1>
           <div className="overflow-hidden flex flex-col border border-slate-400 rounded-md">
+            <Link
+              to={`/recipes/edit/${data?.id}`}
+              className="flex justify-between py-4 px-3 hover:bg-orange-500 hover:text-white hover:font-[600] transition-all border-b border-b-slate-400"
+            >
+              <span className="font-[600]">Edit Recipe</span>
+              <Pencil/>
+            </Link>
             <button className="flex justify-between py-4 px-3 hover:bg-orange-500 hover:text-white hover:font-[600] transition-all border-b border-b-slate-400">
               <span className="font-[600]">Add to Meal</span>
               <Plus/>
@@ -132,7 +138,7 @@ export default function RecipeDetails(): React.ReactElement {
             <button 
               onClick={async () => {
                 try {
-                  await updateFirestoreDoc()
+                  await updateFirestoreDoc(recipeId as string, { isFavorite: !data?.isFavorite })
                   setIsFavorite(f => !f)
                 } catch (err: any) {
                   console.error(err.message)
@@ -147,14 +153,10 @@ export default function RecipeDetails(): React.ReactElement {
             <button 
               onClick={handlePrint} 
               disabled={isPrinterWindowOpen}
-              className="disabled:cursor-wait flex justify-between py-4 px-3 hover:bg-orange-500 hover:text-white hover:font-[600] transition-all border-b border-b-slate-400"
+              className="disabled:cursor-wait flex justify-between py-4 px-3 hover:bg-orange-500 hover:text-white hover:font-[600] transition-all"
             >
               <span className="font-[600]">{isPrinterWindowOpen ? "Working on It..." : "Save as PDF"}</span>
               <ArrowDownToLine/>
-            </button>
-            <button className="flex justify-between py-4 px-3 hover:bg-orange-500 hover:text-white hover:font-[600] transition-all">
-              <span className="font-[600]">Share Recipe</span>
-              <ExternalLink/>
             </button>
           </div>
         </div>
@@ -166,7 +168,7 @@ export default function RecipeDetails(): React.ReactElement {
               <img 
                 src={data.image} 
                 alt={data.title}
-                className="rounded-md shadow-md"
+                className="rounded-md shadow-md max-w-[300px]"
               />
               <div className="flex-1 flex flex-col gap-2">
                 <h1 className="font-bold text-3xl">{data.title}</h1>
@@ -209,12 +211,15 @@ export default function RecipeDetails(): React.ReactElement {
                     ))
                   }
                 </div>
-                <div className="flex gap-2">
-                  <Link to={data.source?.url as string} target="_blank">
-                    <Earth/>
-                  </Link>
-                  <p className="text-muted-foreground">{data.source?.name}</p>
-                </div>
+                {
+                  data.source &&
+                    <div className="flex gap-2">
+                      <Link to={data.source?.url as string} target="_blank">
+                        <Earth/>
+                      </Link>
+                      <p className="text-muted-foreground">{data.source?.name}</p>
+                    </div>
+                }
               </div>
             </div>
             <div ref={el => sectionRefs.current.description = el} className="pt-6">
@@ -251,7 +256,7 @@ export default function RecipeDetails(): React.ReactElement {
               </div>
               <div className="flex justify-between items-center mb-2">
                 <h1 className="text-lg">
-                  <b>Serving Size</b>: {data.servingSize.amount}{data.servingSize.unit}
+                  <b>Serving Size</b>: {data.servingSize.amount} {data.servingSize.unit}
                 </h1>
                 <div className="flex overflow-hidden border border-slate-400 rounded-md *:aspect-square *:w-8">
                   <button onClick={() => count > 1 && setCount(c => c - 1)} className="flex justify-center items-center border-r border-r-slate-400 hover:bg-orange-500 active:bg-orange-700 hover:text-white transition-colors">
@@ -266,7 +271,7 @@ export default function RecipeDetails(): React.ReactElement {
               <div className="grid grid-cols-2 gap-4 border border-slate-400 p-4 rounded-lg">
                 {
                   data.nutrition.map((nutrient: Nutrition) => (
-                    <div key={nanoid()} className="flex justify-between">
+                    <div key={nanoid()} className="flex justify-between odd:last:w-full">
                       <div>
                         <span className="font-[500]">{nutrient.name}</span>
                         <span className="text-sm text-muted-foreground font-[300]"> ({nutrient.unit})</span>
@@ -322,12 +327,12 @@ export default function RecipeDetails(): React.ReactElement {
               </div>
               <div className="flex flex-col gap-4">
                 {
-                  data.instructions.map((instruction: Instruction) => (
+                  data.instructions.map((instruction: string, index: number) => (
                     <div key={nanoid()} className="flex justify-between gap-3 bg-orange-100 rounded-md p-4">
                       <div className="size-12 flex justify-center items-center text-white font-bold bg-orange-500 rounded-full">
-                        {instruction.number}
+                        {index + 1}
                       </div>
-                      <p className="flex-1">{instruction.step}</p>
+                      <p className="flex-1">{instruction}</p>
                     </div>
                   ))
                 }

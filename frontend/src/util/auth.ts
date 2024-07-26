@@ -23,7 +23,7 @@ export async function createUser(userInput: UserInput) {
 	const { firstName, lastName, displayName, email, password } = userInput
 	
 	try {
-		const userInfo:UserCredential = await createUserWithEmailAndPassword(auth, email, password)
+		const userInfo: UserCredential = await createUserWithEmailAndPassword(auth, email, password)
 		await updateProfile(userInfo.user, { displayName: displayName })
 		await addDoc(usersCollectionRef, {
 			email: email,

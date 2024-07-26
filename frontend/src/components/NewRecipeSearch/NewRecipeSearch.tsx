@@ -9,13 +9,13 @@ import { defaultRecipe } from "@/types/recipe"
 
 export default function NewRecipeSearch() {
   const { toast } = useToast()
-  const [searchResults, setSearchResults] = useState<Recipe[]>(defaultRecipe)
+  const [searchResults, setSearchResults] = useState<Recipe[]>([defaultRecipe])
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const originalSearchQuery = useRef<string>("")
 
   async function searchRecipes(searchParams: Query) {
     originalSearchQuery.current = searchParams.query
-    setSearchResults(defaultRecipe)
+    setSearchResults([defaultRecipe])
 
     if(!searchParams.query)
       return toast({
