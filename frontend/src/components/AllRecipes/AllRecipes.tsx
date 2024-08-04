@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import {
   Select,
   SelectContent,
@@ -11,7 +11,7 @@ import { defaultRecipe, type RecipeSort, type Recipe as RecipeType } from "@/typ
 import Recipe from "./Recipe"
 import { useFirestoreFetch, useFirestoreTest } from "@/util/hooks"
 import { nanoid } from "nanoid"
-import { collection, query, where } from "firebase/firestore"
+import { collection, Query, query, where } from "firebase/firestore"
 import { firestore } from "../../../../firebaseConfig"
 import { type CurrentUser } from "@/types/app"
 import { UserContext } from "@/App"
@@ -24,14 +24,12 @@ import { Link } from "react-router-dom"
 export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
-  const currentUser = useContext<CurrentUser>(UserContext)
+  const user = useContext<CurrentUser>(UserContext)
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   // const { isFetching, data, setData } = useFirestoreTest()
-  const q = useMemo(() => query(collection(firestore, "recipes"), where("userId", "==", currentUser?.uid)), [])
+  const [q, setQ] = useState<Query>()
   const { isFetching, data, setData } = useFirestoreFetch<RecipeType>(q, [defaultRecipe])
-  
-  data && console.log(data)
   
   function invalidateInitialState(recipe: RecipeType) {
     setIsFirstRender(false)
@@ -55,6 +53,12 @@ export default function AllRecipes(): React.ReactElement {
     }
   }
 
+  useEffect(() => {
+    if(user) {
+      setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
+    }
+  }, [user])
+
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>
       <div className="relative h-[calc(100vh-150px)] grid grid-cols-[33vw_1fr] xl:grid-cols-[1fr_33vw]">
@@ -71,7 +75,7 @@ export default function AllRecipes(): React.ReactElement {
               </Link>
             </div>
             <div className="flex justify-between gap-4 w-full">
-              <Search/>
+              {/* <Search/> */}
               <Select onValueChange={sortRecipes}>
                 <SelectTrigger className="h-[35px] xl:h-[50px] w-[175px] rounded-full">
                   <SelectValue placeholder="Sort By" />

@@ -138,7 +138,7 @@ export default function RecipeDetails(): React.ReactElement {
             <button 
               onClick={async () => {
                 try {
-                  await updateFirestoreDoc(recipeId as string, { isFavorite: !data?.isFavorite })
+                  await updateFirestoreDoc("recipes", recipeId as string, { isFavorite: !data?.isFavorite })
                   setIsFavorite(f => !f)
                 } catch (err: any) {
                   console.error(err.message)
@@ -248,7 +248,7 @@ export default function RecipeDetails(): React.ReactElement {
                   </PopoverTrigger>
                   <PopoverContent side="top" className="size-auto p-0">
                     <p className="p-4 max-w-[300px]">
-                      Contains all nutrients contributing to one's daily, 
+                      Contains all nutrients contributing to one's daily needs, 
                       including macronutrients such as calories, carbohydrates, and fats.
                     </p>
                   </PopoverContent>

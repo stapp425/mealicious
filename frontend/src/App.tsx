@@ -15,6 +15,11 @@ import AllRecipes from "./components/AllRecipes/AllRecipes"
 import RecipeDetails from "./components/RecipeDetails/RecipeDetails"
 import CreateRecipe from "./components/RecipeTools/CreateRecipe"
 import EditRecipe from "./components/RecipeTools/EditRecipe"
+import Calendar from "./components/Calendar/Calendar"
+import MealCalendar from "./components/Calendar/MealCalendar"
+import CreateMeal from "./components/MealTools/CreateMeal"
+import EditMeal from "./components/MealTools/EditMeal"
+import AllMeals from "./components/AllMeals/AllMeals"
 
 export const UserContext = createContext<CurrentUser>(null)
 export const ScreenContext = createContext<Breakpoints>({
@@ -57,7 +62,12 @@ export default function App() {
           <Route path="/" element={<MainLayout/>}>
             <Route path="dashboard" element={<Dashboard/>}/>
             <Route path="meals">
+              <Route path="all" element={<AllMeals/>}/>
               <Route path="search" element={<NewRecipeSearch/>}/>
+              <Route path="create" element={<CreateMeal/>}/>
+              <Route path="edit">
+                <Route path=":mealId" element={<EditMeal/>}/>
+              </Route>
             </Route>
             <Route path="recipes">
               <Route index element={<AllRecipes/>}/>

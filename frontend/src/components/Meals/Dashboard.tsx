@@ -21,7 +21,7 @@ export default function Dashboard(): React.ReactElement {
           <img
             src={spoonacularLogo}
             alt="Spoonacular Logo"
-            className="w-[48px] xl:w-[72px]" 
+            className="w-12 xl:w-18" 
           />
         </div>
         <Separator/>

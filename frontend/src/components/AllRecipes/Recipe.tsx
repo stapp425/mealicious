@@ -34,7 +34,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
         className="hidden"
       />
       <div className="relative group overflow-hidden flex justify-center items-center basis-1/3 shadow-lg">
-        <div className="h-full relative flex justify-center items-center border border-red-700">
+        <div className="h-full relative flex justify-center items-center">
           <img
             src={recipe.image}
             alt={recipe.title}

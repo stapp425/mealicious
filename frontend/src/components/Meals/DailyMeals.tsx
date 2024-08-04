@@ -20,7 +20,7 @@ export default function DailyMeals(): React.ReactElement {
         <div className="absolute top-0 right-0 flex justify-between items-center gap-2">
           <div className="relative group flex flex-col gap-2 items-center">
             <button className="p-3 text-white bg-orange-500 rounded-full hover:bg-orange-700 hover:scale-[110%] transition">
-              <Link to="/meals/calendar">
+              <Link to="/meals/create">
                 <Pencil size={matches.xl ? 20 : 18}/>
               </Link>
             </button>
@@ -29,7 +29,7 @@ export default function DailyMeals(): React.ReactElement {
           <Separator orientation="vertical" className="h-8 w-[2px] bg-slate-300 rounded-full"/>
           <div className="relative group flex flex-col gap-2 items-center bg-red-500r">
             <button className="p-3 text-white bg-orange-500 rounded-full hover:bg-orange-700 hover:scale-[110%] transition">
-              <Link to="/meals/calendar">
+              <Link to="/meals/all">
                 <LayoutGrid size={matches.xl ? 20 : 18}/>
               </Link>
             </button>

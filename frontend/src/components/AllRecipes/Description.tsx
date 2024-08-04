@@ -51,14 +51,16 @@ export default function Description({ activeRecipe }: Props) {
               <h1 className="font-bold text-xl text-slate-400">No diet types found!</h1>
             </div>
           }
-          
         </div>
-        <div className="flex items-center gap-2 group">
-          <Link to={activeRecipe.source?.url as string} target="_blank">
-            <Earth className="group-hover:scale-[125%] transition" size={28}/>
-          </Link>
-          <span className="text-muted-foreground">{activeRecipe.source?.name}</span>
-        </div>
+        {
+          activeRecipe.source &&
+            <div className="flex items-center gap-2 group">
+              <Link to={activeRecipe.source.url} target="_blank">
+                <Earth className="group-hover:scale-[125%] transition" size={28}/>
+              </Link>
+              <span className="text-muted-foreground">{activeRecipe.source.name}</span>
+            </div>
+        }
       </div>
       <img 
         src={activeRecipe.image}
