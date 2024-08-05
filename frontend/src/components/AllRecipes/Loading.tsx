@@ -1,10 +1,9 @@
-import { ScreenContext } from "@/App"
-import { Breakpoints } from "@/types/app"
+import { AppContext } from "@/App"
 import { useContext } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { nanoid } from "nanoid"
 export default function Loading(): React.ReactElement {
-  const { xl } = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: { xl } } = useContext(AppContext)
   
   return (
     <>

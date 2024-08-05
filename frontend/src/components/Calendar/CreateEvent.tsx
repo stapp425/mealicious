@@ -12,7 +12,7 @@ import {
 import { Input } from "../ui/input"
 import { useFirestorePost } from "@/util/hooks"
 import { CurrentUser } from "@/types/app"
-import { UserContext } from "@/App"
+import { AppContext } from "@/App"
 import { currentDay } from "@/util/hooks"
 
 const dateFormat = "yyyy-MM-dd"

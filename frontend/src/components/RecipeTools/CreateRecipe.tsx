@@ -2,8 +2,7 @@ import { useContext, useState } from "react"
 import { useFirestorePost, useStorageUpload } from "@/util/hooks"
 import { defaultRecipe, type Recipe } from "@/types/recipe"
 import { useToast } from "@/components/ui/use-toast"
-import { UserContext } from "@/App"
-import { CurrentUser } from "@/types/app"
+import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { nanoid } from "nanoid"
 import Title from "./Title"
@@ -19,7 +18,7 @@ import Nutrition from "./Nutrition"
 
 const CreateRecipe: React.FC = () => {
   const { toast } = useToast()
-  const user = useContext<CurrentUser>(UserContext)
+  const { user } = useContext(AppContext)
   const [image, setImage] = useState<Image>({
     file: undefined,
     name: "",
@@ -27,7 +26,7 @@ const CreateRecipe: React.FC = () => {
     url: ""
   })
   const { addFirestoreDoc } = useFirestorePost()
-  const uploadToStorage = useStorageUpload()
+  const { uploadFile } = useStorageUpload()
 
   const { 
     register, 
@@ -45,13 +44,13 @@ const CreateRecipe: React.FC = () => {
   const submitRecipe: SubmitHandler<Recipe> = async(data: Recipe) => {     
     if(user && image.file) {
       try {
-          const imageRef = await uploadToStorage(image.file, `${image.name}-${nanoid()}`)
+          const imageRef = await uploadFile(image.file, `${image.name}-${nanoid()}`)
     
-          await addFirestoreDoc("recipes", {
+          await addFirestoreDoc({
             ...data,
             image: imageRef,
             userId: user?.uid
-          })
+          }, { name: "recipes" })
           toast({
             title: "Success",
             description: "Recipe successfully added!",

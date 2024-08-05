@@ -1,5 +1,4 @@
-import { UserContext } from "@/App"
-import { CurrentUser } from "@/types/app"
+import { AppContext } from "@/App"
 import { collection, query, Query, where } from "firebase/firestore"
 import { useContext, useEffect, useState } from "react"
 import { firestore } from "../../../../firebaseConfig"
@@ -8,9 +7,9 @@ import { defaultMeal, Meal } from "@/types/meal"
 import { Link } from "react-router-dom"
 
 const AllMeals: React.FC = () => {
-  const user = useContext<CurrentUser>(UserContext)
+  const { user } = useContext(AppContext)
   const [q, setQ] = useState<Query>()
-  const { data } = useFirestoreFetch<Meal>(q, [defaultMeal])
+  const { data } = useFirestoreFetch<Meal>([defaultMeal], q)
   
   useEffect(() => {
     user && setQ(query(collection(firestore, "meals"), where("userId", "==", user.uid)))

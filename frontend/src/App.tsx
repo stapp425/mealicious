@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
 import { auth } from "../../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
-import { type CurrentUser, type Breakpoints } from "@/types/app"
+import { type App, type CurrentUser, type Breakpoints } from "@/types/app"
 import Login from "./components/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/Meals/Dashboard"
@@ -17,15 +17,16 @@ import CreateRecipe from "./components/RecipeTools/CreateRecipe"
 import EditRecipe from "./components/RecipeTools/EditRecipe"
 import Calendar from "./components/Calendar/Calendar"
 import MealCalendar from "./components/Calendar/MealCalendar"
-import CreateMeal from "./components/MealTools/CreateMeal"
-import EditMeal from "./components/MealTools/EditMeal"
 import AllMeals from "./components/AllMeals/AllMeals"
+import MealTools from "./components/MealTools/MealTools"
 
-export const UserContext = createContext<CurrentUser>(null)
-export const ScreenContext = createContext<Breakpoints>({
-  any: false, sm: false,
-  md: false, lg: false,
-  xl: false, xxl: false
+export const AppContext = createContext<App>({
+  user: null,
+  screenSizes: {
+    any: false, sm: false,
+    md: false, lg: false,
+    xl: false, xxl: false
+  }
 })
 
 export default function App() {
@@ -56,34 +57,32 @@ export default function App() {
   }, [])
   
   return (
-    <ScreenContext.Provider value={matches}>  
-      <UserContext.Provider value={currentUser}>
-        <Routes>
-          <Route path="/" element={<MainLayout/>}>
-            <Route path="dashboard" element={<Dashboard/>}/>
-            <Route path="meals">
-              <Route path="all" element={<AllMeals/>}/>
-              <Route path="search" element={<NewRecipeSearch/>}/>
-              <Route path="create" element={<CreateMeal/>}/>
-              <Route path="edit">
-                <Route path=":mealId" element={<EditMeal/>}/>
-              </Route>
-            </Route>
-            <Route path="recipes">
-              <Route index element={<AllRecipes/>}/>
-              <Route path="create" element={<CreateRecipe/>}/>
-              <Route path="edit">
-                <Route path=":recipeId" element={<EditRecipe/>}/>
-              </Route>
-              <Route path=":recipeId" element={<RecipeDetails/>}/>
+    <AppContext.Provider value={{ user: currentUser, screenSizes: matches }}>  
+      <Routes>
+        <Route path="/" element={<MainLayout/>}>
+          <Route path="dashboard" element={<Dashboard/>}/>
+          <Route path="meals">
+            <Route path="all" element={<AllMeals/>}/>
+            <Route path="search" element={<NewRecipeSearch/>}/>
+            <Route path="create" element={<MealTools mode="create"/>}/>
+            <Route path="edit">
+              <Route path=":mealId" element={<MealTools mode="edit"/>}/>
             </Route>
           </Route>
-          <Route path="/auth" element={<AuthLayout/>}>
-            <Route path="login" element={<Login/>}/>
-            <Route path="register" element={<Register/>}/>
+          <Route path="recipes">
+            <Route index element={<AllRecipes/>}/>
+            <Route path="create" element={<CreateRecipe/>}/>
+            <Route path="edit">
+              <Route path=":recipeId" element={<EditRecipe/>}/>
+            </Route>
+            <Route path=":recipeId" element={<RecipeDetails/>}/>
           </Route>
-        </Routes>
-      </UserContext.Provider>
-    </ScreenContext.Provider>
+        </Route>
+        <Route path="/auth" element={<AuthLayout/>}>
+          <Route path="login" element={<Login/>}/>
+          <Route path="register" element={<Register/>}/>
+        </Route>
+      </Routes>
+    </AppContext.Provider>
   )
 }

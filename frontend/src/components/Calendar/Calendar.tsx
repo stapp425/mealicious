@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import * as dateFns from "date-fns"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useCalendar } from "@/util/hooks"

@@ -1,24 +1,25 @@
-import { useContext, useState } from "react"
-import { defaultRecipe, type Recipe as RecipeType } from "@/types/recipe"
-import { Link } from "react-router-dom"
-import { Skeleton } from "@/components/ui/skeleton"
-import { nanoid } from "nanoid"
-import Recipe from "./Recipe"
-import { SquareArrowUpRight } from "lucide-react"
-import { Separator } from "@/components/ui/separator"
-import { collection } from "@firebase/firestore"
-import { useFirestoreFetch, useFirestoreTest } from "@/util/hooks"
+import { useContext, useEffect, useState } from "react"
+import { AppContext } from "@/App"
 import { firestore } from "../../../../firebaseConfig"
-import { limit, query, where } from "firebase/firestore"
-import { type CurrentUser } from "@/types/app"
-import { UserContext } from "@/App"
+import { type Recipe as RecipeType, defaultRecipe } from "@/types/recipe"
+import { type Query, query, collection, where } from "firebase/firestore"
+import { Link } from "react-router-dom"
+import { SquareArrowUpRight } from "lucide-react"
+import { nanoid } from "nanoid"
+import { useFirestoreFetch } from "@/util/hooks"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Separator } from "@/components/ui/separator"
+import Recipe from "./Recipe"
 
 export default function SavedRecipes(): React.ReactElement {
-  const currentUser = useContext<CurrentUser>(UserContext)
-  const { isFetching, data } = useFirestoreTest()
-  
-  // useFirestoreFetch(query(collection(firestore, "recipes"), where("userId", "==", currentUser?.uid), limit(2)), defaultRecipe)
+  const { user } = useContext(AppContext)
+  const [q, setQ] = useState<Query>()
+  const { isFetching, data } = useFirestoreFetch<RecipeType>([defaultRecipe], q)
 
+  useEffect(() => {
+    user && setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
+  }, [user])
+  
   return (
     <div className="row-start-3 col-span-2 xl:row-start-2 xl:col-start-3 xl:col-span-1 overflow-hidden flex xl:flex-col justify-between gap-6">
       <div className="flex flex-col gap-2 h-full xl:h-36 w-44 xl:w-full">

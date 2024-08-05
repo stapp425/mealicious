@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react"
-import Recipe from "./Recipe"
+import { AppContext } from "@/App"
 import { type Recipe as RecipeType } from "@/types/recipe"
-import { ScreenContext } from "@/App"
-import { Layout, type Breakpoints } from "@/types/app"
+import { type Layout } from "@/types/app"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Skeleton } from "@/components/ui/skeleton"
 import { nanoid } from "nanoid"
+import Recipe from "./Recipe"
 import searchIcon from "@/img/magnifying-glass.png"
 import noResultsImage from "@/img/no-results.png"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Loading from "./Loading"
-import { Skeleton } from "@/components/ui/skeleton"
 
 type Props = {
   results: RecipeType[]
@@ -17,7 +17,7 @@ type Props = {
 }
 
 export default function SearchResults({ results, query, isFetching }: Props): React.ReactElement {
-  const matches = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: matches } = useContext(AppContext)
   const [selectedLayout, setSelectedLayout] = useState<Layout>(matches.md ? "list" : "square")
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   

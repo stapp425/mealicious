@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Clock, Earth, Zap } from "lucide-react"
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
-import { type Breakpoints, type Layout } from "@/types/app"
-import { ScreenContext } from "@/App"
+import { type Layout } from "@/types/app"
+import { AppContext } from "@/App"
 import Details from "./Details"
 
 type Props = {
@@ -31,7 +31,7 @@ export default function Recipe({ layout, recipe }: Props): React.ReactElement {
 }
 
 function List({ recipe }: Props): React.ReactElement {
-  const matches = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: matches } = useContext(AppContext)
   
   return (
     <div className="overflow-hidden min-h-[225px] flex justify-between rounded-lg border-2 border-slate-200">
@@ -122,7 +122,7 @@ function List({ recipe }: Props): React.ReactElement {
 }
 
 function Card({ recipe }: Props) {
-  const matches = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: matches } = useContext(AppContext)
 
   return (
     <div className="overflow-hidden flex flex-col justify-between w-[275px] md:w-[225px] h-[500px] rounded-lg border-2 border-slate-200">
@@ -211,7 +211,7 @@ function Card({ recipe }: Props) {
 }
 
 function Square({ recipe }: Props): React.ReactElement {
-  const matches = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: matches } = useContext(AppContext)
 
   return (
     <div className="group relative overflow-hidden aspect-square w-3/4 md:w-full rounded-lg shadow-md">

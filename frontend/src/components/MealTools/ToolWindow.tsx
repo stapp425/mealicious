@@ -10,7 +10,6 @@ import RecipeList from "./RecipeList"
 import Errors from "./Errors"
 
 interface Props<T extends Obj> extends RequiredSingleField<T>, RequiredFieldArray<T> {
-  toggleEditMode: (...params: any) => unknown
   reset: UseFormReset<T>
 }
 
@@ -40,7 +39,6 @@ const ToolWindow: React.FC<Props<Meal>> = (props) => {
       />
       <RecipeList
         control={props.control}
-        toggleEditMode={props.toggleEditMode}
         setValue={props.setValue}
         setError={props.setError}
         clearErrors={props.clearErrors}

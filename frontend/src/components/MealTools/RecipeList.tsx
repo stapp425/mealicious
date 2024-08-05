@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react"
-import { MealEditContext } from "./EditMeal"
+import { MealEditContext } from "./MealTools"
 import { type Meal } from "@/types/meal"
 import { type Obj } from "@/types/app"
 import { type RequiredFieldArray } from "@/types/form"
@@ -12,11 +12,10 @@ import AddRecipeButton from "./AddRecipeButton"
 
 interface Props<T extends Obj> extends RequiredFieldArray<T> {
   contentClassName?: string
-  toggleEditMode: (...params: any) => unknown
 }
 
 // TODO: Fix data not updating
-const RecipeList: React.FC<Props<Meal>> = ({ control, toggleEditMode, setValue, className, contentClassName, setError, clearErrors }) => {
+const RecipeList: React.FC<Props<Meal>> = ({ control, setValue, className, contentClassName, setError, clearErrors }) => {
   const { fetchedRecipeData } = useContext(MealEditContext)
   
   const recipeList = useWatch({
@@ -76,7 +75,7 @@ const RecipeList: React.FC<Props<Meal>> = ({ control, toggleEditMode, setValue, 
                 )
             })
           }
-          <AddRecipeButton onClick={toggleEditMode}/>
+          <AddRecipeButton/>
         </AnimatePresence>
       </div>
       <ScrollBar/>

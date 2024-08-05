@@ -1,29 +1,20 @@
-import { useState, useEffect, createContext, useContext,  } from "react"
+import { useEffect, useContext } from "react"
+import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { type Meal, defaultMeal } from "@/types/meal"
-import { type Recipe, defaultRecipe } from "@/types/recipe"
 import { AnimatePresence } from "framer-motion"
-import { useFirestoreFetch, useFirestoreGet, useFirestoreUpdate } from "@/util/hooks"
-import { collection, query, type Query, where } from "firebase/firestore"
-import { CurrentUser } from "@/types/app"
-import { UserContext } from "@/App"
-import { firestore } from "../../../../firebaseConfig"
+import { useFirestoreGet, useFirestoreUpdate } from "@/util/hooks"
 import ToolWindow from "./ToolWindow"
 import AddWindow from "./AddWindow"
 import { useParams } from "react-router-dom"
+import { MealEditContext } from "./MealTools"
 
-export const MealEditContext = createContext<{isEditActive: boolean, fetchedRecipeData: Recipe[]}>({
-  isEditActive: false,
-  fetchedRecipeData: [defaultRecipe]
-})
 
 const EditMeal: React.FC = () => {
+  const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
-  const user = useContext<CurrentUser>(UserContext)
-  const [q, setQ] = useState<Query>()
-  const { data: mealData } = useFirestoreGet<Meal>("meals", mealId as string)
-  const { data: recipesData } = useFirestoreFetch<Recipe>(q, [defaultRecipe])
-  const [isAddRecipeActive, setIsAddRecipeActive] = useState<boolean>(false)
+  const { user } = useContext(AppContext)
+  const { data: mealData } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
   const {
     control,
     register,
@@ -39,12 +30,11 @@ const EditMeal: React.FC = () => {
 
   const submitMeal: SubmitHandler<Meal> = async (data) => {
     if(user)
-      updateMeal("meals", mealId as string, { ...data, userId: user.uid })
+      updateMeal({ ...data, userId: user.uid }, { name: "meals", id: mealId as string })
   }
 
   function sendProps() {
     return {
-      toggleEditMode: toggleEditMode,
       register: register,
       control: control,
       setValue: setValue,
@@ -53,10 +43,6 @@ const EditMeal: React.FC = () => {
       setError: setError,
       clearErrors: clearErrors
     }
-  }
-  
-  function toggleEditMode() {
-    setIsAddRecipeActive(a => !a)
   }
 
   useEffect(() => {
@@ -70,22 +56,16 @@ const EditMeal: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    user && setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
-  }, [user])
-
-  useEffect(() => {
     mealData && reset(mealData)
   }, [mealData])
 
   return (
-    <MealEditContext.Provider value={{ isEditActive: isAddRecipeActive, fetchedRecipeData: recipesData }}>
-      <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">
-        <ToolWindow {...sendProps()}/>
-        <AnimatePresence>
-          { isAddRecipeActive && <AddWindow setValue={setValue} getValues={getValues}/> }
-        </AnimatePresence>
-      </form>
-    </MealEditContext.Provider>
+    <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">
+      <ToolWindow {...sendProps()}/>
+      <AnimatePresence>
+        { isAddRecipeActive && <AddWindow setValue={setValue} getValues={getValues}/> }
+      </AnimatePresence>
+    </form>
   )
 }
 

@@ -3,7 +3,7 @@ import { useFirestoreGet, useFirestoreUpdate, useScroll } from "@/util/hooks"
 import { Link, useParams } from "react-router-dom"
 // import { sampleFullRecipe as data } from "@/test"
 import { type Section } from "@/types/app"
-import { Recipe, type Ingredient, type Nutrition } from "@/types/recipe"
+import { defaultRecipe, Recipe, type Ingredient, type Nutrition } from "@/types/recipe"
 import {
   Popover,
   PopoverContent,
@@ -18,7 +18,7 @@ type SectionRefs = {[key in Section]: HTMLDivElement | null}
 
 export default function RecipeDetails(): React.ReactElement {
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string)
+  const { data } = useFirestoreGet<Recipe>(defaultRecipe, { name: "recipes", id: recipeId as string })
   const { isWorking, updateFirestoreDoc } = useFirestoreUpdate()
   const [count, setCount] = useState<number>(1)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -138,7 +138,7 @@ export default function RecipeDetails(): React.ReactElement {
             <button 
               onClick={async () => {
                 try {
-                  await updateFirestoreDoc("recipes", recipeId as string, { isFavorite: !data?.isFavorite })
+                  await updateFirestoreDoc({ isFavorite: !data?.isFavorite }, { name: "recipes", id: recipeId as string })
                   setIsFavorite(f => !f)
                 } catch (err: any) {
                   console.error(err.message)

@@ -2,8 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { useFirestoreGet, useFirestoreUpdate, useStorageDelete, useStorageUpload } from "@/util/hooks"
 import { defaultRecipe, type Recipe } from "@/types/recipe"
 import { useToast } from "@/components/ui/use-toast"
-import { UserContext } from "@/App"
-import { CurrentUser } from "@/types/app"
+import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { nanoid } from "nanoid"
@@ -21,9 +20,9 @@ import Nutrition from "./Nutrition"
 // TODO: Fix image issues
 const EditRecipe: React.FC = () => {
   const { toast } = useToast()
-  const user = useContext<CurrentUser>(UserContext)
+  const { user } = useContext(AppContext)
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string)
+  const { data } = useFirestoreGet<Recipe>(defaultRecipe, { name: "recipes", id: recipeId as string })
   const [image, setImage] = useState<Image>({
     file: undefined,
     name: "",
@@ -31,8 +30,8 @@ const EditRecipe: React.FC = () => {
     url: ""
   })
   const { updateFirestoreDoc } = useFirestoreUpdate()
-  const uploadToStorage = useStorageUpload()
-  const deleteFromStorage = useStorageDelete()
+  const { uploadFile } = useStorageUpload()
+  const { deleteFile } = useStorageDelete()
 
   const { 
     register, 
@@ -56,18 +55,18 @@ const EditRecipe: React.FC = () => {
         let imageRef
 
         if(image.file) {
-          imageRef = await uploadToStorage(image.file, `${image.name}-${nanoid()}`)
+          imageRef = await uploadFile(image.file, `${image.name}-${nanoid()}`)
           if(originalImageURL.current.includes("firebasestorage") && originalImageURL.current !== imageRef)
-            await deleteFromStorage(getImageNameFromURL(originalImageURL.current))
+            await deleteFile(getImageNameFromURL(originalImageURL.current))
         } else {
           imageRef = image.url
         }
   
-        await updateFirestoreDoc("recipes", recipeId as string, {
+        await updateFirestoreDoc({
           ...data,
           image: imageRef,
           userId: user.uid
-        })
+        }, { name: "recipes", id: recipeId as string })
         toast({
           title: "Success",
           description: "Recipe successfully updated!",

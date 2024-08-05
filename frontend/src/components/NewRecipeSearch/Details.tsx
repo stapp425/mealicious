@@ -13,8 +13,7 @@ import {
   Bookmark, Flag, ExternalLink
 } from "lucide-react"
 import { nanoid } from "nanoid"
-import { UserContext } from "@/App"
-import { type CurrentUser } from "@/types/app"
+import { AppContext } from "@/App"
 import { collection, addDoc } from "firebase/firestore"
 import { firestore } from "../../../../firebaseConfig"
 import { type CollectionReference } from "firebase/firestore"
@@ -26,12 +25,12 @@ type Props = {
 
 export default function Details({ recipe, matches }: Props): React.ReactElement {
   const { toast } = useToast()
-  const currentUser = useContext<CurrentUser>(UserContext)
+  const { user } = useContext(AppContext)
   const recipesCollectionRef = useRef<CollectionReference>(collection(firestore, "recipes"))
 
   async function saveRecipe(recipe: Recipe) {
     try {
-      await addDoc(recipesCollectionRef.current, { ...recipe, userId: currentUser?.uid })
+      await addDoc(recipesCollectionRef.current, { ...recipe, userId: user?.uid })
       toast({
         title: "Success!",
         description: "Recipe added successfully."

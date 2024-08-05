@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { UserContext } from "@/App"
+import { AppContext } from "@/App"
 import { signOut } from "@/util/auth"
 import { Button } from "@/components/ui/button"
 import { House, Info, Menu, Phone, Navigation, CircleUser } from "lucide-react"
@@ -30,11 +30,11 @@ import siteLogo from "@/img/logo/mealicious-logo.svg"
 import defaultProfilePicture from "@/img/default-pfp.svg"
 
 export default function Header() {
-  const currentUser = useContext(UserContext)
-  const profilePicture = currentUser?.photoURL || defaultProfilePicture
+  const { user } = useContext(AppContext)
+  const profilePicture = user?.photoURL || defaultProfilePicture
   
   function styleResults() {
-    if(currentUser) {
+    if(user) {
       return (
         <div>
           <Popover modal={true}>
@@ -56,8 +56,8 @@ export default function Header() {
               </div>
               <div className="flex flex-col mt-6 p-5 gap-2">
                 <div>
-                  <h1 className="font-bold text-2xl">{currentUser?.displayName}</h1>
-                  <p className="text-sm text-muted-foreground">{currentUser?.email}</p>
+                  <h1 className="font-bold text-2xl">{user?.displayName}</h1>
+                  <p className="text-sm text-muted-foreground">{user?.email}</p>
                 </div>
                 <Button className="rounded-md w-1/2 h-9 px-4 bg-orange-500">
                   <Link to="/profile" className="flex justify-between items-center gap-2">

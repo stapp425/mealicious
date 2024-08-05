@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { type Obj } from "@/types/app"
 import { type RequiredFieldArray as SelectField } from "@/types/form"
 import { type Meal, type MealTime } from "@/types/meal"
@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import Button from "../Theme/Button"
+import { MealEditContext } from "./MealTools"
 
 interface Props<T extends Obj> extends SelectField<T> {
   className?: string
@@ -20,6 +21,8 @@ interface Props<T extends Obj> extends SelectField<T> {
 }
 
 const Time: React.FC<Props<Meal>> = ({ className, setValue, control, setError, clearErrors }) => {
+  const { mode } = useContext(MealEditContext)
+  
   const mealTime = useWatch({
     control,
     name: "time"
@@ -53,7 +56,8 @@ const Time: React.FC<Props<Meal>> = ({ className, setValue, control, setError, c
         </SelectContent>
       </Select>
       <Button>
-        Update Meal
+        { mode === "create" && "Create Meal" }
+        { mode === "edit" && "Update Meal" }
       </Button>
     </div>
   )

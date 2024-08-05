@@ -6,7 +6,7 @@ import { firestore, storage } from "../../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useToast } from "@/components/ui/use-toast"
 import * as dateFns from "date-fns"
-import { Obj } from "@/types/app"
+import { FirestoreCollection, Obj } from "@/types/app"
 
 interface HasDate extends Obj {
   date: number
@@ -82,7 +82,7 @@ export function useCalendar<T extends HasDate>(data: T[]) {
   }
 }
 
-export function useFirestoreFetch<T>(query: Query | undefined, initialData: T[]) {
+export function useFirestoreFetch<T>(initialData: T[], query?: Query) {
   const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T[]>(initialData)
@@ -109,10 +109,11 @@ export function useFirestoreFetch<T>(query: Query | undefined, initialData: T[])
   return { isFetching, data, setData }
 }
 
-export function useFirestoreGet<T>(name: string, id: string) {
+export function useFirestoreGet<T>(initialData: T, location: { name: FirestoreCollection, id: string }) {
+  const { name, id } = location
   const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const [data, setData] = useState<T>()
+  const [data, setData] = useState<T>(initialData)
 
   useEffect(() => {
     fetchData()
@@ -137,14 +138,15 @@ export function useFirestoreGet<T>(name: string, id: string) {
   return { isFetching, data, fetchData }
 }
 
-export function useFirestoreUpdate() {
+export function useFirestoreUpdate<T extends Obj>() {
   const { toast } = useToast()
   const [isWorking, setIsWorking] = useState<boolean>(false)
   
-  async function updateFirestoreDoc(path: string, id: string, data: {[key: string]: any}) {
+  async function updateFirestoreDoc(data: T, location: { name: FirestoreCollection, id: string }) {
     try {
+      const { name, id } = location
       setIsWorking(true)
-      await updateDoc(doc(firestore, path, id), data)
+      await updateDoc(doc(firestore, name, id), data)
       toast({
         title: "Success!",
         description: "Document successfully updated.",
@@ -164,13 +166,14 @@ export function useFirestoreUpdate() {
   return { isWorking, updateFirestoreDoc }
 }
 
-export function useFirestorePost() {
+export function useFirestorePost<T extends Obj>() {
   const [isWorking, setIsWorking] = useState<boolean>(false)
   const { toast } = useToast()
-  async function addFirestoreDoc(path: string, data: Obj) {
+
+  async function addFirestoreDoc(data: T, location: { name: FirestoreCollection }) {
     try {
       setIsWorking(true)
-      await addDoc(collection(firestore, path), data)
+      await addDoc(collection(firestore, location.name), data)
       toast({
         title: "Success!",
         description: "Successfully added document.",
@@ -219,14 +222,18 @@ export function useFirestoreTest() {
 
 export function useStorageUpload() {
   const { toast } = useToast()
+  const [isUploading, setIsUploading] = useState<boolean>(false)
 
   async function uploadFile(file: File, fileName: string) {
     try {
+      setIsUploading(true)
       const image = await uploadBytes(ref(storage, fileName), file)
       const imageRef = await getDownloadURL(image.ref)
+      setIsUploading(false)
 
       return imageRef
     } catch (err: any) {
+      setIsUploading(false)
       toast({
         title: "Error!",
         description: err.message,
@@ -235,20 +242,31 @@ export function useStorageUpload() {
     }
   }
 
-  return uploadFile
+  return { isUploading, uploadFile }
 }
 
 export function useStorageDelete() {
+  const { toast } = useToast()
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
+
   async function deleteFile(fileName: string) {
     try {
       const imageRef = ref(storage, fileName)
+
+      setIsDeleting(true)
       await deleteObject(imageRef)
     } catch (err: any) {
-      console.error(err.message)
+      toast({
+        title: "Error!",
+        description: err.message,
+        variant: "destructive"
+      })
+    } finally {
+      setIsDeleting(false)
     }
   }
 
-  return deleteFile
+  return { isDeleting, deleteFile }
 }
 
 export function useScroll() {
@@ -270,7 +288,7 @@ export function useScroll() {
   return scrollPoints
 }
 
-export function useInputChange<T extends {[key: string]: unknown}>(initialInput: T) {
+export function useInputChange<T extends Obj>(initialInput: T) {
   const [input, setInput] = useState<T>(initialInput)
   const [isEditActive, setIsEditActive] = useState<boolean>(false)
 

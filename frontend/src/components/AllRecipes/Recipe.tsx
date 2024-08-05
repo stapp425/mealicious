@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { type Breakpoints } from "@/types/app"
 import { Badge } from "../ui/badge"
-import { ScreenContext } from "@/App"
+import { AppContext } from "@/App"
 import { Ingredient, type Recipe } from "@/types/recipe"
 import { ActiveRecipeContext } from "./AllRecipes"
 import { Clock, Earth, Zap } from "lucide-react"
@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function Recipe({ recipe, onChange }: Props): React.ReactElement {
-  const { xl } = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: { xl } } = useContext(AppContext)
 
   return xl ? <List recipe={recipe} onChange={onChange}/> : <Square recipe={recipe} onChange={onChange}/>
 }

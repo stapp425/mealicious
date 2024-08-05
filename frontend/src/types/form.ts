@@ -9,11 +9,11 @@ import { Obj } from "./app"
 
 
 
-interface Field {
+export interface Field {
   className?: string
 }
 
-interface RequiredField<T extends Obj> extends Field {
+export interface RequiredField<T extends Obj> extends Field {
   error: FieldErrors<T>
 }
 

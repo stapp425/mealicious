@@ -1,14 +1,14 @@
-import { ScreenContext } from "@/App"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Breakpoints, Layout } from "@/types/other"
 import { useContext } from "react"
+import { AppContext } from "@/App"
+import { type Layout } from "@/types/app"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type Props = {
   layout: Layout
 }
 
 export default function Loading({ layout }: Props) {
-  const matches = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: matches } = useContext(AppContext)
   
   switch(layout) {
     case "list":

@@ -1,5 +1,10 @@
 import { type User } from "firebase/auth"
 
+export type App = {
+  user: CurrentUser,
+  screenSizes: Breakpoints
+}
+
 export type Obj = {[key: string]: unknown}
 
 export type CurrentUser = User | null
@@ -20,3 +25,5 @@ export type Image = {
   type: string
   url: string
 }
+
+export type FirestoreCollection = "recipes" | "meals" | "users"

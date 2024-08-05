@@ -1,13 +1,12 @@
 import { useContext } from "react"
+import { AppContext } from "@/App"
 import { Calendar, LayoutGrid, Pencil } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
-import { ScreenContext } from "@/App"
-import { type Breakpoints } from "@/types/app"
 
 export default function DailyMeals(): React.ReactElement {
-  const matches = useContext<Breakpoints>(ScreenContext)
+  const { screenSizes: matches } = useContext(AppContext)
 
   return (
     <div className="row-start-2 col-start-2 col-span-2 xl:row-span-1 xl:col-span-1 flex flex-col gap-2">

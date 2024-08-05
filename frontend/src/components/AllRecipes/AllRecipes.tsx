@@ -13,8 +13,7 @@ import { useFirestoreFetch, useFirestoreTest } from "@/util/hooks"
 import { nanoid } from "nanoid"
 import { collection, Query, query, where } from "firebase/firestore"
 import { firestore } from "../../../../firebaseConfig"
-import { type CurrentUser } from "@/types/app"
-import { UserContext } from "@/App"
+import { AppContext } from "@/App"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Clipboard, Plus } from "lucide-react"
 import Description from "./Description"
@@ -24,12 +23,12 @@ import { Link } from "react-router-dom"
 export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
-  const user = useContext<CurrentUser>(UserContext)
+  const { user } = useContext(AppContext)
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   // const { isFetching, data, setData } = useFirestoreTest()
   const [q, setQ] = useState<Query>()
-  const { isFetching, data, setData } = useFirestoreFetch<RecipeType>(q, [defaultRecipe])
+  const { isFetching, data, setData } = useFirestoreFetch<RecipeType>([defaultRecipe], q)
   
   function invalidateInitialState(recipe: RecipeType) {
     setIsFirstRender(false)
