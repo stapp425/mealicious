@@ -2,7 +2,7 @@ import { useState, useEffect, createContext } from "react"
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
-import { auth } from "../../firebaseConfig"
+import { auth, firestore } from "../../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
 import { type App, type CurrentUser, type Breakpoints } from "@/types/app"
 import Login from "./components/Login"
@@ -15,12 +15,13 @@ import AllRecipes from "./components/AllRecipes/AllRecipes"
 import RecipeDetails from "./components/RecipeDetails/RecipeDetails"
 import CreateRecipe from "./components/RecipeTools/CreateRecipe"
 import EditRecipe from "./components/RecipeTools/EditRecipe"
-import Calendar from "./components/Calendar/Calendar"
 import MealCalendar from "./components/Calendar/MealCalendar"
 import AllMeals from "./components/AllMeals/AllMeals"
 import MealTools from "./components/MealTools/MealTools"
+import { now } from "./util/hooks"
 
 export const AppContext = createContext<App>({
+  date: now,
   user: null,
   screenSizes: {
     any: false, sm: false,
@@ -46,10 +47,10 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, user => {
       if(user) {
         setCurrentUser(user)
-        location.pathname.match(/^\/(auth\/.+)?$/) && navigate("/dashboard")
+        location.pathname.match(/^\/(auth\/.+)?$/) && navigate("/dashboard", { replace: true })
       } else {
         setCurrentUser(null)
-        navigate("/")
+        navigate("/", { replace: true })
       }
     })
 
@@ -57,20 +58,23 @@ export default function App() {
   }, [])
   
   return (
-    <AppContext.Provider value={{ user: currentUser, screenSizes: matches }}>  
+    <AppContext.Provider value={{
+      date: now,
+      user: currentUser,
+      screenSizes: matches,
+    }}>
       <Routes>
         <Route path="/" element={<MainLayout/>}>
           <Route path="dashboard" element={<Dashboard/>}/>
           <Route path="meals">
             <Route path="all" element={<AllMeals/>}/>
-            <Route path="search" element={<NewRecipeSearch/>}/>
             <Route path="create" element={<MealTools mode="create"/>}/>
-            <Route path="edit">
-              <Route path=":mealId" element={<MealTools mode="edit"/>}/>
-            </Route>
+            <Route path="edit/:mealId" element={<MealTools mode="edit"/>}/>
+            <Route path="calendar" element={<MealCalendar/>}/>
           </Route>
           <Route path="recipes">
             <Route index element={<AllRecipes/>}/>
+            <Route path="search" element={<NewRecipeSearch/>}/>
             <Route path="create" element={<CreateRecipe/>}/>
             <Route path="edit">
               <Route path=":recipeId" element={<EditRecipe/>}/>

@@ -1,27 +1,20 @@
-import { useContext, useEffect, useState } from "react"
-import { AppContext } from "@/App"
-import { firestore } from "../../../../firebaseConfig"
-import { type Recipe as RecipeType, defaultRecipe } from "@/types/recipe"
-import { type Query, query, collection, where } from "firebase/firestore"
 import { Link } from "react-router-dom"
 import { SquareArrowUpRight } from "lucide-react"
-import { nanoid } from "nanoid"
-import { useFirestoreFetch } from "@/util/hooks"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import Recipe from "./Recipe"
+import { useFirestoreFetch } from "@/util/hooks"
+import { defaultRecipe, type Recipe as RecipeType } from "@/types/recipe"
+import { createQuery } from "@/types/app"
+import { useContext } from "react"
+import { AppContext } from "@/App"
+import { type User } from "firebase/auth"
 
 export default function SavedRecipes(): React.ReactElement {
   const { user } = useContext(AppContext)
-  const [q, setQ] = useState<Query>()
-  const { isFetching, data } = useFirestoreFetch<RecipeType>([defaultRecipe], q)
-
-  useEffect(() => {
-    user && setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
-  }, [user])
+  const { data: recipes } = useFirestoreFetch<RecipeType>([defaultRecipe], createQuery(user as User, "recipes", { limit: 2 }))
   
   return (
-    <div className="row-start-3 col-span-2 xl:row-start-2 xl:col-start-3 xl:col-span-1 overflow-hidden flex xl:flex-col justify-between gap-6">
+    <div className="row-start-3 col-span-2 xl:row-start-2 xl:col-start-3 xl:col-span-1 overflow-hidden flex flex-row xl:flex-col justify-between gap-6">
       <div className="flex flex-col gap-2 h-full xl:h-36 w-44 xl:w-full">
         <h1 className="text-2xl font-bold xl:text-center">Saved Recipes</h1>
         <button className="flex-1">
@@ -32,18 +25,9 @@ export default function SavedRecipes(): React.ReactElement {
           </Link>
         </button>
       </div>
-      {
-        !isFetching
-          ? 
-          <>
-            {data?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe}/>)}
-          </>
-          :
-          <>
-            <Skeleton className="h-full w-56 xl:h-48 xl:w-full rounded-lg bg-slate-300"/>
-            <Skeleton className="h-full w-56 xl:h-48 xl:w-full rounded-lg bg-slate-300"/>
-          </>
-      }
+      <div className="flex-1 flex flex-row xl:flex-col gap-6">
+        { recipes.slice(0, 2).map((recipe, index) => <Recipe key={index} recipe={recipe}/>) }
+      </div>
     </div>
   )
 }

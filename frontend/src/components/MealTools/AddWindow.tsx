@@ -8,6 +8,7 @@ import { animate, motion } from "framer-motion"
 import { useInputChange } from "@/util/hooks"
 import { Clipboard, Clock, Heart, Microwave, MoveLeft, Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 type Props<T extends Obj> = {
   setValue: UseFormSetValue<T>
@@ -45,40 +46,43 @@ const AddWindow: React.FC<Props<Meal>> = ({ setValue, getValues }) => {
       className="overflow-hidden border border-orange-400 w-[425px] rounded-l-2xl"
     >
       <div ref={addWindow} className="w-[200%] h-full flex">
-        <div className="w-1/2 flex flex-col gap-2 p-4">
+        <div className="w-1/2 flex flex-col gap-2 px-4 pt-4">
           {
             !isRecipeSelected &&
             <>
-              <h1 className="font-bold text-3xl">Saved Recipes</h1>
-              <div>
-                {
-                  fetchedRecipeData.map((recipe, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        setIsRecipeSelected(true)
-                        setIsFirstRender(false)
-                        setSelectedRecipe(recipe)
-                      }}
-                      type="button"
-                      className="group border border-slate-300 min-h-[100px] w-full flex justify-between gap-3 items-start hover:bg-orange-500 hover:border-orange-500 transition-colors p-3 rounded-md"
-                    >
-                      <img
-                        src={recipe.image}
-                        alt={recipe.title}
-                        className="h-[100px] bg-white rounded-sm"
-                      />
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center mb-2">
-                          <h1 className="font-[600] group-hover:text-white line-clamp-1">{recipe.title}</h1>
-                          {recipe.isFavorite && <Heart size={18} className="text-rose-500 group-hover:text-white"/>}
+              <h1 className="text-left font-bold text-3xl bg-white">Saved Recipes</h1>
+              <ScrollArea className="flex-1">
+                <div className="space-y-2 pb-4">
+                  {
+                    fetchedRecipeData.map((recipe, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setIsRecipeSelected(true)
+                          setIsFirstRender(false)
+                          setSelectedRecipe(recipe)
+                        }}
+                        type="button"
+                        className="group border border-slate-300 min-h-[100px] w-full flex justify-between gap-3 items-start hover:bg-orange-500 hover:border-orange-500 transition-colors p-3 rounded-md"
+                      >
+                        <img
+                          src={recipe.image}
+                          alt={recipe.title}
+                          className="h-[100px] bg-white rounded-sm"
+                        />
+                        <div className="flex-1">
+                          <div className="flex justify-between items-center mb-2">
+                            <h1 className="font-[600] group-hover:text-white truncate max-w-[175px] text-nowrap">{recipe.title}</h1>
+                            {recipe.isFavorite && <Heart size={18} className="text-rose-500 group-hover:text-white"/>}
+                          </div>
+                          <p className="line-clamp-3 text-left text-sm font-[600] text-muted-foreground group-hover:text-white">{recipe.description}</p>
                         </div>
-                        <p className="line-clamp-3 text-left text-sm font-[600] text-muted-foreground group-hover:text-white">{recipe.description}</p>
-                      </div>
-                    </button>
-                  ))
-                }
-              </div>
+                      </button>
+                    ))
+                  }
+                </div>
+                <ScrollBar/>
+              </ScrollArea>
             </>
           }
         </div>
@@ -149,7 +153,7 @@ const AddWindow: React.FC<Props<Meal>> = ({ setValue, getValues }) => {
                     className="flex-1"
                   />
                   <button
-                    onClick={() => { input.type && setValue("contents", [...getValues("contents"), { type: input.type, recipe: selectedRecipe.id as string }])}}
+                    onClick={() => { input.type && setValue("contents", [...getValues("contents"), { type: input.type, recipe: selectedRecipe }])}}
                     type="button"
                     className="size-10 flex justify-center items-center bg-orange-500 rounded-md hover:bg-orange-700 active:bg-orange-800 transition-colors"
                   >

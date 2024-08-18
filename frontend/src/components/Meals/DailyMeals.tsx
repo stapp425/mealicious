@@ -4,17 +4,18 @@ import { Calendar, LayoutGrid, Pencil } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
+import { format } from "date-fns"
 
 export default function DailyMeals(): React.ReactElement {
-  const { screenSizes: matches } = useContext(AppContext)
+  const { date, screenSizes: matches } = useContext(AppContext)
 
   return (
     <div className="row-start-2 col-start-2 col-span-2 xl:row-span-1 xl:col-span-1 flex flex-col gap-2">
       <div className="relative flex justify-between">
         <div className="flex flex-col">
           <h1 className="font-bold text-2xl xl:text-4xl">Today's Meals</h1>
-          <p className="text-sm xl:text-lg text-muted-foreground">Tuesday</p>
-          <p className="text-sm xl:text-lg text-muted-foreground">07/09/2024</p>
+          <p className="text-sm xl:text-lg text-muted-foreground">{format(date, "EEEE")}</p>
+          <p className="text-sm xl:text-lg text-muted-foreground">{format(date, "MMMM do, yyyy")}</p>
         </div>
         <div className="absolute top-0 right-0 flex justify-between items-center gap-2">
           <div className="relative group flex flex-col gap-2 items-center">

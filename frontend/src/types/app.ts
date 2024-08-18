@@ -1,8 +1,36 @@
 import { type User } from "firebase/auth"
+import { collection, limit, query, Query, where } from "firebase/firestore"
+import { firestore } from "../../../firebaseConfig"
 
-export type App = {
-  user: CurrentUser,
-  screenSizes: Breakpoints
+export type Operation = "create" | "replace" | "update" | "remove"
+
+type Option = "add" | "remove" | "update" | "format"
+
+export function modifyData<T extends { id?: string }>(original: T[], option: Option, data?: T): T[] {
+  if(option === "format") {
+    if(data) throw new Error("Formatting does not require a target data for processing")
+    return original
+  } else {
+    if(!data) throw new Error("A modification to the original list must require data")
+  }
+
+  let temp = [...original]
+
+  if(data) {
+    switch(option) {
+      case "add":
+        temp.push(data)
+        break
+      case "remove":
+        temp = original.filter(d => d.id !== data.id)
+        break
+      case "update":
+        temp = original.map(d => d.id === data.id ? data : d)
+        break
+    }
+  }
+
+  return temp
 }
 
 export type Obj = {[key: string]: unknown}
@@ -11,12 +39,16 @@ export type CurrentUser = User | null
 
 export type Layout = "list" | "card" | "square"
 
-export type Section = "title" | "description" | "nutrition" | "ingredients" | "instructions"
-
 export type Breakpoints = {
   any: boolean; sm: boolean
   md: boolean; lg: boolean
   xl: boolean; xxl: boolean
+}
+
+export type App = {
+  date: Date,
+  user: CurrentUser
+  screenSizes: Breakpoints
 }
 
 export type Image = {
@@ -26,4 +58,11 @@ export type Image = {
   url: string
 }
 
-export type FirestoreCollection = "recipes" | "meals" | "users"
+export type FirestoreCollection = "recipes" | "meals" | "users" | "plans"
+
+export function createQuery(user: User, path: FirestoreCollection, options?: { limit?: number }): Query {
+  if(options && options.limit)
+    return query(collection(firestore, path), where("userId", "==", user.uid), limit(options.limit))
+  
+  return query(collection(firestore, path), where("userId", "==", user.uid))
+}

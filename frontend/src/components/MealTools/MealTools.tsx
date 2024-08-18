@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { AppContext } from "@/App"
 import { defaultRecipe, Recipe } from "@/types/recipe"
-import { useFirestoreFetch } from "@/util/hooks"
-import { collection, query, Query, where } from "firebase/firestore"
-
-import { firestore } from "../../../../firebaseConfig"
 import CreateMeal from "./CreateMeal"
 import EditMeal from "./EditMeal"
+import { useFirestoreFetch } from "@/util/hooks"
+import { createQuery } from "@/types/app"
+import { User } from "firebase/auth"
 
 type Edit = {
   mode: Mode,
@@ -28,17 +27,16 @@ export const MealEditContext = createContext<Edit>({
   fetchedRecipeData: [defaultRecipe],
 })
 
-const MealContainer: React.FC<Props> = ({ mode }) => {
+const MealTools: React.FC<Props> = ({ mode }) => {
   const { user } = useContext(AppContext)
-  const [q, setQ] = useState<Query>()
-  const { data } = useFirestoreFetch<Recipe>([defaultRecipe], q)
+  const { data: recipes } = useFirestoreFetch<Recipe>([defaultRecipe], createQuery(user as User, "recipes"))
   const [isAddRecipeActive, setIsAddRecipeActive] = useState<boolean>(false)  
   
   const context = {
     mode,
     isAddRecipeActive,
     toggleAddRecipe,
-    fetchedRecipeData: data
+    fetchedRecipeData: recipes
   }
 
   function toggleAddRecipe() {
@@ -54,11 +52,6 @@ const MealContainer: React.FC<Props> = ({ mode }) => {
 
     return () => window.removeEventListener("beforeunload", handleUnload)
   }, [])
-  
-  useEffect(() => {
-    if(user)
-      setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
-  }, [user])
 
   return (
     <MealEditContext.Provider value={context}>
@@ -68,4 +61,4 @@ const MealContainer: React.FC<Props> = ({ mode }) => {
   )
 }
 
-export default MealContainer
+export default MealTools

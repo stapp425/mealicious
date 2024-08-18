@@ -30,14 +30,14 @@ const Diets: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) =
           />
           <button
             type="button" 
-            onClick={() => setValue("diets", [...diets, input.diet])}
+            onClick={() => {diets && setValue("diets", [...diets, input.diet])}}
             className="right-1.5 bg-orange-500 hover:bg-orange-700 text-white font-[600] px-6 rounded-md transition-colors"
           >
             Add
           </button>
         </div>
         {
-          diets.length > 0 &&
+          diets && diets.length > 0 &&
             <ScrollArea>
               <div className="flex flex-wrap gap-x-1 gap-y-2">
                 { 

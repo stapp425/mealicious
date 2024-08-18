@@ -61,19 +61,25 @@ const EditRecipe: React.FC = () => {
         } else {
           imageRef = image.url
         }
-  
-        await updateFirestoreDoc({
+
+        const editedRecipe = {
           ...data,
           image: imageRef,
           userId: user.uid
-        }, { name: "recipes", id: recipeId as string })
+        }
+  
+        await updateFirestoreDoc(editedRecipe, { name: "recipes", id: recipeId as string })
         toast({
           title: "Success",
           description: "Recipe successfully updated!",
           variant: "success"
         })
       } catch (err: any) {
-        console.error(err.message)
+        toast({
+          title: "Error!",
+          description: err.message,
+          variant: "destructive"
+        })
       }
     }
   }
