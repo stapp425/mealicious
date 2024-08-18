@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react"
-import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection } from "firebase/firestore"
+import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc } from "firebase/firestore"
+import { type FirestoreCollection, type Obj } from "@/types/app"
 import { firestoreTest } from "./fetch"
 import { defaultRecipe, Recipe } from "@/types/recipe"
 import { firestore, storage } from "../../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useToast } from "@/components/ui/use-toast"
 import * as dateFns from "date-fns"
-import { FirestoreCollection, Obj } from "@/types/app"
 
 interface HasDate extends Obj {
-  date: number
+  date: Date
 }
 
-export const currentDay = new Date()
+export const now = new Date()
 
 export function useCalendar<T extends HasDate>(data: T[]) {
-  const [currentMonth, setCurrentMonth] = useState<Date>(currentDay)
-  const [events, setEvents] = useState<T[]>([])
+  const [currentMonth, setCurrentMonth] = useState<Date>(now)
+  const [events, setEvents] = useState<T[]>(data)
   
   const fullCurrentMonth = getFullCurrentMonth(currentMonth)
   
@@ -63,7 +63,7 @@ export function useCalendar<T extends HasDate>(data: T[]) {
   }
   
   useEffect(() => {
-    if(data.length > 0)
+    if(data.length > 0 && data[0].title)
       setEvents(data)
   }, [data])
   
@@ -83,7 +83,6 @@ export function useCalendar<T extends HasDate>(data: T[]) {
 }
 
 export function useFirestoreFetch<T>(initialData: T[], query?: Query) {
-  const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T[]>(initialData)
   
@@ -95,11 +94,7 @@ export function useFirestoreFetch<T>(initialData: T[], query?: Query) {
         const filteredData = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as T))
         setData(filteredData)
       } catch (err: any) {
-        toast({
-          title: "Error!",
-          description: err.message,
-          variant: "destructive"
-        })
+        throw err
       } finally {
         setIsFetching(false)
       }
@@ -111,7 +106,6 @@ export function useFirestoreFetch<T>(initialData: T[], query?: Query) {
 
 export function useFirestoreGet<T>(initialData: T, location: { name: FirestoreCollection, id: string }) {
   const { name, id } = location
-  const { toast } = useToast()
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T>(initialData)
 
@@ -125,11 +119,7 @@ export function useFirestoreGet<T>(initialData: T, location: { name: FirestoreCo
       const filteredData = { ...result.data(), id: result.id } as T
       setData(filteredData)
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      throw err
     } finally {
       setIsFetching(false)
     }
@@ -153,11 +143,7 @@ export function useFirestoreUpdate<T extends Obj>() {
         variant: "success"
       })
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      throw err
     } finally {
       setIsWorking(false)
     }
@@ -173,24 +159,47 @@ export function useFirestorePost<T extends Obj>() {
   async function addFirestoreDoc(data: T, location: { name: FirestoreCollection }) {
     try {
       setIsWorking(true)
-      await addDoc(collection(firestore, location.name), data)
+      const docRef = await addDoc(collection(firestore, location.name), data)
+      const docData = await getDoc(docRef)
       toast({
         title: "Success!",
         description: "Successfully added document.",
         variant: "success"
       })
+
+      return docData
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      throw err
     } finally {
       setIsWorking(false)
     }
   }
 
   return { isWorking, addFirestoreDoc }
+}
+
+export function useFirestoreDelete() {
+  const { toast } = useToast()
+  const [isWorking, setIsWorking] = useState<boolean>(false)
+  
+  async function deleteFirestoreDoc(location: { name: FirestoreCollection, id: string }) {
+    try {
+      const { name, id } = location
+      setIsWorking(true)
+      await deleteDoc(doc(firestore, name, id))
+      toast({
+        title: "Alert!",
+        description: "Document successfully deleted.",
+        variant: "destructive"
+      })
+    } catch (err: any) {
+      throw err
+    } finally {
+      setIsWorking(false)
+    }
+  }
+
+  return { isWorking, deleteFirestoreDoc }
 }
 
 export function useFirestoreTest() {
@@ -221,7 +230,6 @@ export function useFirestoreTest() {
 
 
 export function useStorageUpload() {
-  const { toast } = useToast()
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   async function uploadFile(file: File, fileName: string) {
@@ -234,11 +242,7 @@ export function useStorageUpload() {
       return imageRef
     } catch (err: any) {
       setIsUploading(false)
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      throw err
     }
   }
 
@@ -246,7 +250,6 @@ export function useStorageUpload() {
 }
 
 export function useStorageDelete() {
-  const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
   async function deleteFile(fileName: string) {
@@ -256,11 +259,7 @@ export function useStorageDelete() {
       setIsDeleting(true)
       await deleteObject(imageRef)
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      throw err
     } finally {
       setIsDeleting(false)
     }

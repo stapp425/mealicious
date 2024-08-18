@@ -5,12 +5,15 @@ import { type Meal, defaultMeal } from "@/types/meal"
 import { AnimatePresence } from "framer-motion"
 import { useFirestorePost } from "@/util/hooks"
 import { AppContext } from "@/App"
+import { useToast } from "@/components/ui/use-toast"
+import { modifyData } from "@/types/app"
 import ToolWindow from "./ToolWindow"
 import AddWindow from "./AddWindow"
 
 const CreateMeal: React.FC = () => {
+  const { toast } = useToast()
   const { isAddRecipeActive } = useContext(MealEditContext)
-  const { user }  = useContext(AppContext)
+  const { user, meals, setMeals, formatMeals }  = useContext(AppContext)
 
   const {
     control,
@@ -27,7 +30,18 @@ const CreateMeal: React.FC = () => {
 
   const submitMeal: SubmitHandler<Meal> = async (data) => {
     if(user) {
-      addMeal({ ...data, userId: user.uid }, { name: "meals" })
+      try {
+        const addedData = { ...data, userId: user.uid }
+        
+        await addMeal(addedData, { name: "meals" })
+        setMeals(formatMeals(modifyData<Meal>(meals, "add", addedData)))
+      } catch (err: any) {
+        toast({
+          title: "Error!",
+          description: err.message,
+          variant: "destructive"
+        })
+      }
     }
   }
 

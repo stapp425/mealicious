@@ -1,5 +1,4 @@
 import { useContext } from "react"
-import { type Breakpoints } from "@/types/app"
 import { Badge } from "../ui/badge"
 import { AppContext } from "@/App"
 import { Ingredient, type Recipe } from "@/types/recipe"
@@ -45,7 +44,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
       <div className="relative flex flex-col justify-between gap-1 basis-2/3 py-3 px-4">
         <h1 className="font-bold text-lg mx-0 pr-2">{recipe.title}</h1>
         {
-          recipe.diets.length > 0 && 
+          recipe.diets && recipe.diets.length > 0 && 
           <div className="flex gap-[6px]">
             {recipe.diets.slice(0, 3).map((diet: string) => <Badge key={nanoid()} className="pointer-events-none bg-orange-500">{diet}</Badge>)}
           </div>
@@ -84,7 +83,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
         </div>
         <div>
         <div className="flex justify-between items-center">
-          <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes.slice(0, 5).join(" · ")}</p>
+          <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes?.slice(0, 5).join(" · ")}</p>
           {
             recipe.source &&
               <TooltipProvider>

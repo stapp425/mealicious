@@ -37,12 +37,12 @@ export default function Description({ activeRecipe }: Props) {
         </div>
         
         <div className="flex flex-wrap gap-1">
-          {activeRecipe.diets.map((diet: string) => <Badge key={nanoid()} className="bg-orange-500 pointer-events-none select-none">{diet}</Badge>)}
+          {activeRecipe.diets?.map((diet: string) => <Badge key={nanoid()} className="bg-orange-500 pointer-events-none select-none">{diet}</Badge>)}
         </div>
         <div className="flex-1 flex flex-wrap justify-between gap-2">
           {
-            activeRecipe.dishTypes.length > 0 ?
-              activeRecipe.dishTypes.map((dish: string) => (
+            activeRecipe.dishTypes && activeRecipe.dishTypes.length > 0 ?
+              activeRecipe.dishTypes?.map((dish: string) => (
                 <div key={nanoid()} className="text-nowrap flex-1 text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 hover:bg-orange-500 hover:text-white transition">
                   {dish}
                 </div>

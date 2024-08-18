@@ -112,11 +112,11 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                       <p>{recipe.source?.name}</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
-                      {recipe.diets.map((diet: string) => <Badge key={nanoid()} className="line-clamp-1 pointer-events-none bg-orange-500">{diet}</Badge>)}
+                      {recipe.diets?.map((diet: string) => <Badge key={nanoid()} className="line-clamp-1 pointer-events-none bg-orange-500">{diet}</Badge>)}
                     </div>
                     <div className="group grid grid-cols-2 gap-2 mt-2 *:border *:border-slate-300 *:rounded-sm group-hover:bg-orange-500">
                       {
-                        recipe.dishTypes.map((dish: string) => (
+                        recipe.dishTypes?.map((dish: string) => (
                           <h1 key={nanoid()} className="text-[min(1.5vw,_16px)] hover:cursor-default border border-slate-400 hover:bg-orange-500 hover:text-white transition text-center py-2 px-3 odd:last:col-span-2">
                             {dish}
                           </h1>
@@ -206,13 +206,13 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                   </DialogTitle>
                   <div className="row-start-2 col-start-2 row-span-2 col-span-1 flex flex-col gap-2 justify-between">
                     {
-                      recipe.diets.length > 0 && 
+                      recipe.diets && recipe.diets.length > 0 && 
                       <div className="flex flex-col items-stretch gap-[6px]">
                         { recipe.diets.slice(0, 3).map((diet: string) => <Badge key={nanoid()} className="pointer-events-none bg-orange-500">{diet}</Badge>) }
                       </div>
                     }
                     {
-                      recipe.dishTypes.slice(0, recipe.diets.length > 0 ? 3 : 6).map((dish: string) => (
+                      recipe.dishTypes?.slice(0, recipe.diets && recipe.diets.length > 0 ? 3 : 6).map((dish: string) => (
                         <div key={nanoid()} className="flex-1 flex justify-center items-center text-sm hover:cursor-default border border-slate-300 hover:bg-orange-500 hover:text-white transition py-1 px-3 rounded-sm">
                           {dish}
                         </div>

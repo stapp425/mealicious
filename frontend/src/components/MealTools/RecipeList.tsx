@@ -52,22 +52,22 @@ const RecipeList: React.FC<Props<Meal>> = ({ control, setValue, className, conte
                     onClick={() => {
                       setValue("contents", recipeList.filter(entry => entry !== recipe))
                     }}
-                    className="flex h-[150px] border border-slate-400 hover:border-red-500 hover:bg-red-300 p-2 rounded-md transition-colors"
+                    className="flex gap-2 h-[150px] border border-slate-400 hover:border-red-500 hover:bg-red-300 p-3 rounded-md transition-colors"
                   >
                     <img
                       src={foundRecipe.image}
                       alt={foundRecipe.title}
                       className="h-full rounded-md"
                     />
-                    <div className="relative flex-1 h-full flex flex-col gap-2">
+                    <div className="relative flex-1 h-full">
                       <div className="flex justify-between items-center">
-                        <h1 className="font-bold text-xl">{foundRecipe.title}</h1>
+                        <h1 className="text-left font-bold text-xl line-clamp-1">{foundRecipe.title}</h1>
                         {foundRecipe.isFavorite && <Heart size={20} className="text-rose-500 group-hover:text-white"/>}
                       </div>
                       <p className="text-left text-slate-400 text-sm font-[600] line-clamp-3">
                         {foundRecipe.description}
                       </p>
-                      <h1 className="absolute bottom-2 right-2 font-[600] text-white text-sm px-2 bg-orange-500 rounded-md">
+                      <h1 className="absolute bottom-0 right-0 font-[600] text-white text-sm px-2 bg-orange-500 rounded-md">
                         {recipe.type}
                       </h1>
                     </div>

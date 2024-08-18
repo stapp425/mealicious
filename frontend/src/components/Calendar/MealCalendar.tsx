@@ -1,30 +1,32 @@
-import { CurrentUser } from "@/types/app"
-import { UserContext } from "@/App"
+import { AppContext } from "@/App"
 import { useContext, useEffect, useState } from "react"
-import { useFirestoreFetch } from "@/util/hooks"
-import { collection, query, Query, where } from "firebase/firestore"
-import { firestore } from "../../../../firebaseConfig"
 import Calendar from "./Calendar"
 import CreateEvent from "./CreateEvent"
-import DragAndDrop from "./DragAndDrop"
+import { defaultPlan, isDate, isTimestamp, Plan } from "@/types/plan"
+import { Timestamp } from "firebase/firestore"
 
 const MealCalendar: React.FC = () => {
-  const user = useContext<CurrentUser>(UserContext)
-  const [q, setQ] = useState<Query>()
+  const { plans, setPlans } = useContext(AppContext)
 
-  // const { data } = useFirestoreFetch<{ date: number, title: string, description: string }>(q, [])
+  useEffect(() => {
+    if(plans[0].title) formatPlans()
 
-  // useEffect(() => {
-  //   if(user) {
-  //     setQ(query(collection(firestore, "test"), where("userId", "==", user.uid)))
-  //   }
-  // }, [user])
-  
+    function formatPlans() {
+      const list = plans.map(plan => 
+        isTimestamp(plan.date)
+          ? { ...plan, date: plan.date.toDate() }
+          : plan
+      )
+      setPlans(list)
+    }
+  }, [])
+
+  console.log(plans)
+
   return (
     <div className="min-h-[calc(100vh-150px)] flex flex-col items-start gap-2">
-      {/* <Calendar data={data}/> */}
+      <Calendar data={plans}/>
       <CreateEvent/>
-      <DragAndDrop/>
     </div>
   )
 }

@@ -18,7 +18,7 @@ import Nutrition from "./Nutrition"
 
 const CreateRecipe: React.FC = () => {
   const { toast } = useToast()
-  const { user } = useContext(AppContext)
+  const { user, setRecipes, modifyRecipes } = useContext(AppContext)
   const [image, setImage] = useState<Image>({
     file: undefined,
     name: "",
@@ -28,7 +28,7 @@ const CreateRecipe: React.FC = () => {
   const { addFirestoreDoc } = useFirestorePost()
   const { uploadFile } = useStorageUpload()
 
-  const { 
+  const {
     register, 
     handleSubmit,
     setValue,
@@ -44,21 +44,26 @@ const CreateRecipe: React.FC = () => {
   const submitRecipe: SubmitHandler<Recipe> = async(data: Recipe) => {     
     if(user && image.file) {
       try {
-          const imageRef = await uploadFile(image.file, `${image.name}-${nanoid()}`)
-    
-          await addFirestoreDoc({
-            ...data,
-            image: imageRef,
-            userId: user?.uid
-          }, { name: "recipes" })
-          toast({
-            title: "Success",
-            description: "Recipe successfully added!",
-            variant: "success"
-          })
+        const imageRef = await uploadFile(image.file, `${image.name}-${nanoid()}`)
+        const addedRecipe = {
+          ...data,
+          image: imageRef,
+          userId: user?.uid
+        }
 
+        const doc = await addFirestoreDoc(addedRecipe, { name: "recipes" })
+        setRecipes(modifyRecipes("add", doc))
+        toast({
+          title: "Success",
+          description: "Recipe successfully added!",
+          variant: "success"
+        })
       } catch (err: any) {
-        console.error(err.message)
+        toast({
+          title: "Error!",
+          description: err.message,
+          variant: "destructive"
+        })
       }
     }
   }

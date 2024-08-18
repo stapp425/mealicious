@@ -1,24 +1,15 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { AppContext } from "@/App"
-import { firestore } from "../../../../firebaseConfig"
-import { type Recipe as RecipeType, defaultRecipe } from "@/types/recipe"
-import { type Query, query, collection, where } from "firebase/firestore"
+import { type Recipe as RecipeType } from "@/types/recipe"
 import { Link } from "react-router-dom"
 import { SquareArrowUpRight } from "lucide-react"
 import { nanoid } from "nanoid"
-import { useFirestoreFetch } from "@/util/hooks"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
 import Recipe from "./Recipe"
 
 export default function SavedRecipes(): React.ReactElement {
-  const { user } = useContext(AppContext)
-  const [q, setQ] = useState<Query>()
-  const { isFetching, data } = useFirestoreFetch<RecipeType>([defaultRecipe], q)
-
-  useEffect(() => {
-    user && setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
-  }, [user])
+  const { recipes, isRecipesFetching: isFetching } = useContext(AppContext)
   
   return (
     <div className="row-start-3 col-span-2 xl:row-start-2 xl:col-start-3 xl:col-span-1 overflow-hidden flex xl:flex-col justify-between gap-6">
@@ -36,7 +27,7 @@ export default function SavedRecipes(): React.ReactElement {
         !isFetching
           ? 
           <>
-            {data?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe}/>)}
+            {recipes.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe}/>)}
           </>
           :
           <>

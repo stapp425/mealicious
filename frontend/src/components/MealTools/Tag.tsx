@@ -19,16 +19,15 @@ const Tag: React.FC<FieldArray<Meal>> = ({ control, className, setValue }) => {
   })
 
   function handleEnterPress(event: React.KeyboardEvent) {
-    if(input.tag && event.key === "Enter")
+    if(input.tag && tags && event.key === "Enter")
       setValue("tags", [...tags, input.tag])
-  }
-  
+  } 
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <AnimatePresence>
         { 
-          tags.map((tag, index) => (
+          tags?.map((tag, index) => (
             <motion.button
               key={index}
               initial={{ scale: 0 }}

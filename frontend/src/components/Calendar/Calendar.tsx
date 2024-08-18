@@ -1,20 +1,14 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import * as dateFns from "date-fns"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useCalendar } from "@/util/hooks"
 import { animate, stagger } from "framer-motion"
 import { Separator } from "@/components/ui/separator"
 import Box from "./Box"
+import { type Plan } from "@/types/plan"
 
 type Props = {
-  data: Event[]
-}
-
-export type Event = {
-  date: number
-  title: string
-  description: string
-  userId?: string
+  data: Plan[]
 }
 
 const Calendar: React.FC<Props> = ({ data }) => {
@@ -27,15 +21,16 @@ const Calendar: React.FC<Props> = ({ data }) => {
     dates: {
       adjacentMonths,
     }
-  } = useCalendar<Event>(data)
+  } = useCalendar<Plan>(data)
 
+  const calendar = useRef<HTMLDivElement>(null)
+  
   useEffect(() => {
-    const calendar = document.getElementById("calendar")
     const days = [...document.getElementsByClassName("day")]
 
-    if(calendar && days.length > 0) {
+    if(calendar.current && days.length > 0) {
       animate(
-        calendar, 
+        calendar.current, 
         { opacity: [0, 100] }, 
         { 
           ease: "easeOut",
@@ -56,12 +51,11 @@ const Calendar: React.FC<Props> = ({ data }) => {
         }
       )
     }
-    
   }, [currentMonth])
   
   return (
     <div className="overflow-hidden border border-slate-400 rounded-md">
-      <div id="calendar" className="flex flex-col justify-between gap-3 p-4" draggable>
+      <div ref={calendar} className="flex flex-col justify-between gap-3 p-4" draggable>
         <div className="flex justify-between items-center py-2">
           <button onClick={setPreviousMonth} className="bg-orange-500 flex justify-between items-center text-white rounded-sm p-2 hover:bg-orange-600 active:bg-orange-700 transition-colors">
             <ChevronLeft/>
@@ -97,21 +91,21 @@ const Calendar: React.FC<Props> = ({ data }) => {
           >
             {
               fullCurrentMonth.map((day: Date, index: number) => {
-                const dailyEvents = getEventsOfDate(dateFns.getTime(day))
+                const dailyPlans = getEventsOfDate(dateFns.getTime(day))
                 const isSameMonth = dateFns.isSameMonth(day, currentMonth)
 
                 return (
                   <div key={index} className={`day aspect-square border ${dateFns.isToday(day) ? "bg-orange-300 border-orange-300" : "border-slate-400"} p-2 rounded-sm`}>
                     <h1 className={`${isSameMonth ? "text-black" : "text-slate-400"} font-[600]`}>{dateFns.format(day, "d")}</h1>
                     {
-                      dailyEvents.length > 0 && 
+                      dailyPlans.length > 0 && 
                       <Box day={day}>
                         <div className="flex flex-col gap-2">
                           {
-                            dailyEvents.map((event: Event, index: number) => (
+                            dailyPlans.map((plan, index) => (
                               <div key={index}>
-                                <h1 className="font-bold text-lg">{event.title}</h1>
-                                <p>{event.description}</p>
+                                <h1 className="font-bold text-lg">{plan.title}</h1>
+                                { plan.description && <p>{plan.description}</p> }
                               </div>
                             ))
                           }

@@ -89,14 +89,18 @@ export type Recipe = {
     name: string
     url: string
   }
-  diets: string[]
-  dishTypes: string[]
+  diets?: string[]
+  dishTypes?: string[]
   times: Time
   servingSize: Serving
   nutrition: Nutrition[]
   ingredients: Ingredient[]
   instructions: string[]
   id?: string
+}
+
+export function isRecipe(obj: string | Recipe): obj is Recipe {
+  return typeof obj !== "string"
 }
 
 export const defaultRecipe: Recipe = {

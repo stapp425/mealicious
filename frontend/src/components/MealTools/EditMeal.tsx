@@ -8,12 +8,13 @@ import ToolWindow from "./ToolWindow"
 import AddWindow from "./AddWindow"
 import { useParams } from "react-router-dom"
 import { MealEditContext } from "./MealTools"
+import { modifyData } from "@/types/app"
 
 
 const EditMeal: React.FC = () => {
   const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
-  const { user } = useContext(AppContext)
+  const { user, meals, setMeals, formatMeals } = useContext(AppContext)
   const { data: mealData } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
   const {
     control,
@@ -29,19 +30,21 @@ const EditMeal: React.FC = () => {
   const { updateFirestoreDoc: updateMeal } = useFirestoreUpdate()
 
   const submitMeal: SubmitHandler<Meal> = async (data) => {
-    if(user)
-      updateMeal({ ...data, userId: user.uid }, { name: "meals", id: mealId as string })
+    if(user) {
+      const editedData = { ...data, userId: user.uid }
+    
+      setMeals(formatMeals(modifyData<Meal>(meals, "update", editedData)))
+      updateMeal(editedData, { name: "meals", id: mealId as string })
+    }
   }
 
   function sendProps() {
     return {
-      register: register,
-      control: control,
-      setValue: setValue,
-      reset: reset,
+      register, control,
+      setValue, reset,
       error: errors,
-      setError: setError,
-      clearErrors: clearErrors
+      setError,
+      clearErrors
     }
   }
 

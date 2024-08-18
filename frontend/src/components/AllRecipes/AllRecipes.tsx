@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import {
   Select,
   SelectContent,
@@ -6,13 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import Search from "./Search"
+// import Search from "./Search"
 import { defaultRecipe, type RecipeSort, type Recipe as RecipeType } from "@/types/recipe"
 import Recipe from "./Recipe"
-import { useFirestoreFetch, useFirestoreTest } from "@/util/hooks"
 import { nanoid } from "nanoid"
-import { collection, Query, query, where } from "firebase/firestore"
-import { firestore } from "../../../../firebaseConfig"
 import { AppContext } from "@/App"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Clipboard, Plus } from "lucide-react"
@@ -23,12 +20,10 @@ import { Link } from "react-router-dom"
 export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
-  const { user } = useContext(AppContext)
+  const { recipes, isRecipesFetching } = useContext(AppContext)
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
-  // const { isFetching, data, setData } = useFirestoreTest()
-  const [q, setQ] = useState<Query>()
-  const { isFetching, data, setData } = useFirestoreFetch<RecipeType>([defaultRecipe], q)
+  const [sortedRecipes, setSortedRecipes] = useState<RecipeType[]>(recipes)
   
   function invalidateInitialState(recipe: RecipeType) {
     setIsFirstRender(false)
@@ -38,25 +33,19 @@ export default function AllRecipes(): React.ReactElement {
   function sortRecipes(sort: RecipeSort) {
     switch(sort) {
       case "favorite":
-        setData((d: RecipeType[]) => [...d.filter((recipe: RecipeType) => recipe.isFavorite), ...d.filter((recipe: RecipeType) => !recipe.isFavorite)])
+        setSortedRecipes((d: RecipeType[]) => [...d.filter((recipe: RecipeType) => recipe.isFavorite), ...d.filter((recipe: RecipeType) => !recipe.isFavorite)])
         break
       case "title":
-        setData((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.title.localeCompare(b.title)))
+        setSortedRecipes((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.title.localeCompare(b.title)))
         break
       case "calories":
-        setData((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.nutrition[0].amount - b.nutrition[0].amount))
+        setSortedRecipes((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.nutrition[0].amount - b.nutrition[0].amount))
         break
       case "time":
-        setData((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.times.readyTime - b.times.readyTime))
+        setSortedRecipes((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.times.readyTime - b.times.readyTime))
         break
     }
   }
-
-  useEffect(() => {
-    if(user) {
-      setQ(query(collection(firestore, "recipes"), where("userId", "==", user.uid)))
-    }
-  }, [user])
 
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>
@@ -91,9 +80,9 @@ export default function AllRecipes(): React.ReactElement {
           <ScrollArea className="h-full px-4" type="scroll">
             <div className="w-full grid 2xl:grid-cols-2 gap-6 py-4">
               { 
-                isFetching
+                isRecipesFetching
                   ? <Loading/>
-                  : data?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidateInitialState}/>)
+                  : sortedRecipes?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidateInitialState}/>)
               }
             </div>
             <ScrollBar/>
@@ -106,7 +95,7 @@ export default function AllRecipes(): React.ReactElement {
                   <Clipboard size={96}/>
                   <div className="text-center">
                     <h1 className="font-bold text-xl">Selected Recipes will appear here</h1>
-                    <p>Start clicking!</p>
+                    <p>Try selecting one!</p>
                   </div>
                 </div>
               : <Description activeRecipe={activeRecipe}/>
