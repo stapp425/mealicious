@@ -20,7 +20,7 @@ import Nutrition from "./Nutrition"
 // TODO: Fix image issues
 const EditRecipe: React.FC = () => {
   const { toast } = useToast()
-  const { user } = useContext(AppContext)
+  const { user, setRecipes } = useContext(AppContext)
   const { recipeId } = useParams()
   const { data } = useFirestoreGet<Recipe>(defaultRecipe, { name: "recipes", id: recipeId as string })
   const [image, setImage] = useState<Image>({
@@ -69,6 +69,10 @@ const EditRecipe: React.FC = () => {
         }
   
         await updateFirestoreDoc(editedRecipe, { name: "recipes", id: recipeId as string })
+<<<<<<< HEAD
+=======
+        setRecipes(recipes => [...recipes.filter(r => r.id !== editedRecipe.id), editedRecipe])
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
         toast({
           title: "Success",
           description: "Recipe successfully updated!",

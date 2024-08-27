@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
 import { auth, firestore } from "../../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
-import { type App, type CurrentUser, type Breakpoints } from "@/types/app"
+import { type App, type CurrentUser, type Breakpoints, type FetchQueries, modifyData } from "@/types/app"
 import Login from "./components/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/Meals/Dashboard"
@@ -18,7 +18,15 @@ import EditRecipe from "./components/RecipeTools/EditRecipe"
 import MealCalendar from "./components/Calendar/MealCalendar"
 import AllMeals from "./components/AllMeals/AllMeals"
 import MealTools from "./components/MealTools/MealTools"
+<<<<<<< HEAD
 import { now } from "./util/hooks"
+=======
+import { now, useFirestoreFetch } from "./util/hooks"
+import { defaultMeal, formatMeals, type Meal } from "./types/meal"
+import { defaultRecipe, type Recipe } from "./types/recipe"
+import { collection, query, where } from "firebase/firestore"
+import { type Plan, defaultPlan, isTimestamp } from "./types/plan"
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 
 export const AppContext = createContext<App>({
   date: now,
@@ -27,11 +35,28 @@ export const AppContext = createContext<App>({
     any: false, sm: false,
     md: false, lg: false,
     xl: false, xxl: false
-  }
+  },
+  meals: [defaultMeal],
+  recipes: [defaultRecipe],
+  plans: [defaultPlan],
+  isMealsFetching: false,
+  isRecipesFetching: false,
+  isPlansFetching: false,
+  setMeals: () => {},
+  setRecipes: () => {},
+  setPlans: () => {},
 })
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>(null)
+  const [queries, setQueries] = useState<FetchQueries>({
+    meals: undefined,
+    recipes: undefined,
+    plans: undefined
+  })
+  const { isFetching: isMealsFetching, data: meals, setData: setMeals } = useFirestoreFetch<Meal>([defaultMeal], queries.meals)
+  const { isFetching: isRecipesFetching, data: recipes, setData: setRecipes } = useFirestoreFetch<Recipe>([defaultRecipe], queries.recipes)
+  const { isFetching: isPlansFetching, data: plans, setData: setPlans } = useFirestoreFetch<Plan>([defaultPlan], queries.plans)
   const navigate = useNavigate()
   const location = useLocation()
   const matches: Breakpoints = {
@@ -56,12 +81,51 @@ export default function App() {
 
     return unsubscribe
   }, [])
+
+  useEffect(() => {
+    if(currentUser) {
+      setQueries({
+        meals: query(collection(firestore, "meals"), where("userId", "==", currentUser.uid)),
+        recipes: query(collection(firestore, "recipes"), where("userId", "==", currentUser.uid)),
+        plans: query(collection(firestore, "plans"), where("userId", "==", currentUser.uid))
+      })
+    }
+  }, [currentUser])
+
+  useEffect(() => {
+    recipes[0].title && setMeals(formatMeals(modifyData<Meal>(meals, "format"), recipes))
+  }, [recipes])
+
+  useEffect(() => {
+    if(plans[0].title) formatPlans()
+
+    function formatPlans() {
+      const list = plans.map(plan => 
+        isTimestamp(plan.date)
+          ? { ...plan, date: plan.date.toDate() }
+          : plan
+      )
+      setPlans(list)
+    }
+  }, [])
   
   return (
     <AppContext.Provider value={{
       date: now,
       user: currentUser,
       screenSizes: matches,
+<<<<<<< HEAD
+=======
+      meals,
+      recipes,
+      plans,
+      setMeals,
+      setRecipes,
+      setPlans,
+      isMealsFetching,
+      isRecipesFetching,
+      isPlansFetching
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
     }}>
       <Routes>
         <Route path="/" element={<MainLayout/>}>
@@ -69,7 +133,13 @@ export default function App() {
           <Route path="meals">
             <Route path="all" element={<AllMeals/>}/>
             <Route path="create" element={<MealTools mode="create"/>}/>
+<<<<<<< HEAD
             <Route path="edit/:mealId" element={<MealTools mode="edit"/>}/>
+=======
+            <Route path="edit">
+              <Route path=":mealId" element={<MealTools mode="edit"/>}/>
+            </Route>
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
             <Route path="calendar" element={<MealCalendar/>}/>
           </Route>
           <Route path="recipes">

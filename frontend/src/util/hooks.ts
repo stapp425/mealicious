@@ -14,11 +14,16 @@ interface HasDate extends Obj {
 
 export const now = new Date()
 
+<<<<<<< HEAD
 type Time = "day" | "week" | "month" | "year"
 type Adjacent = { previous: string, next: string }
 
 export function useEventCalendar<T extends HasDate>(data: T[]) {
   const [currentDay, setCurrentDay] = useState<Date>(now)
+=======
+export function useCalendar<T extends HasDate>(data: T[]) {
+  const [currentMonth, setCurrentMonth] = useState<Date>(now)
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   const [events, setEvents] = useState<T[]>(data)
   
   const adjacentDates: {[K in Time]: Adjacent} = {
@@ -113,7 +118,11 @@ export function useEventCalendar<T extends HasDate>(data: T[]) {
   }
 }
 
+<<<<<<< HEAD
 export function useFirestoreFetch<T>(initialData: T[], query: Query) {
+=======
+export function useFirestoreFetch<T>(initialData: T[], query?: Query) {
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T[]>(initialData)
   

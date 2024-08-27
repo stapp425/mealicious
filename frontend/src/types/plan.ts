@@ -1,5 +1,9 @@
 import { now } from "@/util/hooks"
+<<<<<<< HEAD
 import { defaultMeal, isMeal, type Meal } from "./meal"
+=======
+import { isMeal, type Meal } from "./meal"
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 import { Timestamp } from "firebase/firestore"
 
 export type Macronutrient = {
@@ -12,7 +16,11 @@ export type Plan = {
   title: string
   description?: string
   tags?: string[]
+<<<<<<< HEAD
   meals: Meal[]
+=======
+  meals: (string | Meal)[]
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   id?: string
   userId?: string
 }
@@ -53,6 +61,7 @@ export function isPlan(value: unknown): value is Plan {
     (planVal.userId === undefined || typeof planVal.userId === "string")
   )
 }
+<<<<<<< HEAD
 
 export function formatPlans(plans: Plan[], meals: Meal[]): (Plan & { meals: Meal[] })[] {
   return plans.map(plan => ({
@@ -60,3 +69,5 @@ export function formatPlans(plans: Plan[], meals: Meal[]): (Plan & { meals: Meal
     meals: plan.meals.map(meal => isMeal(meal) ? meal : meals.find(m => m.id === meal) || defaultMeal)
   }))
 }
+=======
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88

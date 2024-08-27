@@ -1,4 +1,5 @@
 import { type User } from "firebase/auth"
+<<<<<<< HEAD
 import { collection, limit, query, Query, where } from "firebase/firestore"
 import { firestore } from "../../../firebaseConfig"
 
@@ -31,7 +32,62 @@ export function modifyData<T extends { id?: string }>(original: T[], option: Opt
   }
 
   return temp
+=======
+import { Meal } from "./meal"
+import { Recipe } from "./recipe"
+import { type Query } from "firebase/firestore"
+import { type Plan } from "./plan"
+
+export type Operation = "create" | "replace" | "update" | "remove"
+
+type Option = "add" | "remove" | "update" | "format"
+
+export function modifyData<T extends { id?: string }>(original: T[], option: Option, data?: T): T[] {
+  if(option === "format") {
+    if(data) throw new Error("Formatting does not require a target data for processing")
+    return original
+  } else {
+    if(!data) throw new Error("A modification to the original list must require data")
+  }
+
+  let temp = [...original]
+
+  if(data) {
+    switch(option) {
+      case "add":
+        temp.push(data)
+        break
+      case "remove":
+        temp = original.filter(d => d.id !== data.id)
+        break
+      case "update":
+        temp = original.map(d => d.id === data.id ? data : d)
+        break
+    }
+  }
+
+  return temp
 }
+
+type DataStateChange<T> = React.Dispatch<React.SetStateAction<T[]>>
+
+export type App = {
+  date: Date,
+  user: CurrentUser
+  screenSizes: Breakpoints
+  meals: Meal[]
+  recipes: Recipe[]
+  plans: Plan[]
+  setMeals: DataStateChange<Meal>
+  setRecipes: DataStateChange<Recipe>
+  setPlans: DataStateChange<Plan>
+  isMealsFetching: boolean
+  isRecipesFetching: boolean
+  isPlansFetching: boolean
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
+}
+
+export type FetchQueries = {[K in FirestoreCollection]?: Query | undefined}
 
 export type Obj = {[key: string]: unknown}
 
@@ -58,6 +114,7 @@ export type Image = {
   url: string
 }
 
+<<<<<<< HEAD
 export type FirestoreCollection = "recipes" | "meals" | "users" | "plans"
 
 export function createQuery(user: User, path: FirestoreCollection, options?: { limit?: number }): Query {
@@ -66,3 +123,6 @@ export function createQuery(user: User, path: FirestoreCollection, options?: { l
   
   return query(collection(firestore, path), where("userId", "==", user.uid))
 }
+=======
+export type FirestoreCollection = "recipes" | "meals" | "users" | "plans"
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88

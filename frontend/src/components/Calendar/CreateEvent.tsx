@@ -28,13 +28,19 @@ import Spinner from "@/components/ui/Spinner"
 import Error from "./Error"
 import DragAndDrop from "./DragAndDrop"
 import { defaultPlan, type Plan } from "@/types/plan"
+<<<<<<< HEAD
 import { useToast } from "@/components/ui/use-toast"
 import { Meal } from "@/types/meal"
+=======
+import { isMeal } from "@/types/meal"
+import { modifyData } from "@/types/app"
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 
 const dateFormat = "yyyy-MM-dd"
 const minDate = startOfWeek(addDays(now, 7), { weekStartsOn: 1 }) // Monday of the following week
 const maxDate = startOfWeek(addMonths(minDate, 2), { weekStartsOn: 0 }) // Sunday 2 months in the future
 
+<<<<<<< HEAD
 type Props = {
   meals: Meal[]
   setPlans: React.Dispatch<React.SetStateAction<Plan[]>>
@@ -43,6 +49,12 @@ type Props = {
 const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
   const { toast } = useToast()
   const { user } = useContext(AppContext)
+=======
+
+// TODO: Add events to "plans" collection
+const CreateEvent: React.FC = () => {
+  const { user, plans, setPlans } = useContext(AppContext)
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   const [date, setDate] = useState<Date>(minDate)
   
   const {
@@ -66,10 +78,18 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
         await addFirestoreDoc({
           ...data,
           date: Timestamp.fromDate(data.date),
+<<<<<<< HEAD
           userId: user.uid
         }, { name: "plans" })
 
         setPlans(s => [...s, data])
+=======
+          meals: data.meals.map(meal => isMeal(meal) ? meal.id : meal),
+          userId: user.uid
+        }, { name: "plans" })
+        setPlans(modifyData<Plan>(plans, "format"))
+        console.log(plans)
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
       } catch (err: any) {
         toast({
           title: "Error!",
@@ -147,7 +167,10 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
             />
           </Label>
           <DragAndDrop
+<<<<<<< HEAD
             meals={meals}
+=======
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
             control={control}
             setValue={setValue}
             error={errors}

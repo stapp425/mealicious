@@ -8,12 +8,18 @@ import ToolWindow from "./ToolWindow"
 import AddWindow from "./AddWindow"
 import { useParams } from "react-router-dom"
 import { MealEditContext } from "./MealTools"
+import { modifyData } from "@/types/app"
 
 const EditMeal: React.FC = () => {
   const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
+<<<<<<< HEAD
   const { user } = useContext(AppContext)
   const { data: meal } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
+=======
+  const { user, meals, setMeals, formatMeals } = useContext(AppContext)
+  const { data: mealData } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   const {
     control,
     register,
@@ -31,6 +37,10 @@ const EditMeal: React.FC = () => {
     if(user) {
       const editedData = { ...data, userId: user.uid }
     
+<<<<<<< HEAD
+=======
+      setMeals(formatMeals(modifyData<Meal>(meals, "update", editedData)))
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
       updateMeal(editedData, { name: "meals", id: mealId as string })
     }
   }

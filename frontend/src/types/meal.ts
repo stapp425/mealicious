@@ -1,7 +1,10 @@
 import { isRecipe, type Recipe } from "./recipe"
 
+<<<<<<< HEAD
 
 // TODO: FIX STRING UNION
+=======
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 export type Meal = {
   title: string,
   description?: string,
@@ -14,13 +17,18 @@ export type Meal = {
 
 export type MealType = {
   type: string,
+<<<<<<< HEAD
   recipe: Recipe
+=======
+  recipe: string | Recipe
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 }
 
 export type MealTime = 
   "breakfast" | "brunch" | "lunch" |
   "dinner" | "supper" | "snack" | ""
   
+<<<<<<< HEAD
 function isMealTime(value: unknown): value is MealTime {
   return (
     value != null &&
@@ -58,6 +66,10 @@ export function isMeal(value: unknown): value is Meal {
     (mealVal.isFavorite === undefined || typeof mealVal.isFavorite === "boolean") &&
     (mealVal.id === undefined || typeof mealVal.id === "string")
   )
+=======
+export function isMeal(value: string | Meal): value is Meal {
+  return typeof value !== "string"
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 }
 
 export const defaultMeal: Meal = {
@@ -74,6 +86,7 @@ export function areAllRecipesStrings(meals: Meal[]): boolean {
   )
 }
 
+<<<<<<< HEAD
 // export function formatMeals(meals: Meal[], recipes: Recipe[]): (Meal & { contents: { type: string, recipe: Recipe }[] })[] {
 //   return meals.map(meal => ({
 //     ...meal,
@@ -83,3 +96,14 @@ export function areAllRecipesStrings(meals: Meal[]): boolean {
 //     }))
 //   }))
 // }
+=======
+export function formatMeals(meals: Meal[], recipes: Recipe[]) {
+  return meals.map(meal => ({
+    ...meal,
+    contents: meal.contents.map(content => ({
+      ...content,
+      recipe: isRecipe(content.recipe) ? content.recipe : recipes.find(recipe => content.recipe === recipe.id) as Recipe
+    }))
+  }))
+}
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88

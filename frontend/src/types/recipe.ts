@@ -154,6 +154,7 @@ export type Recipe = {
   id?: string
 }
 
+<<<<<<< HEAD
 export function isRecipe(value: unknown): value is Recipe {
   const recipeVal = value as Recipe
   
@@ -191,6 +192,10 @@ export function isRecipe(value: unknown): value is Recipe {
     "instructions" in recipeVal && Array.isArray(recipeVal.instructions) && recipeVal.instructions.every(i => typeof i === "string") &&
     (recipeVal.id === undefined || typeof recipeVal.id === "string")
   )
+=======
+export function isRecipe(obj: string | Recipe): obj is Recipe {
+  return typeof obj !== "string"
+>>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 }
 
 export const defaultRecipe: Recipe = {
