@@ -7,6 +7,9 @@ import { signIn, signInWithGoogle } from "@/util/auth"
 import siteLogo from "@/img/logo/mealicious-logo.svg"
 import googleLogo from "@/img/logo/google-logo.svg"
 import loginImage from "@/img/login-page.jpg"
+import { useForm, type SubmitHandler } from "react-hook-form"
+import Error from "./Error"
+import { Eye, EyeOff } from "lucide-react"
 
 type UserInput = {
   email: string,
@@ -14,37 +17,18 @@ type UserInput = {
 }
 
 export default function Login() {
-  const [userInput, setUserInput] = useState<UserInput>({
-    email: "",
-    password: ""
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false)
+  
+  const { register, handleSubmit, formState: { errors } } = useForm<UserInput>({ 
+    defaultValues: {
+      email: "",
+      password: ""
+    }
   })
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target
-    setUserInput(u => ({
-      ...u,
-      [name]: value
-    }))
-  }
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const { email, password } = userInput
+  const submitUserInput: SubmitHandler<UserInput> = async (data) => {
+    const { email, password } = data
     
-    if(!email || !password) {
-      return toast({
-        description: "Email and/or password is empty.",
-        variant: "destructive"
-      })
-    }
-
-    if(!email.match(/(^[^\s@]+@[^\s@]+\.[^\s@]+$)/)) {
-      return toast({
-        description: "Please enter a valid email.",
-        variant: "destructive"
-      })
-    }
-
     try {
       await signIn(email, password)
     } catch (err: any) {
@@ -56,8 +40,12 @@ export default function Login() {
     }
   }
 
+  function togglePasswordVisibility() {
+    setIsPasswordVisible(p => !p)
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="size-full grid grid-cols-1 md:grid-cols-2 gap-x-4 *:py-0">
+    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 md:grid-cols-2 gap-x-4 *:py-0">
       <div className="justify-self-center">
         <img
           src={siteLogo}
@@ -70,30 +58,71 @@ export default function Login() {
         <p className="text-muted-foreground">Log In to Continue</p>
       </div>
       <div className="px-6">
-        <Label htmlFor="email" className="after:content-['_*'] after:font-bold after:text-red-600">E-Mail</Label>
+        <div className="flex justify-between">
+          <Label htmlFor="email" className="after:content-['_*'] after:font-bold after:text-red-600">E-Mail</Label>
+          {
+            errors.email &&
+            <Error>{errors.email.message}</Error>
+          }
+        </div>
         <Input
           id="email"
           type="text"
-          name="email"
-          value={userInput.email}
+          {
+            ...register("email", {
+              required: "E-mail is required",
+              pattern: {
+                value: /(^[^\s@]+@[^\s@]+\.[^\s@]+$)/,
+                message: "Not a valid e-mail format"
+              },
+              maxLength: {
+                value: 20,
+                message: "Cannot exceed 20 characters long"
+              }
+            })
+          }
           placeholder="E-Mail"
-          onChange={handleChange}
           className="mt-2"
           autoFocus
         />
       </div>
       <div className="px-6">
-        <Label htmlFor="password" className="after:content-['_*'] after:font-bold after:text-red-600">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          name="password"
-          value={userInput.password}
-          placeholder="Password"
-          onChange={handleChange}
-          minLength={5}
-          maxLength={20}
-        />
+        <div className="flex justify-between">
+          <Label htmlFor="password" className="after:content-['_*'] after:font-bold after:text-red-600">Password</Label>
+          {
+            errors.password &&
+            <Error>{errors.password.message}</Error>
+          }
+        </div>
+
+        <div className="relative">
+          <Input
+            id="password"
+            type={isPasswordVisible ? "text" : "password"}
+            {
+              ...register("password", {
+                required: "A password is required",
+                minLength: {
+                  value: 5,
+                  message: "Must contain at least 5 characters"
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Cannot exceed 20 characters"
+                }
+              })
+            }
+            placeholder="Password"
+            className="mt-2"
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute top-1/2 -translate-y-1/2 right-3 text-slate-500 cursor-pointer hover:text-slate-600 active:text-slate-700 transition-colors"
+          >
+            { isPasswordVisible ? <Eye size={20}/> : <EyeOff size={20}/> }
+          </button>
+        </div>
       </div>
       <div className="text-center font-bold text-muted-foreground">
         ---------------------- OR ----------------------

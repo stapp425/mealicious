@@ -9,12 +9,11 @@ import AddWindow from "./AddWindow"
 import { useParams } from "react-router-dom"
 import { MealEditContext } from "./MealTools"
 
-
 const EditMeal: React.FC = () => {
   const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
   const { user } = useContext(AppContext)
-  const { data: mealData } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
+  const { data: meal } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
   const {
     control,
     register,
@@ -29,19 +28,20 @@ const EditMeal: React.FC = () => {
   const { updateFirestoreDoc: updateMeal } = useFirestoreUpdate()
 
   const submitMeal: SubmitHandler<Meal> = async (data) => {
-    if(user)
-      updateMeal({ ...data, userId: user.uid }, { name: "meals", id: mealId as string })
+    if(user) {
+      const editedData = { ...data, userId: user.uid }
+    
+      updateMeal(editedData, { name: "meals", id: mealId as string })
+    }
   }
 
   function sendProps() {
     return {
-      register: register,
-      control: control,
-      setValue: setValue,
-      reset: reset,
+      register, control,
+      setValue, reset,
       error: errors,
-      setError: setError,
-      clearErrors: clearErrors
+      setError,
+      clearErrors
     }
   }
 
@@ -56,8 +56,8 @@ const EditMeal: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    mealData && reset(mealData)
-  }, [mealData])
+    meal && reset(meal)
+  }, [meal])
 
   return (
     <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">

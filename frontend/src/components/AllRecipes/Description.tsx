@@ -11,12 +11,15 @@ import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { useState } from "react"
+import Delete from "./Delete"
 
 type Props = {
+  isDeleting: boolean
+  deleteRecipe: (id: string) => void
   activeRecipe: Recipe
 }
 
-export default function Description({ activeRecipe }: Props) {
+export default function Description({ isDeleting, activeRecipe, deleteRecipe }: Props) {
   const [count, setCount] = useState<number>(1)
   
   return (
@@ -24,25 +27,25 @@ export default function Description({ activeRecipe }: Props) {
       <div className="row-start-1 col-start-1 row-span-1 col-span-1 flex flex-col gap-2">
         <h1 className="text-3xl font-bold line-clamp-2">{activeRecipe.title}</h1>
         <div className="flex gap-2 *:flex-1">
-          <button className="flex-1 flex justify-between items-center gap-2 py-1 px-2 w-fit text-white bg-orange-500 hover:bg-orange-700 transition rounded-md">
-            <span className="font-[600] text-sm">Add to Meal</span>
-            <Plus size={20}/>
-          </button>
-          <button className="py-1 px-2 w-fit border border-slate-400 hover:bg-slate-200 transition rounded-md">
+          <button className="text-nowrap py-1 px-2 border border-slate-400 hover:bg-slate-200 transition rounded-md">
             <Link to={`/recipes/${activeRecipe.id}`} target="_blank" className="flex justify-between items-center gap-2">
               <span className="font-[600] text-sm">Full Version</span>
               <ArrowUpRight size={20}/>
             </Link>
           </button>
+          <Delete
+            isDeleting={isDeleting}
+            id={activeRecipe.id as string}
+            deleteRecipe={deleteRecipe}
+          />
         </div>
-        
         <div className="flex flex-wrap gap-1">
-          {activeRecipe.diets.map((diet: string) => <Badge key={nanoid()} className="bg-orange-500 pointer-events-none select-none">{diet}</Badge>)}
+          {activeRecipe.diets?.map((diet: string) => <Badge key={nanoid()} className="bg-orange-500 pointer-events-none select-none">{diet}</Badge>)}
         </div>
         <div className="flex-1 flex flex-wrap justify-between gap-2">
           {
-            activeRecipe.dishTypes.length > 0 ?
-              activeRecipe.dishTypes.map((dish: string) => (
+            activeRecipe.dishTypes && activeRecipe.dishTypes.length > 0 ?
+              activeRecipe.dishTypes?.map((dish: string) => (
                 <div key={nanoid()} className="text-nowrap flex-1 text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 hover:bg-orange-500 hover:text-white transition">
                   {dish}
                 </div>

@@ -10,7 +10,7 @@ export default function Dashboard(): React.ReactElement {
   const navigate = useNavigate()
   
   return (
-    <div className="flex-1 grid grid-rows-[150px_1fr_150px] grid-cols-[225px_1fr] xl:grid-rows-[150px_1fr] xl:grid-cols-[300px_1fr_250px] gap-x-6 gap-y-4 p-4">
+    <div className="h-[calc(100vh-150px)] grid grid-rows-[150px_1fr_150px] grid-cols-[225px_1fr] xl:grid-rows-[150px_1fr] xl:grid-cols-[300px_1fr_250px] gap-x-6 gap-y-4 p-4">
       <Banner/>
       <div className="row-start-3 xl:row-start-1 xl:col-start-3 flex flex-col justify-between items-stretch gap-2 bg-orange-500 p-3 rounded-md">
         <div className="flex flex-col-reverse xl:flex-row justify-between items-center gap-1">
@@ -24,7 +24,7 @@ export default function Dashboard(): React.ReactElement {
           />
         </div>
         <Separator/>
-        <button className="text-black bg-white px-5 py-1 rounded-sm font-[600]" onClick={() => navigate("/meals/search")}>
+        <button className="text-black bg-white px-5 py-1 rounded-sm font-[600]" onClick={() => navigate("/recipes/search")}>
           Search
         </button>
       </div>

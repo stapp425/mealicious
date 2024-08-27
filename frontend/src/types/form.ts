@@ -7,8 +7,6 @@ import {
 } from "react-hook-form"
 import { Obj } from "./app"
 
-
-
 export interface Field {
   className?: string
 }

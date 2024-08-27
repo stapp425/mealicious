@@ -18,7 +18,7 @@ const Box: React.FC<Props> = ({ day, children }) => {
       <DialogTrigger>
         <button className="size-3 bg-orange-500 rounded-md hover:scale-[120%] transition-transform"/>
       </DialogTrigger>
-      <DialogContent className="min-w-[250px] min-h-[350px]">
+      <DialogContent className="min-w-[400px] min-h-[560px]">
         <DialogTitle>
           Events
         </DialogTitle>

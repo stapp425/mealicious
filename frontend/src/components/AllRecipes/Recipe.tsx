@@ -1,5 +1,4 @@
 import { useContext } from "react"
-import { type Breakpoints } from "@/types/app"
 import { Badge } from "../ui/badge"
 import { AppContext } from "@/App"
 import { Ingredient, type Recipe } from "@/types/recipe"
@@ -45,7 +44,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
       <div className="relative flex flex-col justify-between gap-1 basis-2/3 py-3 px-4">
         <h1 className="font-bold text-lg mx-0 pr-2">{recipe.title}</h1>
         {
-          recipe.diets.length > 0 && 
+          recipe.diets && recipe.diets.length > 0 && 
           <div className="flex gap-[6px]">
             {recipe.diets.slice(0, 3).map((diet: string) => <Badge key={nanoid()} className="pointer-events-none bg-orange-500">{diet}</Badge>)}
           </div>
@@ -54,7 +53,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
           <div className="flex justify-center items-center gap-2 my-1">
             <Zap/>
             <span>
-              <b>{Math.round(recipe.nutrition[0].amount)}</b> cal
+              <b>{Math.round(recipe.nutrition.find(n => n.name.toLowerCase() === "calories")?.amount || 0)}</b> cal
             </span>
           </div>
           <div className="flex items-center gap-2 my-1">
@@ -84,7 +83,7 @@ function List({ recipe, onChange }: Props): React.ReactElement {
         </div>
         <div>
         <div className="flex justify-between items-center">
-          <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes.slice(0, 5).join(" · ")}</p>
+          <p className="text-muted-foreground max-w-[90%]">{recipe.dishTypes?.slice(0, 5).join(" · ")}</p>
           {
             recipe.source &&
               <TooltipProvider>
@@ -130,8 +129,10 @@ function Square({ recipe, onChange }: Props): React.ReactElement {
       <h1 className="text-center font-bold text-lg line-clamp-1">{recipe.title}</h1>
       <div className="flex gap-2 text-muted-foreground">
         <Zap/> 
-        <span>
-          <b>{Math.round(recipe.nutrition[0].amount)}</b> cal
+        <span className="font-bold after:[]">
+          <b>
+            {Math.round(recipe.nutrition.find(n => n.name.toLowerCase() === "calories")?.amount || 0)}
+          </b> kcal
         </span>
       </div>
       <div className="flex gap-2 text-muted-foreground">

@@ -30,9 +30,6 @@ export default function Banner(): React.ReactElement {
           </div>
         </div>
       </div>
-      <button className="text-white font-[600] absolute bottom-4 right-4 px-8 py-2 bg-orange-500 rounded-md hover:bg-orange-700 transition">
-        View Profile
-      </button>
     </div>
   )
 }

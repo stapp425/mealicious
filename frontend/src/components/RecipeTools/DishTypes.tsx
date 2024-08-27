@@ -30,14 +30,14 @@ const DishTypes: React.FC<FieldArray<Recipe>> = ({ className, control, setValue 
           />
           <button
             type="button" 
-            onClick={() => setValue("dishTypes", [...dishTypes, input.dishType])}
+            onClick={() => {dishTypes && setValue("dishTypes", [...dishTypes, input.dishType])}}
             className="right-1.5 bg-orange-500 hover:bg-orange-700 text-white font-[600] px-6 rounded-md transition-colors"
           >
             Add
           </button>
         </div>
         {
-          dishTypes.length > 0 &&
+          dishTypes && dishTypes.length > 0 &&
             <ScrollArea>
               <div className="grid grid-cols-2 gap-3">
                 { 
