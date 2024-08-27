@@ -18,7 +18,7 @@ import Nutrition from "./Nutrition"
 
 const CreateRecipe: React.FC = () => {
   const { toast } = useToast()
-  const { user, setRecipes, modifyRecipes } = useContext(AppContext)
+  const { user } = useContext(AppContext)
   const [image, setImage] = useState<Image>({
     file: undefined,
     name: "",
@@ -51,12 +51,7 @@ const CreateRecipe: React.FC = () => {
           userId: user?.uid
         }
 
-<<<<<<< HEAD
         await addFirestoreDoc(addedRecipe, { name: "recipes" })
-=======
-        const doc = await addFirestoreDoc(addedRecipe, { name: "recipes" })
-        setRecipes(modifyRecipes("add", doc))
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
         toast({
           title: "Success",
           description: "Recipe successfully added!",

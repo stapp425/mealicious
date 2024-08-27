@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import {
   Select,
   SelectContent,
@@ -10,10 +10,6 @@ import {
 import { defaultRecipe, type RecipeSort, type Recipe as RecipeType } from "@/types/recipe"
 import Recipe from "./Recipe"
 import { nanoid } from "nanoid"
-<<<<<<< HEAD
-=======
-import { AppContext } from "@/App"
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Clipboard, Plus } from "lucide-react"
 import Description from "./Description"
@@ -27,13 +23,9 @@ import { createQuery } from "@/types/app"
 export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
-<<<<<<< HEAD
   const { user } = useContext(AppContext)
   const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>([defaultRecipe], createQuery(user as User, "recipes"))
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
-=======
-  const { recipes, isRecipesFetching } = useContext(AppContext)
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   const [sortedRecipes, setSortedRecipes] = useState<RecipeType[]>(recipes)
@@ -60,7 +52,6 @@ export default function AllRecipes(): React.ReactElement {
     }
   }
 
-<<<<<<< HEAD
   async function deleteRecipe(id: string) {
     try {
       await deleteFirestoreDoc({ name: "recipes", id: id })
@@ -77,8 +68,6 @@ export default function AllRecipes(): React.ReactElement {
 
   console.log(sortedRecipes)
 
-=======
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>
       <div className="relative h-[calc(100vh-150px)] grid grid-cols-[33vw_1fr] xl:grid-cols-[1fr_33vw]">
@@ -113,11 +102,7 @@ export default function AllRecipes(): React.ReactElement {
               { 
                 isRecipesFetching
                   ? <Loading/>
-<<<<<<< HEAD
                   : sortedRecipes?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidate}/>)
-=======
-                  : sortedRecipes?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidateInitialState}/>)
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
               }
             </div>
             <ScrollBar/>

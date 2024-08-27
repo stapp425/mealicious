@@ -1,6 +1,5 @@
 import { AppContext } from "@/App"
 import { useContext } from "react"
-<<<<<<< HEAD
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/types/app"
 import { defaultMeal, type Meal as MealEntry } from "@/types/meal"
@@ -18,19 +17,6 @@ const AllMeals: React.FC = () => {
   const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
   const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>([defaultMeal], createQuery(user as User, "meals"))
-=======
-import { useFirestoreDelete } from "@/util/hooks"
-import { modifyData } from "@/types/app"
-import { areAllRecipesStrings, type Meal as MealEntry } from "@/types/meal"
-import { useToast } from "@/components/ui/use-toast"
-import Meal from "./Meal"
-import Spinner from "@/components/ui/Spinner"
-
-const AllMeals: React.FC = () => {
-  const { meals, setMeals, screenSizes: { xl } } = useContext(AppContext)
-  const { toast } = useToast()
-  const { deleteFirestoreDoc } = useFirestoreDelete()
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
   
   function evenlySplitArray<T = MealEntry>(arr: T[], sections: number): T[][] {
     if(sections <= 0 || sections % 1)
@@ -53,11 +39,7 @@ const AllMeals: React.FC = () => {
   async function removeMeal(targetMeal: MealEntry) {
     try {
       await deleteFirestoreDoc({ name: "meals", id: targetMeal.id as string })
-<<<<<<< HEAD
       setMeals(meals => meals.filter(m => m.id !== targetMeal.id))
-=======
-      setMeals(modifyData<MealEntry>(meals, "remove", targetMeal))
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
     } catch (err: any) {
       toast({
         title: "Error!",
@@ -73,7 +55,6 @@ const AllMeals: React.FC = () => {
         <h1 className="font-bold text-5xl mb-8">All Meals</h1>
         <div className="flex justify-center items-start gap-8">
           {
-<<<<<<< HEAD
             !isFetching
               ? evenlySplitArray(fetchedMeals, xl ? 2 : 1).map((meals, index) => 
                   <div key={index} className="w-full flex flex-col gap-8">
@@ -95,19 +76,6 @@ const AllMeals: React.FC = () => {
                               </Link>
                             </Button>
                           </Placeholder>
-=======
-            !areAllRecipesStrings(meals)
-              ? evenlySplitArray(meals, xl ? 2 : 1).map((meals, index) => 
-                  <div key={index} className="flex flex-col gap-8">
-                    {
-                      meals.map((meal, index) => 
-                        <Meal 
-                          key={index}
-                          meal={meal}
-                          removeMeal={removeMeal}
-                        />
-                      )
->>>>>>> 3a832f9e04d7f95afbafe0543fc1043ffd7e7c88
                     }
                   </div>
                 )
