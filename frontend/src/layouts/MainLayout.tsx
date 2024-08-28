@@ -8,7 +8,6 @@ import Spinner from "@/components/ui/Spinner"
 
 export default function MainLayout() {
   const { user } = useContext(AppContext)
-  
   return (
     <div className="relative max-w-screen min-h-screen flex flex-col">
       <Header/>

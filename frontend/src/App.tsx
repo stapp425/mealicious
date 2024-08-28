@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
 import { auth, firestore } from "../../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
-import { type App, type CurrentUser, type Breakpoints } from "@/types/app"
+import { type App, type CurrentUser, type Breakpoints, type FetchQueries, modifyData } from "@/types/app"
 import Login from "./components/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/Meals/Dashboard"
@@ -18,7 +18,11 @@ import EditRecipe from "./components/RecipeTools/EditRecipe"
 import MealCalendar from "./components/Calendar/MealCalendar"
 import AllMeals from "./components/AllMeals/AllMeals"
 import MealTools from "./components/MealTools/MealTools"
-import { now } from "./util/hooks"
+import { now, useFirestoreFetch } from "./util/hooks"
+import { defaultMeal, type Meal } from "./types/meal"
+import { defaultRecipe, type Recipe } from "./types/recipe"
+import { collection, query, where } from "firebase/firestore"
+import { type Plan, defaultPlan, isTimestamp } from "./types/plan"
 
 export const AppContext = createContext<App>({
   date: now,
@@ -32,6 +36,11 @@ export const AppContext = createContext<App>({
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>(null)
+  const [queries, setQueries] = useState<FetchQueries>({
+    meals: undefined,
+    recipes: undefined,
+    plans: undefined
+  })
   const navigate = useNavigate()
   const location = useLocation()
   const matches: Breakpoints = {

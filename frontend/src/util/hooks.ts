@@ -12,9 +12,10 @@ interface HasDate extends Obj {
   date: Date
 }
 
+type Time = "day" | "week" | "month" | "year"
+
 export const now = new Date()
 
-type Time = "day" | "week" | "month" | "year"
 type Adjacent = { previous: string, next: string }
 
 export function useEventCalendar<T extends HasDate>(data: T[]) {
@@ -112,6 +113,7 @@ export function useEventCalendar<T extends HasDate>(data: T[]) {
     currentEvents
   }
 }
+
 
 export function useFirestoreFetch<T>(initialData: T[], query: Query) {
   const [isFetching, setIsFetching] = useState<boolean>(true)

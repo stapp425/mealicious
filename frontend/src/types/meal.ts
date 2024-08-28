@@ -12,13 +12,14 @@ export type Meal = {
 
 export type MealType = {
   type: string,
+
   recipe: Recipe
 }
 
 export type MealTime = 
   "breakfast" | "brunch" | "lunch" |
   "dinner" | "supper" | "snack" | ""
-  
+
 function isMealTime(value: unknown): value is MealTime {
   return (
     value != null &&
@@ -71,13 +72,3 @@ export function areAllRecipesStrings(meals: Meal[]): boolean {
     meal.contents.every(content => !isRecipe(content.recipe))
   )
 }
-
-// export function formatMeals(meals: Meal[], recipes: Recipe[]): (Meal & { contents: { type: string, recipe: Recipe }[] })[] {
-//   return meals.map(meal => ({
-//     ...meal,
-//     contents: meal.contents.map(content => ({
-//       ...content,
-//       recipe: isRecipe(content.recipe) ? content.recipe : recipes.find(recipe => content.recipe === recipe.id) as Recipe
-//     }))
-//   }))
-// }
