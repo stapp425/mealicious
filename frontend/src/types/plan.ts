@@ -18,16 +18,16 @@ export type Plan = {
 }
 
 export const defaultPlan: Plan = {
-  date: now,
+  date: new Date(),
   title: "",
   meals: [],
 }
 
-export function isDate(value: Date | Timestamp): value is Date {
+export function isDate(value: unknown): value is Date {
   return value instanceof Date
 }
 
-export function isTimestamp(value: Date | Timestamp): value is Timestamp {
+export function isTimestamp(value: unknown): value is Timestamp {
   return value instanceof Timestamp
 }
 
@@ -51,5 +51,13 @@ export function isPlan(value: unknown): value is Plan {
     ) &&
     (planVal.id === undefined || typeof planVal.id === "string") &&
     (planVal.userId === undefined || typeof planVal.userId === "string")
+  )
+}
+
+export function formatPlans(plans: Plan[]): Plan[] {
+  return plans.map(plan => 
+    isTimestamp(plan.date)
+      ? { ...plan, date: plan.date.toDate() }
+      : plan
   )
 }

@@ -2,12 +2,13 @@ import { useEffect, useRef } from "react"
 import * as dateFns from "date-fns"
 import { type Plan } from "@/types/plan"
 import { cn } from "@/lib/utils"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, SquarePen } from "lucide-react"
 import { animate, stagger } from "framer-motion"
 import { Separator } from "@/components/ui/separator"
 import { motion } from "framer-motion"
 import Box from "./Box"
 import DayIcon from "./DayIcon"
+import Menu from "./Options"
 
 type Props<T = Plan> = {
   className?: string

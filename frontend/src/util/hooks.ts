@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc } from "firebase/firestore"
+import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc, Timestamp } from "firebase/firestore"
 import { type FirestoreCollection, type Obj } from "@/types/app"
 import { firestoreTest } from "./fetch"
 import { defaultRecipe, Recipe } from "@/types/recipe"
@@ -7,9 +7,10 @@ import { firestore, storage } from "../../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useToast } from "@/components/ui/use-toast"
 import * as dateFns from "date-fns"
+import { isTimestamp } from "@/types/plan"
 
 interface HasDate extends Obj {
-  date: Date
+  date: Date | Timestamp
 }
 
 type Time = "day" | "week" | "month" | "year"
@@ -18,7 +19,7 @@ export const now = new Date()
 
 type Adjacent = { previous: string, next: string }
 
-export function useEventCalendar<T extends HasDate>(data: T[]) {
+export function useEventCalendar<T extends HasDate>(data: T[] = []) {
   const [currentDay, setCurrentDay] = useState<Date>(now)
   const [events, setEvents] = useState<T[]>(data)
   
@@ -74,7 +75,7 @@ export function useEventCalendar<T extends HasDate>(data: T[]) {
   function getEventsOfInterval(start: Date, end: Date): T[] {
     const interval = { start, end }
 
-    return events.filter(event => dateFns.isWithinInterval(event.date, interval))
+    return events.filter(event => dateFns.isWithinInterval(event.date as Date, interval))
   }
 
   function getFullWeek(day: Date): Date[] {
@@ -99,8 +100,12 @@ export function useEventCalendar<T extends HasDate>(data: T[]) {
   }
   
   useEffect(() => {
-    if(data.length > 0 && data[0].title)
-      setEvents(data)
+    if(data.length > 0)
+      setEvents(formatEvents(data))
+
+    function formatEvents(events: T[]) {
+      return events.map(e => isTimestamp(e.date) ? ({ ...e, date: e.date.toDate() }) : e)
+    }
   }, [data])
   
   return {
@@ -115,7 +120,7 @@ export function useEventCalendar<T extends HasDate>(data: T[]) {
 }
 
 
-export function useFirestoreFetch<T>(initialData: T[], query: Query) {
+export function useFirestoreFetch<T>(query: Query, initialData: T[] = []) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T[]>(initialData)
   
@@ -138,8 +143,7 @@ export function useFirestoreFetch<T>(initialData: T[], query: Query) {
   return { isFetching, data, setData }
 }
 
-export function useFirestoreGet<T>(initialData: T, location: { name: FirestoreCollection, id: string }) {
-  const { name, id } = location
+export function useFirestoreGet<T>(path: FirestoreCollection, id: string, initialData: T) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T>(initialData)
 
@@ -149,7 +153,7 @@ export function useFirestoreGet<T>(initialData: T, location: { name: FirestoreCo
 
   async function fetchData() {
     try {
-      const result: DocumentSnapshot = await getDoc(doc(firestore, name, id))
+      const result: DocumentSnapshot = await getDoc(doc(firestore, path, id))
       const filteredData = { ...result.data(), id: result.id } as T
       setData(filteredData)
     } catch (err: any) {
@@ -166,11 +170,10 @@ export function useFirestoreUpdate<T extends Obj>() {
   const { toast } = useToast()
   const [isWorking, setIsWorking] = useState<boolean>(false)
   
-  async function updateFirestoreDoc(data: T, location: { name: FirestoreCollection, id: string }) {
+  async function updateFirestoreDoc(path: FirestoreCollection, id: string, data: T) {
     try {
-      const { name, id } = location
       setIsWorking(true)
-      await updateDoc(doc(firestore, name, id), data)
+      await updateDoc(doc(firestore, path, id), data)
       toast({
         title: "Success!",
         description: "Document successfully updated.",
@@ -190,10 +193,10 @@ export function useFirestorePost<T extends Obj>() {
   const [isWorking, setIsWorking] = useState<boolean>(false)
   const { toast } = useToast()
 
-  async function addFirestoreDoc(data: T, location: { name: FirestoreCollection }) {
+  async function addFirestoreDoc(path: FirestoreCollection, data: T) {
     try {
       setIsWorking(true)
-      const docRef = await addDoc(collection(firestore, location.name), data)
+      const docRef = await addDoc(collection(firestore, path), data)
       const docData = await getDoc(docRef)
       toast({
         title: "Success!",
@@ -216,11 +219,10 @@ export function useFirestoreDelete() {
   const { toast } = useToast()
   const [isWorking, setIsWorking] = useState<boolean>(false)
   
-  async function deleteFirestoreDoc(location: { name: FirestoreCollection, id: string }) {
+  async function deleteFirestoreDoc(path: FirestoreCollection, id: string) {
     try {
-      const { name, id } = location
       setIsWorking(true)
-      await deleteDoc(doc(firestore, name, id))
+      await deleteDoc(doc(firestore, path, id))
       toast({
         title: "Alert!",
         description: "Document successfully deleted.",

@@ -30,7 +30,7 @@ const Options: React.FC<Props> = ({ className, recipe, content, isFavorite, setI
   async function toggleFavorite() {
     try {
       setIsFavorite(f => !f)
-      await updateFirestoreDoc({ isFavorite: !recipe.isFavorite }, { name: "recipes", id: recipe.id as string })
+      await updateFirestoreDoc("recipes", recipe.id as string, { isFavorite: !recipe.isFavorite })
     } catch (err: any) {
       toast({
         title: "Error!",

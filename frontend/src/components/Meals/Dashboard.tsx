@@ -2,12 +2,16 @@ import { useNavigate } from "react-router-dom"
 import spoonacularLogo from "@/img/logo/spoonacular-logo.svg"
 import { Separator } from "@/components/ui/separator"
 import SavedRecipes from "./SavedRecipes"
-import DailyMeals from "./DailyMeals"
+import * as DailyMeals from "./DailyMeals"
 import Overview from "./Overview"
 import Banner from "./Banner"
+import { useContext } from "react"
+import { AppContext } from "@/App"
+import { Calendar, LayoutGrid, Pencil } from "lucide-react"
 
 export default function Dashboard(): React.ReactElement {
   const navigate = useNavigate()
+  const { date, screenSizes: { xl } } = useContext(AppContext)
   
   return (
     <div className="h-[calc(100vh-150px)] grid grid-rows-[150px_1fr_150px] grid-cols-[225px_1fr] xl:grid-rows-[150px_1fr] xl:grid-cols-[300px_1fr_250px] gap-x-6 gap-y-4 p-4">
@@ -29,7 +33,23 @@ export default function Dashboard(): React.ReactElement {
         </button>
       </div>
       <Overview/>  
-      <DailyMeals/>
+      <DailyMeals.Root className="row-start-2 col-start-2 col-span-2 xl:row-span-1 xl:col-span-1">
+        <DailyMeals.Header className="relative">
+          <DailyMeals.Date date={date}/>
+          <DailyMeals.OptionContainer className="absolute top-0 right-0">
+            <DailyMeals.Option to="create" label="Create New">
+              <Pencil size={xl ? 20 : 18}/>
+            </DailyMeals.Option>
+            <DailyMeals.Option to="all" label="All Meals">
+              <LayoutGrid size={xl ? 20 : 18}/>
+            </DailyMeals.Option>
+            <DailyMeals.Option to="calendar" label="Meal Calendar">
+              <Calendar size={xl ? 20 : 18}/>
+            </DailyMeals.Option>
+          </DailyMeals.OptionContainer>
+        </DailyMeals.Header>
+        <DailyMeals.DailyMeals className="flex-1"/>
+      </DailyMeals.Root>
       <SavedRecipes/>
     </div>
   )

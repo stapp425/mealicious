@@ -7,7 +7,7 @@ import {
   format,
   parse,
 } from "date-fns"
-import { Input } from "../ui/input"
+import { Input } from "../../ui/input"
 import { useFirestorePost } from "@/util/hooks"
 import { AppContext } from "@/App"
 import { now } from "@/util/hooks"
@@ -21,11 +21,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import Button from "../Theme/Button"
+import Button from "../../Theme/Button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import Spinner from "@/components/ui/Spinner"
-import Error from "./Error"
+import Error from "../Error"
 import DragAndDrop from "./DragAndDrop"
 import { defaultPlan, type Plan } from "@/types/plan"
 import { useToast } from "@/components/ui/use-toast"
@@ -44,6 +44,7 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
   const { toast } = useToast()
   const { user } = useContext(AppContext)
   const [date, setDate] = useState<Date>(minDate)
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   
   const {
     register,
@@ -63,13 +64,13 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
   const submitEvent: SubmitHandler<Plan> = async (data) => {
     if(user) {
       try {
-        await addFirestoreDoc({
+        const addedPlan = await addFirestoreDoc("plans", {
           ...data,
           date: Timestamp.fromDate(data.date),
           userId: user.uid
-        }, { name: "plans" })
-
-        setPlans(s => [...s, data])
+        })
+        setPlans(s => [...s, { ...data, id: addedPlan.id }])
+        setIsDialogOpen(false)
       } catch (err: any) {
         toast({
           title: "Error!",
@@ -93,7 +94,7 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
   }, [date])
   
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={(bool) => setIsDialogOpen(bool)}>
       <DialogTrigger>
         <Button>Create an Event</Button>
       </DialogTrigger>
@@ -132,12 +133,11 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
               />
             </Label>
           </div>
-          
           {
             errors.title &&
-              <Error>
-                {errors.title.message}
-              </Error>
+            <Error>
+              {errors.title.message}
+            </Error>
           }
           <Label className="space-y-1">
             <h2 className="text-lg after:content-['_(optional)'] after:text-xs after:text-muted-foreground">Description</h2>

@@ -13,7 +13,7 @@ import { type User } from "firebase/auth"
 
 export default function SavedRecipes(): React.ReactElement {
   const { user } = useContext(AppContext)
-  const { data: recipes } = useFirestoreFetch<RecipeType>([defaultRecipe], createQuery(user as User, "recipes", { limit: 2 }))
+  const { data: recipes } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes", { limit: 2 }))
   
   return (
     <div className="row-start-3 col-span-2 xl:row-start-2 xl:col-start-3 xl:col-span-1 overflow-hidden flex flex-row xl:flex-col justify-between gap-6">

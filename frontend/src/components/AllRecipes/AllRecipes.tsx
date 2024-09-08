@@ -24,7 +24,7 @@ export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
   const { user } = useContext(AppContext)
-  const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>([defaultRecipe], createQuery(user as User, "recipes"))
+  const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"))
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
@@ -54,7 +54,7 @@ export default function AllRecipes(): React.ReactElement {
 
   async function deleteRecipe(id: string) {
     try {
-      await deleteFirestoreDoc({ name: "recipes", id: id })
+      await deleteFirestoreDoc("recipes", id)
       setSortedRecipes(sorted => sorted.filter(s => s.id !== id))
     } catch (err: any) {
       console.error(err.message)
@@ -62,11 +62,9 @@ export default function AllRecipes(): React.ReactElement {
   }
 
   useEffect(() => {
-    if(recipes[0].title)
+    if(recipes.length > 0)
       setSortedRecipes(recipes)
   }, [recipes])
-
-  console.log(sortedRecipes)
 
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>

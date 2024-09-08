@@ -51,7 +51,7 @@ const CreateRecipe: React.FC = () => {
           userId: user?.uid
         }
 
-        await addFirestoreDoc(addedRecipe, { name: "recipes" })
+        await addFirestoreDoc("recipes", addedRecipe)
         toast({
           title: "Success",
           description: "Recipe successfully added!",

@@ -14,7 +14,7 @@ import Sections from "./Sections"
 export default function RecipeDetails(): React.ReactElement {
   const { y } = useScroll()
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>(defaultRecipe, { name: "recipes", id: recipeId as string })
+  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, defaultRecipe)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   
   const contentRef = useRef<HTMLDivElement>(null)

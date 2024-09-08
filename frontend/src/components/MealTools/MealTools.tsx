@@ -29,7 +29,7 @@ export const MealEditContext = createContext<Edit>({
 
 const MealTools: React.FC<Props> = ({ mode }) => {
   const { user } = useContext(AppContext)
-  const { data: recipes } = useFirestoreFetch<Recipe>([defaultRecipe], createQuery(user as User, "recipes"))
+  const { data: recipes } = useFirestoreFetch<Recipe>(createQuery(user as User, "recipes"))
   const [isAddRecipeActive, setIsAddRecipeActive] = useState<boolean>(false)  
   
   const context = {

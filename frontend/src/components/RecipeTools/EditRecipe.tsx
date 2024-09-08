@@ -22,7 +22,7 @@ const EditRecipe: React.FC = () => {
   const { toast } = useToast()
   const { user } = useContext(AppContext)
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>(defaultRecipe, { name: "recipes", id: recipeId as string })
+  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, defaultRecipe)
   const [image, setImage] = useState<Image>({
     file: undefined,
     name: "",
@@ -68,7 +68,7 @@ const EditRecipe: React.FC = () => {
           userId: user.uid
         }
   
-        await updateFirestoreDoc(editedRecipe, { name: "recipes", id: recipeId as string })
+        await updateFirestoreDoc("recipes", recipeId as string, editedRecipe)
         toast({
           title: "Success",
           description: "Recipe successfully updated!",

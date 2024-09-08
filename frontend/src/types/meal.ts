@@ -12,7 +12,6 @@ export type Meal = {
 
 export type MealType = {
   type: string,
-
   recipe: Recipe
 }
 

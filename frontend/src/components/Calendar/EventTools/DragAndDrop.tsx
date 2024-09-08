@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import { Label } from "../ui/label"
-import Button from "../Theme/Button"
+import { Label } from "../../ui/label"
+import Button from "../../Theme/Button"
 import { useWatch } from "react-hook-form"
 import { RequiredFieldArray } from "@/types/form"
 import { X } from "lucide-react"
 import { type Meal } from "@/types/meal"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import Error from "./Error"
+import Error from "../Error"
 import { Plan } from "@/types/plan"
-import { Message, Placeholder, Tip } from "../Theme/Placeholder"
+import * as Placeholder from "../../Theme/Placeholder"
 import { Link } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
@@ -119,18 +119,18 @@ const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clea
                         className="flex flex-col h-[90%] border border-slate-400 p-3 space-y-1 rounded-sm"
                       />
                     )
-                  : <Placeholder 
+                  : <Placeholder.Root 
                       icon={<X size={64}/>}
                       className="w-full"
                     >
-                      <Message className="text-lg">No Meals Found!</Message>
-                      <Tip className="text-xs">Try creating a new one!</Tip>
+                      <Placeholder.Message className="text-lg">No Meals Found!</Placeholder.Message>
+                      <Placeholder.Tip className="text-xs">Try creating a new one!</Placeholder.Tip>
                       <Button className="text-xs">
                         <Link to="/meals/create">
                           Create Meal
                         </Link>
                       </Button>
-                    </Placeholder>
+                    </Placeholder.Root>
               }
             </div>
             <ScrollBar orientation="horizontal"/>

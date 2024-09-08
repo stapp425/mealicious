@@ -32,7 +32,7 @@ const CreateMeal: React.FC = () => {
       try {
         const addedData = { ...data, userId: user.uid }
         
-        await addMeal(addedData, { name: "meals" })
+        await addMeal("meals", addedData)
       } catch (err: any) {
         toast({
           title: "Error!",

@@ -13,7 +13,7 @@ const EditMeal: React.FC = () => {
   const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
   const { user } = useContext(AppContext)
-  const { data: meal } = useFirestoreGet<Meal>(defaultMeal, { name: "meals", id: mealId as string })
+  const { data: meal } = useFirestoreGet<Meal>("meals", mealId as string, defaultMeal)
   const {
     control,
     register,
@@ -31,7 +31,7 @@ const EditMeal: React.FC = () => {
     if(user) {
       const editedData = { ...data, userId: user.uid }
     
-      updateMeal(editedData, { name: "meals", id: mealId as string })
+      updateMeal("meals", mealId as string, editedData)
     }
   }
 

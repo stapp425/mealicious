@@ -13,11 +13,11 @@ export default function MainLayout() {
       <Header/>
       { 
         user
-          ? <Outlet/>
-          : <div className="h-[calc(100vh-150px)] w-full flex flex-col justify-center items-center gap-4">
-              <Spinner size={84}/>
-              <h1 className="font-bold text-4xl">Loading...</h1>
-            </div>
+        ? <Outlet/>
+        : <div className="h-[calc(100vh-150px)] w-full flex flex-col justify-center items-center gap-4">
+            <Spinner size={84}/>
+            <h1 className="font-bold text-4xl">Loading...</h1>
+          </div>
       }
       <div className="absolute bottom-0 right-0">
         <Toaster/>

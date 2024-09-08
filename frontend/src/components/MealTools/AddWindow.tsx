@@ -43,7 +43,7 @@ const AddWindow: React.FC<Props<Meal>> = ({ setValue, getValues }) => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}
       transition={{ type: "just", duration: 0.25 }}
-      className="overflow-hidden border border-orange-400 w-[425px] rounded-l-2xl"
+      className="overflow-y-auto overflow-x-hidden border border-orange-400 w-[425px] rounded-l-2xl"
     >
       <div ref={addWindow} className="w-[200%] h-full flex">
         <div className="w-1/2 flex flex-col gap-2 px-4 pt-4">

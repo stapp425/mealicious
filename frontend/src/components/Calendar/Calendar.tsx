@@ -10,10 +10,11 @@ import Month from "./month/Month"
 import Day from "./day/Day"
 
 type Props = {
+  className?: string
   plans: Plan[]
 }
 
-const Calendar: React.FC<Props> = ({ plans }) => {
+const Calendar: React.FC<Props> = ({ className, plans }) => {
   const {
     currentDay,
     setDay,
@@ -25,8 +26,8 @@ const Calendar: React.FC<Props> = ({ plans }) => {
   } = useEventCalendar<Plan>(plans)
   
   return (
-    <Tabs defaultValue="month">
-      <TabsList className="w-full flex justify-around *:flex-1">
+    <Tabs defaultValue="month" className={className}>
+      <TabsList className="w-full flex justify-around mb-6 *:flex-1">
         <TabsTrigger value="day">Day</TabsTrigger>
         <TabsTrigger value="month">Month</TabsTrigger>
       </TabsList>

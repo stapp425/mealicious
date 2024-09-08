@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { forwardRef } from "react"
 
-interface  Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   children: React.ReactNode
 }

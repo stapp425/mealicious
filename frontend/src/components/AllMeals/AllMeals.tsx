@@ -10,17 +10,20 @@ import { User } from "@firebase/auth"
 import { X } from "lucide-react"
 import Button from "../Theme/Button"
 import { Link } from "react-router-dom"
-import { Message, Placeholder, Tip } from "../Theme/Placeholder"
+import * as Placeholder from "../Theme/Placeholder"
 
 const AllMeals: React.FC = () => {
   const { user, screenSizes: { xl } } = useContext(AppContext)
   const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
-  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>([defaultMeal], createQuery(user as User, "meals"))
+  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(createQuery(user as User, "meals"))
   
   function evenlySplitArray<T = MealEntry>(arr: T[], sections: number): T[][] {
     if(sections <= 0 || sections % 1)
       throw new Error("The number of sections must be a positive integer.")
+    
+    if(sections > arr.length)
+      return [arr]
     
     const arrLen = arr.length
     const arrTemplate: T[][] = []
@@ -38,7 +41,7 @@ const AllMeals: React.FC = () => {
 
   async function removeMeal(targetMeal: MealEntry) {
     try {
-      await deleteFirestoreDoc({ name: "meals", id: targetMeal.id as string })
+      await deleteFirestoreDoc("meals", targetMeal.id as string)
       setMeals(meals => meals.filter(m => m.id !== targetMeal.id))
     } catch (err: any) {
       toast({
@@ -67,15 +70,15 @@ const AllMeals: React.FC = () => {
                             removeMeal={removeMeal}
                           />
                         )
-                        : <Placeholder icon={<X size={64}/>}>
-                            <Message>No Meals Found!</Message>
-                            <Tip>Try creating a new one!</Tip>
+                        : <Placeholder.Root icon={<X size={64}/>}>
+                            <Placeholder.Message>No Meals Found!</Placeholder.Message>
+                            <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
                             <Button className="text-sm">
                               <Link to="/meals/create">
                                 Create Meal
                               </Link>
                             </Button>
-                          </Placeholder>
+                          </Placeholder.Root>
                     }
                   </div>
                 )
@@ -86,8 +89,6 @@ const AllMeals: React.FC = () => {
           }
         </div>
       </div>
-      
-      
     </div>
   )
 }

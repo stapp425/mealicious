@@ -1,5 +1,6 @@
 import { type FC, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
+import Button, { Props as ButtonProps } from "./Button"
 
 type PlaceholderProps = {
   className?: string
@@ -7,7 +8,7 @@ type PlaceholderProps = {
   icon: ReactNode
 }
 
-const Placeholder: FC<PlaceholderProps> = ({ className, icon, children }) => {
+const Root: FC<PlaceholderProps> = ({ className, icon, children }) => {
   return (
     <div className={cn("flex flex-col justify-center items-center gap-3 border-2 border-dashed border-slate-400 bg-slate-200 text-slate-600 font-[600] text-2xl py-4 rounded-lg", className)}>
       {icon}
@@ -30,12 +31,15 @@ type TipProps = {
   children: ReactNode
 }
 
-const Tip: FC<TipProps> = ({ className, children }) => {
-  return <p className={cn("text-sm font-[500]", className)}>{children}</p>
-}
+const Tip: FC<TipProps> = ({ className, children }) => (
+  <p className={cn("text-sm font-[500]", className)}>{children}</p>
+)
+
+const Action: FC<ButtonProps> = Button
 
 export {
-  Placeholder,
+  Root,
   Message,
-  Tip
+  Tip,
+  Action
 }

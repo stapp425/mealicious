@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import Plan from './Plan'
-import { Message, Placeholder } from '@/components/Theme/Placeholder'
+import * as Placeholder from '@/components/Theme/Placeholder'
 
 type Props = {
   className?: string
@@ -34,23 +34,26 @@ const Day: React.FC<Props> = ({ className, setDay, currentDay, events }) => (
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.35 }} 
-          className="w-[500px] h-[625px] border border-slate-400 flex flex-col rounded-md"
+          className="relative w-[550px] h-[550px] border border-slate-400 flex flex-col rounded-md p-4"
         >
-          <h1 className="text-center font-bold text-3xl mt-3">
+          <h1 className="text-center font-bold text-3xl">
             {format(currentDay, "MMMM dd, yyyy")}
           </h1>
           <h2 className="text-center text-muted-foreground font-[600] my-1">
             {format(currentDay, "EEEE")}
           </h2>
           { 
-            events
+            events && events.length > 0 
               ? <ScrollArea className="flex-1" type="always">
                   {events.map((event, index) => <Plan key={index} plan={event}/>)}
                   <ScrollBar/>
                 </ScrollArea>
-              : <Placeholder icon={<X size={64}/>}>
-                  <Message>No Meals Found!</Message>
-                </Placeholder>
+              : <Placeholder.Root
+                  icon={<X size={64}/>}
+                  className="my-auto size-full"
+                >
+                  <Placeholder.Message>No Meals Found!</Placeholder.Message>
+                </Placeholder.Root>
           }
         </motion.div>
       </AnimatePresence>

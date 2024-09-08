@@ -18,11 +18,11 @@ const Box: React.FC<Props> = ({ day, children }) => {
       <DialogTrigger>
         <button className="size-3 bg-orange-500 rounded-md hover:scale-[120%] transition-transform"/>
       </DialogTrigger>
-      <DialogContent className="min-w-[400px] min-h-[560px]">
-        <DialogTitle>
+      <DialogContent className="min-w-[400px] min-h-[560px] space-y-1">
+        <DialogTitle className="font-bold text-3xl">
           Events
         </DialogTitle>
-        <DialogDescription>
+        <DialogDescription className="font-[600]">
           {dateFns.format(day, "MMMM dd, yyyy")}
         </DialogDescription>
         {children}
