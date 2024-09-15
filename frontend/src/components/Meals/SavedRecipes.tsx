@@ -1,19 +1,20 @@
 
 
 import { Link } from "react-router-dom"
-import { SquareArrowUpRight } from "lucide-react"
+import { SquareArrowUpRight, X } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import Recipe from "./Recipe"
 import { useFirestoreFetch } from "@/util/hooks"
-import { defaultRecipe, type Recipe as RecipeType } from "@/types/recipe"
+import { formatRecipes, type Recipe as RecipeType } from "@/types/recipe"
 import { createQuery } from "@/types/app"
 import { useContext } from "react"
 import { AppContext } from "@/App"
 import { type User } from "firebase/auth"
+import * as Placeholder from "@/components/Theme/Placeholder"
 
 export default function SavedRecipes(): React.ReactElement {
   const { user } = useContext(AppContext)
-  const { data: recipes } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes", { limit: 2 }))
+  const { data: recipes } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes", { limit: 2 }), formatRecipes)
   
   return (
     <div className="row-start-3 col-span-2 xl:row-start-2 xl:col-start-3 xl:col-span-1 overflow-hidden flex flex-row xl:flex-col justify-between gap-6">
@@ -28,7 +29,14 @@ export default function SavedRecipes(): React.ReactElement {
         </button>
       </div>
       <div className="flex-1 flex flex-row xl:flex-col gap-6">
-        { recipes.slice(0, 2).map((recipe, index) => <Recipe key={index} recipe={recipe}/>) }
+        { 
+          recipes.length > 0 
+          ? recipes.slice(0, 2).map((recipe, index) => <Recipe key={index} recipe={recipe}/>) 
+          : <Placeholder.Root icon={<X size={48}/>} className="w-full">
+              <Placeholder.Message>No Recipes Found!</Placeholder.Message>
+              <Placeholder.Tip>Try creating some!</Placeholder.Tip>
+            </Placeholder.Root>
+        }
       </div>
     </div>
   )

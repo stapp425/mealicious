@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { useFirestoreGet, useFirestoreUpdate, useStorageDelete, useStorageUpload } from "@/util/hooks"
-import { defaultRecipe, type Recipe } from "@/types/recipe"
+import { defaultRecipe, formatRecipe, type Recipe } from "@/types/recipe"
 import { useToast } from "@/components/ui/use-toast"
 import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
@@ -22,7 +22,7 @@ const EditRecipe: React.FC = () => {
   const { toast } = useToast()
   const { user } = useContext(AppContext)
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, defaultRecipe)
+  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
   const [image, setImage] = useState<Image>({
     file: undefined,
     name: "",
@@ -91,6 +91,10 @@ const EditRecipe: React.FC = () => {
 
     return imageName[0]
   }
+
+  useEffect(() => {
+    document.title = "Edit Recipe | Mealicious"
+  }, [])
 
   useEffect(() => {
     if(data) {

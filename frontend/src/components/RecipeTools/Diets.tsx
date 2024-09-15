@@ -14,6 +14,11 @@ const Diets: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) =
     name: "diets"
   })
 
+  function addDiet(diet: string) {
+    if(diets && diet)
+      setValue("diets", [...diets, input.diet])
+  }
+
   return (
     <Field className={className}>
       <h1 className="font-bold text-2xl">Diets</h1>
@@ -30,7 +35,7 @@ const Diets: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) =
           />
           <button
             type="button" 
-            onClick={() => {diets && setValue("diets", [...diets, input.diet])}}
+            onClick={() => addDiet(input.diet)}
             className="right-1.5 bg-orange-500 hover:bg-orange-700 text-white font-[600] px-6 rounded-md transition-colors"
           >
             Add

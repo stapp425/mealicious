@@ -1,10 +1,10 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import { type Recipe, type Query } from "@/types/recipe"
 import Search from "@/components/NewRecipeSearch/Search"
 import SearchResults from "@/components/NewRecipeSearch/SearchResults"
 import { Toaster } from "@/components/ui/toaster"
-import fetchFromAPI, { fetchTest } from "@/util/fetch"
+import fetchFromAPI from "@/util/fetch"
 import { defaultRecipe } from "@/types/recipe"
 
 export default function NewRecipeSearch() {
@@ -41,6 +41,10 @@ export default function NewRecipeSearch() {
     }
   }
   
+  useEffect(() => {
+    document.title = "Search | Mealicious"
+  }, [])
+
   return (
     <div className="flex-1 flex flex-col justify-start items-center *:p-6">
       <Search searchRecipes={searchRecipes}/>

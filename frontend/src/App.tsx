@@ -5,12 +5,12 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth, firestore } from "../../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
 import { type App, type CurrentUser, type Breakpoints } from "@/types/app"
-import Login from "./components/Login"
+import Login from "./components/Auth/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/Meals/Dashboard"
 import NewRecipeSearch from "./components/NewRecipeSearch/NewRecipeSearch"
 import AuthLayout from "./layouts/AuthLayout"
-import Register from "./components/Register"
+import Register from "./components/Auth/Register"
 import AllRecipes from "./components/AllRecipes/AllRecipes"
 import RecipeDetails from "./components/RecipeDetails/RecipeDetails"
 import CreateRecipe from "./components/RecipeTools/CreateRecipe"
@@ -44,13 +44,15 @@ export default function App() {
   }
 
   useEffect(() => {
+    document.title = "Mealicious"
+    
     const unsubscribe = onAuthStateChanged(auth, user => {
-      if(user) {
+      if(user?.uid) {
         setCurrentUser(user)
         location.pathname.match(/^\/(auth\/.+)?$/) && navigate("/dashboard", { replace: true })
       } else {
         setCurrentUser(null)
-        navigate("/", { replace: true })
+        navigate("/auth/login", { replace: true })
       }
     })
 

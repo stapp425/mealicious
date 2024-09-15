@@ -3,9 +3,8 @@ import spoonacularLogo from "@/img/logo/spoonacular-logo.svg"
 import { Separator } from "@/components/ui/separator"
 import SavedRecipes from "./SavedRecipes"
 import * as DailyMeals from "./DailyMeals"
-import Overview from "./Overview"
 import Banner from "./Banner"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { AppContext } from "@/App"
 import { Calendar, LayoutGrid, Pencil } from "lucide-react"
 
@@ -13,8 +12,12 @@ export default function Dashboard(): React.ReactElement {
   const navigate = useNavigate()
   const { date, screenSizes: { xl } } = useContext(AppContext)
   
+  useEffect(() => {
+    document.title = "Dashboard | Mealicious"
+  }, [])
+
   return (
-    <div className="h-[calc(100vh-150px)] grid grid-rows-[150px_1fr_150px] grid-cols-[225px_1fr] xl:grid-rows-[150px_1fr] xl:grid-cols-[300px_1fr_250px] gap-x-6 gap-y-4 p-4">
+    <div className="h-[calc(100vh-150px)] grid grid-rows-[150px_minmax(0,_1fr)_150px] grid-cols-[225px_minmax(0,_1fr)] xl:grid-rows-[150px_minmax(0,_1fr)] xl:grid-cols-[300px_1fr_250px] gap-x-6 gap-y-4 p-4">
       <Banner/>
       <div className="row-start-3 xl:row-start-1 xl:col-start-3 flex flex-col justify-between items-stretch gap-2 bg-orange-500 p-3 rounded-md">
         <div className="flex flex-col-reverse xl:flex-row justify-between items-center gap-1">
@@ -31,9 +34,8 @@ export default function Dashboard(): React.ReactElement {
         <button className="text-black bg-white px-5 py-1 rounded-sm font-[600]" onClick={() => navigate("/recipes/search")}>
           Search
         </button>
-      </div>
-      <Overview/>  
-      <DailyMeals.Root className="row-start-2 col-start-2 col-span-2 xl:row-span-1 xl:col-span-1">
+      </div> 
+      <DailyMeals.Root className="row-start-2 col-start-1 col-span-3 xl:row-span-1 xl:col-span-2">
         <DailyMeals.Header className="relative">
           <DailyMeals.Date date={date}/>
           <DailyMeals.OptionContainer className="absolute top-0 right-0">

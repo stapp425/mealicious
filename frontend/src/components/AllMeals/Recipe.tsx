@@ -1,5 +1,5 @@
 import { type Recipe as RecipeType } from "@/types/recipe"
-import { Earth, Heart } from "lucide-react"
+import { ArrowUpRight, Earth } from "lucide-react"
 import { 
   Tooltip,
   TooltipContent,
@@ -24,7 +24,11 @@ const Recipe: React.FC<Props> = ({ recipe }) => {
       <div className="overflow-hidden flex-1 flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <h1 className="font-bold text-lg line-clamp-1">{recipe.title}</h1>
-          {recipe.isFavorite && <Heart size={18} className="text-rose-500 group-hover:text-white"/>}
+          <Link to={`/recipes/${recipe.id as string}`} target="_blank">
+            <button className="aspect-square border border-slate-400 rounded-sm">
+              <ArrowUpRight />
+            </button>
+          </Link>
         </div>
         <div className="flex flex-wrap gap-x-2 gap-y-1">
           {

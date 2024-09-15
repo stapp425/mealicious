@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useFirestoreGet, useScroll } from "@/util/hooks"
 import { useParams } from "react-router-dom"
-import { defaultRecipe, Recipe } from "@/types/recipe"
+import { defaultRecipe, formatRecipe, Recipe } from "@/types/recipe"
 import { ArrowUp } from "lucide-react"
 import Title from "./Title"
 import Description from "./Description"
@@ -14,9 +14,8 @@ import Sections from "./Sections"
 export default function RecipeDetails(): React.ReactElement {
   const { y } = useScroll()
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, defaultRecipe)
+  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
-  
   const contentRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
   const descriptionRef = useRef<HTMLDivElement>(null)
@@ -25,6 +24,8 @@ export default function RecipeDetails(): React.ReactElement {
   const instructionsRef = useRef<HTMLDivElement>(null)
   
   useEffect(() => {
+    document.title = `${data.title} | Mealicious`
+    
     data.isFavorite && 
     setIsFavorite(data.isFavorite)
   }, [data])
@@ -67,7 +68,7 @@ export default function RecipeDetails(): React.ReactElement {
         <Nutrition
           ref={nutritionRef}
           servingSize={data.servingSize}
-          nutrition={data.nutrition}
+          nutrition={data.nutrition.filter(nutrition => Math.floor(nutrition.amount) > 0)}
           className="pt-6 break-inside-avoid-page"
         />
         <Ingredients

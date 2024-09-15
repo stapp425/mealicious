@@ -1,8 +1,8 @@
 import { AppContext } from "@/App"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/types/app"
-import { defaultMeal, type Meal as MealEntry } from "@/types/meal"
+import { formatMeals, type Meal as MealEntry } from "@/types/meal"
 import { useToast } from "@/components/ui/use-toast"
 import Meal from "./Meal"
 import Spinner from "@/components/ui/Spinner"
@@ -16,7 +16,7 @@ const AllMeals: React.FC = () => {
   const { user, screenSizes: { xl } } = useContext(AppContext)
   const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
-  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(createQuery(user as User, "meals"))
+  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(createQuery(user as User, "meals"), formatMeals)
   
   function evenlySplitArray<T = MealEntry>(arr: T[], sections: number): T[][] {
     if(sections <= 0 || sections % 1)
@@ -51,6 +51,10 @@ const AllMeals: React.FC = () => {
       })
     }
   }
+
+  useEffect(() => {
+    document.title = "All Meals | Mealicious"
+  }, [])
 
   return (
     <div className="bg-orange-200 min-h-[calc(100vh-150px)]">

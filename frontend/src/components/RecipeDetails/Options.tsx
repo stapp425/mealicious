@@ -1,6 +1,6 @@
 import { type Recipe } from "@/types/recipe"
 import { useFirestoreUpdate } from "@/util/hooks"
-import { ArrowDownToLine, Heart, Pencil, Plus } from "lucide-react"
+import { ArrowDownToLine, Heart, Pencil } from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useReactToPrint } from "react-to-print"
@@ -25,7 +25,6 @@ const Options: React.FC<Props> = ({ className, recipe, content, isFavorite, setI
     onBeforePrint: () => setIsPrinterWindowOpen(true),
     onAfterPrint: () => setIsPrinterWindowOpen(false)
   })
-  
 
   async function toggleFavorite() {
     try {
@@ -51,10 +50,6 @@ const Options: React.FC<Props> = ({ className, recipe, content, isFavorite, setI
           <span className="font-[600]">Edit Recipe</span>
           <Pencil/>
         </Link>
-        <button className="flex justify-between py-4 px-3 hover:bg-orange-500 hover:text-white hover:font-[600] transition-all border-b border-b-slate-400">
-          <span className="font-[600]">Add to Meal</span>
-          <Plus/>
-        </button>
         <button 
           onClick={toggleFavorite}
           disabled={isWorking}

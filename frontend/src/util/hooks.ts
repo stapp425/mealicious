@@ -19,7 +19,7 @@ export const now = new Date()
 
 type Adjacent = { previous: string, next: string }
 
-export function useEventCalendar<T extends HasDate>(data: T[] = []) {
+export function useEventCalendar<T extends HasDate>(data: T[]) {
   const [currentDay, setCurrentDay] = useState<Date>(now)
   const [events, setEvents] = useState<T[]>(data)
   
@@ -119,8 +119,7 @@ export function useEventCalendar<T extends HasDate>(data: T[] = []) {
   }
 }
 
-
-export function useFirestoreFetch<T>(query: Query, initialData: T[] = []) {
+export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) => Promise<T[]>, initialData: T[] = []) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T[]>(initialData)
   
@@ -130,7 +129,9 @@ export function useFirestoreFetch<T>(query: Query, initialData: T[] = []) {
     async function fetchData() {
       try {
         const data: QuerySnapshot = await getDocs(query)
-        const filteredData = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as T))
+        const snapshot = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as T))
+        const filteredData = snapshot.length > 0 ? await formatFunction(snapshot) : []
+        console.log(filteredData)
         setData(filteredData)
       } catch (err: any) {
         throw err
@@ -143,7 +144,7 @@ export function useFirestoreFetch<T>(query: Query, initialData: T[] = []) {
   return { isFetching, data, setData }
 }
 
-export function useFirestoreGet<T>(path: FirestoreCollection, id: string, initialData: T) {
+export function useFirestoreGet<T>(path: FirestoreCollection, id: string, formatFunction: (value: T) => Promise<T>, initialData: T) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
   const [data, setData] = useState<T>(initialData)
 
@@ -154,7 +155,8 @@ export function useFirestoreGet<T>(path: FirestoreCollection, id: string, initia
   async function fetchData() {
     try {
       const result: DocumentSnapshot = await getDoc(doc(firestore, path, id))
-      const filteredData = { ...result.data(), id: result.id } as T
+      const snapshot = { ...result.data(), id: result.id } as T
+      const filteredData = await formatFunction(snapshot)
       setData(filteredData)
     } catch (err: any) {
       throw err

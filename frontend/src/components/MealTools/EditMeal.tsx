@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react"
 import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { type Meal, defaultMeal } from "@/types/meal"
+import { type Meal, defaultMeal, formatMeal } from "@/types/meal"
 import { AnimatePresence } from "framer-motion"
 import { useFirestoreGet, useFirestoreUpdate } from "@/util/hooks"
 import ToolWindow from "./ToolWindow"
@@ -13,7 +13,7 @@ const EditMeal: React.FC = () => {
   const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
   const { user } = useContext(AppContext)
-  const { data: meal } = useFirestoreGet<Meal>("meals", mealId as string, defaultMeal)
+  const { data: meal } = useFirestoreGet<Meal>("meals", mealId as string, formatMeal, defaultMeal)
   const {
     control,
     register,
@@ -29,8 +29,14 @@ const EditMeal: React.FC = () => {
 
   const submitMeal: SubmitHandler<Meal> = async (data) => {
     if(user) {
-      const editedData = { ...data, userId: user.uid }
-    
+      const editedData = { 
+        ...data,
+        contents: data.contents.map(content => ({
+          type: content.type,
+          recipe: content.recipe.id as string
+        })),
+        userId: user.uid }
+      
       updateMeal("meals", mealId as string, editedData)
     }
   }
@@ -46,6 +52,8 @@ const EditMeal: React.FC = () => {
   }
 
   useEffect(() => {
+    document.title = "Edit Meal | Mealicious"
+    
     function handleUnload(event: BeforeUnloadEvent) {
       event.preventDefault()
     }

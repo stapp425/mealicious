@@ -1,3 +1,6 @@
+import { doc, getDoc } from "firebase/firestore"
+import { firestore } from "../../../firebaseConfig"
+
 export type Query = {
   query: string
 }
@@ -154,43 +157,47 @@ export type Recipe = {
   id?: string
 }
 
-export function isRecipe(value: unknown): value is Recipe {
-  const recipeVal = value as Recipe
+// export function isRecipe(value: unknown): value is Recipe {
+//   const recipeVal = value as Recipe
   
-  return (
-    recipeVal != null &&
-    typeof recipeVal === "object" &&
-    "title" in recipeVal && typeof recipeVal.title === "string" &&
-    "image" in recipeVal && typeof recipeVal.image === "string" &&
-    "description" in recipeVal && typeof recipeVal.description === "string" &&
-    (recipeVal.description === undefined || typeof recipeVal.description === "boolean") &&
-    (
-      recipeVal.source === undefined || 
-      (
-        typeof recipeVal.source === "object" &&
-        "name" in recipeVal.source && typeof recipeVal.source.name === "string" &&
-        "url" in recipeVal.source && typeof recipeVal.source.url === "string"
-      )
-    ) &&
-    (
-      recipeVal.diets === undefined || 
-      (
-        Array.isArray(recipeVal.diets) && recipeVal.diets.every(diet => typeof diet === "string")
-      )
-    ) &&
-    (
-      recipeVal.dishTypes === undefined || 
-      (
-        Array.isArray(recipeVal.dishTypes) && recipeVal.dishTypes.every(dish => typeof dish === "string")
-      )
-    ) &&
-    "times" in recipeVal && isTime(recipeVal.times) &&
-    "servingSize" in recipeVal && isServing(recipeVal.servingSize) && 
-    "nutrition" in recipeVal && Array.isArray(recipeVal.nutrition) && recipeVal.nutrition.every(n => isNutrition(n)) &&
-    "ingredients" in recipeVal && Array.isArray(recipeVal.ingredients) && recipeVal.ingredients.every(i => isIngredient(i)) &&
-    "instructions" in recipeVal && Array.isArray(recipeVal.instructions) && recipeVal.instructions.every(i => typeof i === "string") &&
-    (recipeVal.id === undefined || typeof recipeVal.id === "string")
-  )
+//   return (
+//     recipeVal != null &&
+//     typeof recipeVal === "object" &&
+//     "title" in recipeVal && typeof recipeVal.title === "string" &&
+//     "image" in recipeVal && typeof recipeVal.image === "string" &&
+//     "description" in recipeVal && typeof recipeVal.description === "string" &&
+//     (recipeVal.description === undefined || typeof recipeVal.description === "boolean") &&
+//     (
+//       recipeVal.source === undefined || 
+//       (
+//         typeof recipeVal.source === "object" &&
+//         "name" in recipeVal.source && typeof recipeVal.source.name === "string" &&
+//         "url" in recipeVal.source && typeof recipeVal.source.url === "string"
+//       )
+//     ) &&
+//     (
+//       recipeVal.diets === undefined || 
+//       (
+//         Array.isArray(recipeVal.diets) && recipeVal.diets.every(diet => typeof diet === "string")
+//       )
+//     ) &&
+//     (
+//       recipeVal.dishTypes === undefined || 
+//       (
+//         Array.isArray(recipeVal.dishTypes) && recipeVal.dishTypes.every(dish => typeof dish === "string")
+//       )
+//     ) &&
+//     "times" in recipeVal && isTime(recipeVal.times) &&
+//     "servingSize" in recipeVal && isServing(recipeVal.servingSize) && 
+//     "nutrition" in recipeVal && Array.isArray(recipeVal.nutrition) && recipeVal.nutrition.every(n => isNutrition(n)) &&
+//     "ingredients" in recipeVal && Array.isArray(recipeVal.ingredients) && recipeVal.ingredients.every(i => isIngredient(i)) &&
+//     "instructions" in recipeVal && Array.isArray(recipeVal.instructions) && recipeVal.instructions.every(i => typeof i === "string") &&
+//     (recipeVal.id === undefined || typeof recipeVal.id === "string")
+//   )
+// }
+
+export function isRecipe(value: string | Recipe): value is Recipe {
+  return typeof value !== "string"
 }
 
 export const defaultRecipe: Recipe = {
@@ -214,3 +221,23 @@ export const defaultRecipe: Recipe = {
   id: ""
 }
 
+export async function formatRecipe(recipe: string | Recipe) {
+  if(typeof recipe === "string")
+    try {
+      const docRef = doc(firestore, "recipes", recipe)
+      const recipeSnapshot = await getDoc(docRef)
+      const filteredRecipe = { ...recipeSnapshot.data(), id: recipeSnapshot.id } as Recipe
+
+      return filteredRecipe
+    } catch (err: any) {
+      throw err
+    }
+  else if(isRecipe(recipe))
+    return recipe
+  
+  throw new Error("Unrecognized recipe type found")
+}
+
+export async function formatRecipes(recipes: Recipe[]) {
+  return await Promise.all(recipes.map(recipe => formatRecipe(recipe)))
+}

@@ -1,5 +1,4 @@
-import { now } from "@/util/hooks"
-import { isMeal, type Meal } from "./meal"
+import { formatMeals, isMeal, type Meal } from "./meal"
 import { Timestamp } from "firebase/firestore"
 
 export type Macronutrient = {
@@ -20,6 +19,8 @@ export type Plan = {
 export const defaultPlan: Plan = {
   date: new Date(),
   title: "",
+  description: "",
+  tags: [],
   meals: [],
 }
 
@@ -54,10 +55,23 @@ export function isPlan(value: unknown): value is Plan {
   )
 }
 
-export function formatPlans(plans: Plan[]): Plan[] {
-  return plans.map(plan => 
-    isTimestamp(plan.date)
-      ? { ...plan, date: plan.date.toDate() }
-      : plan
-  )
+export function formatDate(date: Date | Timestamp) {
+  if(isDate(date))
+    return date
+  else if(isTimestamp(date))
+    return date.toDate()
+  
+  throw new Error("Unrecognized date type found")
+}
+
+export async function formatPlan(plan: Plan) {
+  return {
+    ...plan,
+    date: formatDate(plan.date),
+    meals: await formatMeals(plan.meals)
+  }
+}
+
+export async function formatPlans(plans: Plan[]): Promise<Plan[]> {
+  return await Promise.all(plans.map(plan => formatPlan(plan)))
 }

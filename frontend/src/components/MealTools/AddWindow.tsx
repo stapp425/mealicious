@@ -6,9 +6,11 @@ import { type Meal } from "@/types/meal"
 import { type UseFormGetValues, type UseFormSetValue } from "react-hook-form"
 import { animate, motion } from "framer-motion"
 import { useInputChange } from "@/util/hooks"
-import { Clipboard, Clock, Heart, Microwave, MoveLeft, Plus } from "lucide-react"
+import { Clipboard, Clock, Heart, Microwave, MoveLeft, Plus, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import * as Placeholder from "@/components/Theme/Placeholder"
+import { useNavigate } from "react-router-dom"
 
 type Props<T extends Obj> = {
   setValue: UseFormSetValue<T>
@@ -20,6 +22,7 @@ type Type = {
 }
 
 const AddWindow: React.FC<Props<Meal>> = ({ setValue, getValues }) => {  
+  const navigate = useNavigate()
   const { fetchedRecipeData } = useContext(MealEditContext)
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe>(defaultRecipe)
   const [isRecipeSelected, setIsRecipeSelected] = useState<boolean>(false)
@@ -54,31 +57,37 @@ const AddWindow: React.FC<Props<Meal>> = ({ setValue, getValues }) => {
               <ScrollArea className="flex-1">
                 <div className="space-y-2 pb-4">
                   {
-                    fetchedRecipeData.map((recipe, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          setIsRecipeSelected(true)
-                          setIsFirstRender(false)
-                          setSelectedRecipe(recipe)
-                        }}
-                        type="button"
-                        className="group border border-slate-300 min-h-[100px] w-full flex justify-between gap-3 items-start hover:bg-orange-500 hover:border-orange-500 transition-colors p-3 rounded-md"
-                      >
-                        <img
-                          src={recipe.image}
-                          alt={recipe.title}
-                          className="h-[100px] bg-white rounded-sm"
-                        />
-                        <div className="flex-1">
-                          <div className="flex justify-between items-center mb-2">
-                            <h1 className="font-[600] group-hover:text-white truncate max-w-[175px] text-nowrap">{recipe.title}</h1>
-                            {recipe.isFavorite && <Heart size={18} className="text-rose-500 group-hover:text-white"/>}
+                    fetchedRecipeData.length > 0 
+                    ? fetchedRecipeData.map((recipe, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setIsRecipeSelected(true)
+                            setIsFirstRender(false)
+                            setSelectedRecipe(recipe)
+                          }}
+                          type="button"
+                          className="group border border-slate-300 min-h-[100px] w-full flex justify-between gap-3 items-start hover:bg-orange-500 hover:border-orange-500 transition-colors p-3 rounded-md"
+                        >
+                          <img
+                            src={recipe.image}
+                            alt={recipe.title}
+                            className="h-[100px] bg-white rounded-sm"
+                          />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center mb-2">
+                              <h1 className="font-[600] group-hover:text-white truncate max-w-[175px] text-nowrap">{recipe.title}</h1>
+                              {recipe.isFavorite && <Heart size={18} className="text-rose-500 group-hover:text-white"/>}
+                            </div>
+                            <p className="line-clamp-3 text-left text-sm font-[600] text-muted-foreground group-hover:text-white">{recipe.description}</p>
                           </div>
-                          <p className="line-clamp-3 text-left text-sm font-[600] text-muted-foreground group-hover:text-white">{recipe.description}</p>
-                        </div>
-                      </button>
-                    ))
+                        </button>
+                      ))
+                    : <Placeholder.Root icon={<X size={20}/>}>
+                        <Placeholder.Message>No Recipes Found!</Placeholder.Message>
+                        <Placeholder.Tip>Try Creating One!</Placeholder.Tip>
+                        <Placeholder.Action onClick={() => navigate("/recipes/create")} className="text-sm">Create Recipe</Placeholder.Action>
+                      </Placeholder.Root>
                   }
                 </div>
                 <ScrollBar/>

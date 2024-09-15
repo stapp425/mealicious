@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useFirestorePost, useStorageUpload } from "@/util/hooks"
 import { defaultRecipe, type Recipe } from "@/types/recipe"
 import { useToast } from "@/components/ui/use-toast"
@@ -66,6 +66,10 @@ const CreateRecipe: React.FC = () => {
       }
     }
   }
+
+  useEffect(() => {
+    document.title = "Create Recipe | Mealicious"
+  }, [])
   
   return (
     <form onSubmit={handleSubmit(submitRecipe)} className="relative min-h-[calc(100vh-150px)] grid grid-cols-[350px_1fr]">

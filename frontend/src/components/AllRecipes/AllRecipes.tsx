@@ -7,24 +7,26 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 // import Search from "./Search"
-import { defaultRecipe, type RecipeSort, type Recipe as RecipeType } from "@/types/recipe"
+import { defaultRecipe, formatRecipes, type RecipeSort, type Recipe as RecipeType } from "@/types/recipe"
 import Recipe from "./Recipe"
 import { nanoid } from "nanoid"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Clipboard, Plus } from "lucide-react"
+import { Clipboard, Plus, X } from "lucide-react"
 import Description from "./Description"
 import Loading from "./Loading"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AppContext } from "@/App"
 import { User } from "firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/types/app"
+import * as Placeholder from "@/components/Theme/Placeholder"
 
 export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
 export default function AllRecipes(): React.ReactElement {
+  const navigate = useNavigate()
   const { user } = useContext(AppContext)
-  const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"))
+  const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"), formatRecipes)
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
@@ -62,9 +64,15 @@ export default function AllRecipes(): React.ReactElement {
   }
 
   useEffect(() => {
+    document.title = "All Recipes | Mealicious"
+  }, [])
+
+  useEffect(() => {
     if(recipes.length > 0)
       setSortedRecipes(recipes)
   }, [recipes])
+
+  console.log(sortedRecipes)
 
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>
@@ -101,6 +109,19 @@ export default function AllRecipes(): React.ReactElement {
                 isRecipesFetching
                   ? <Loading/>
                   : sortedRecipes?.map((recipe: RecipeType) => <Recipe key={nanoid()} recipe={recipe} onChange={invalidate}/>)
+              }
+              {
+                recipes.length === 0 &&
+                <Placeholder.Root icon={<X size={48}/>} className="2xl:col-span-2 py-[50px]">
+                  <Placeholder.Message>No Recipes Found!</Placeholder.Message>
+                  <Placeholder.Tip>Try creating one!</Placeholder.Tip>
+                  <Placeholder.Action
+                    onClick={() => navigate("/recipes/create")}
+                    className="text-sm"
+                  >
+                    Create Recipe
+                  </Placeholder.Action>
+                </Placeholder.Root>
               }
             </div>
             <ScrollBar/>

@@ -24,7 +24,7 @@ const Delete: React.FC<Props> = ({ isDeleting, id, deleteRecipe }) => {
           </AlertDialogTitle>
           <AlertDialogDescription>
             <p className="text-base">
-              Deleting this recipe will permanently remove it! Note that this recipe will still exist in some meals and plans after deletion.
+              Deleting this recipe will permanently remove it! This action cannot be undone.
             </p>
           </AlertDialogDescription>
         </AlertDialogHeader>

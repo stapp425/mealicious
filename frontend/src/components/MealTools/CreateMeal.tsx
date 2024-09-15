@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { MealEditContext } from "./MealTools"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { type Meal, defaultMeal } from "@/types/meal"
@@ -30,7 +30,14 @@ const CreateMeal: React.FC = () => {
   const submitMeal: SubmitHandler<Meal> = async (data) => {
     if(user) {
       try {
-        const addedData = { ...data, userId: user.uid }
+        const addedData = {
+          ...data,
+          contents: data.contents.map(({ type, recipe }) => ({
+            type,
+            recipe: recipe.id as string
+          })),
+          userId: user.uid
+        }
         
         await addMeal("meals", addedData)
       } catch (err: any) {
@@ -51,6 +58,10 @@ const CreateMeal: React.FC = () => {
       setError, clearErrors
     }
   }
+
+  useEffect(() => {
+    document.title = "Create Meal | Mealicious"
+  }, [])
   
   return (
     <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">

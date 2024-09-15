@@ -52,6 +52,7 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
     setValue,
     setError,
     clearErrors,
+    reset,
     control,
     formState: {
       errors,
@@ -67,9 +68,11 @@ const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
         const addedPlan = await addFirestoreDoc("plans", {
           ...data,
           date: Timestamp.fromDate(data.date),
+          meals: data.meals.map(meal => meal.id as string),
           userId: user.uid
         })
         setPlans(s => [...s, { ...data, id: addedPlan.id }])
+        reset(defaultPlan)
         setIsDialogOpen(false)
       } catch (err: any) {
         toast({

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { AppContext } from "@/App"
-import { defaultRecipe, Recipe } from "@/types/recipe"
+import { defaultRecipe, formatRecipes, Recipe } from "@/types/recipe"
 import CreateMeal from "./CreateMeal"
 import EditMeal from "./EditMeal"
 import { useFirestoreFetch } from "@/util/hooks"
@@ -29,7 +29,7 @@ export const MealEditContext = createContext<Edit>({
 
 const MealTools: React.FC<Props> = ({ mode }) => {
   const { user } = useContext(AppContext)
-  const { data: recipes } = useFirestoreFetch<Recipe>(createQuery(user as User, "recipes"))
+  const { data: recipes } = useFirestoreFetch<Recipe>(createQuery(user as User, "recipes"), formatRecipes)
   const [isAddRecipeActive, setIsAddRecipeActive] = useState<boolean>(false)  
   
   const context = {

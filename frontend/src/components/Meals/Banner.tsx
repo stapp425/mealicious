@@ -1,7 +1,5 @@
 import { useContext } from "react"
 import { AppContext } from "@/App"
-import { Separator } from "@/components/ui/separator"
-import { Link } from "react-router-dom"
 import { signOut } from "@/util/auth"
 import defaultProfilePicture from "@/img/default-pfp.svg"
 
@@ -22,8 +20,6 @@ export default function Banner(): React.ReactElement {
             Welcome, {user?.displayName}
           </h1>
           <div className="flex items-center gap-2">
-            <Link to="/settings" className="text-sm">Settings</Link>
-            <Separator orientation="vertical" className="h-6"/>
             <button className="text-sm text-white font-[600] py-1 px-3 bg-red-500 rounded-sm" onClick={signOut}>
               Sign Out
             </button>
