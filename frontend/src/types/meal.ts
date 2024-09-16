@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore"
-import { formatRecipe, type Recipe } from "./recipe"
+import { formatRecipe, isRecipe, type Recipe } from "./recipe"
 import { firestore } from "../../../firebaseConfig"
 
 export type Meal = {

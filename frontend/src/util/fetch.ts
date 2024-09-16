@@ -1,4 +1,8 @@
-import { type Recipe } from "@/types/recipe"
+import searchSample, { firestoreData } from "@/test"
+import { defaultRecipe, type Recipe } from "@/types/recipe"
+import { doc, DocumentSnapshot } from "@firebase/firestore"
+import { getDoc } from "firebase/firestore"
+import { firestore } from "../../../firebaseConfig"
 
 export default async function fetchFromAPI(httpMethod: string, path: string, queries: {[key: string]: any} | null = null, headers: any = null, body: any = null): Promise<Recipe[]> {
 	const backendURL = `http://localhost:3000`
@@ -28,4 +32,20 @@ export default async function fetchFromAPI(httpMethod: string, path: string, que
   } catch (err: any) {
     throw err
   }
+}
+
+export function fetchTest(): Promise<Recipe[]> {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(searchSample)
+    }, 1500)
+  })
+}
+
+export function firestoreTest(): Promise<Recipe[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(firestoreData)
+    }, 1500)
+  })
 }

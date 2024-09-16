@@ -1,6 +1,0 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { cn } from "@/lib/utils";
-const Error = ({ children, className }) => {
-    return (_jsxs("div", { className: cn("flex items-center gap-1.5 font-bold text-red-500 text-xs", className), children: [_jsx("i", { className: "fa-solid fa-circle-exclamation" }), children] }));
-};
-export default Error;
