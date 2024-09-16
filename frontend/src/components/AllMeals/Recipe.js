@@ -1,0 +1,10 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { ArrowUpRight, Earth } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Link } from "react-router-dom";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+const Recipe = ({ recipe }) => {
+    return (_jsxs("div", { className: "h-[250px] w-[600px] bg-white border border-slate-400 flex gap-4 p-4 rounded-md", children: [_jsx("img", { src: recipe.image, alt: recipe.title, className: "rounded-md max-h-[250px]" }), _jsxs("div", { className: "overflow-hidden flex-1 flex flex-col gap-2", children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx("h1", { className: "font-bold text-lg line-clamp-1", children: recipe.title }), _jsx(Link, { to: `/recipes/${recipe.id}`, target: "_blank", children: _jsx("button", { className: "aspect-square border border-slate-400 rounded-sm", children: _jsx(ArrowUpRight, {}) }) })] }), _jsx("div", { className: "flex flex-wrap gap-x-2 gap-y-1", children: recipe.diets?.map((diet, index) => _jsx("div", { className: "text-white font-[600] text-xs px-2 bg-orange-500 rounded-full select-none", children: diet }, index)) }), _jsxs(ScrollArea, { className: "flex-1 max-h-[400px] w-full", type: "always", children: [_jsx("div", { className: "grid grid-cols-2 gap-2", children: recipe.ingredients.map((ingredient, index) => _jsx("h1", { className: "truncate h-fit border border-slate-400 text-center rounded-md px-4 py-2", children: ingredient.name }, index)) }), _jsx(ScrollBar, {})] }), _jsxs("div", { className: "flex justify-between gap-4 items-center", children: [_jsx("p", { className: "max-w-[325px] truncate text-muted-foreground text-nowrap", children: recipe.dishTypes?.join(" · ") }), recipe.source &&
+                                _jsx(TooltipProvider, { children: _jsxs(Tooltip, { children: [_jsx(TooltipTrigger, { children: _jsx(Link, { to: recipe.source.url, target: "_blank", children: _jsx(Earth, { color: "#1e293b" }) }) }), _jsx(TooltipContent, { children: recipe.source.name })] }) })] })] })] }));
+};
+export default Recipe;

@@ -1,0 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+const Meal = ({ meal }) => (_jsxs("div", { className: "[&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-slate-300 [&:not(:last-child)]:pb-3 pt-3", children: [_jsxs("div", { className: "flex justify-between items-center", children: [_jsx("h1", { className: "font-[600]", children: meal.title }), _jsx("div", { className: " text-center min-w-[75px] bg-orange-500 text-sm text-white font-[600] px-2 rounded-sm", children: meal.time })] }), meal.tags &&
+            _jsx("div", { className: "flex gap-2", children: meal.tags.map(tag => _jsx("div", { className: "text-white bg-orange-500 font-[600] text-xs px-2 rounded-full", children: tag })) }), _jsx("div", { className: "space-y-2 my-2", children: meal.contents.map(content => _jsx("h3", { className: "border border-slate-400 p-2 rounded-md", children: content.recipe.title })) })] }));
+export default Meal;

@@ -1,0 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export default function Recipe({ recipe }) {
+    return (_jsxs("div", { className: "border border-slate-400 flex-1 relative overflow-hidden w-48 xl:min-h-48 xl:w-full flex flex-col justify-end items-center gap-2 shadow-md rounded-lg", children: [_jsx("img", { src: recipe.image, alt: recipe.title, className: "absolute size-full shadow-md" }), _jsxs("p", { className: "z-10 bg-white min-w-[50px] py-1 px-2 rounded-sm text-xs text-center font-[600] text-slate-600", children: [recipe.servingSize.amount, " ", recipe.servingSize.unit] }), _jsx("div", { className: "z-10 w-full min-h-[50px] bg-white p-1 flex justify-center items-center", children: _jsx("h1", { className: "font-[600] text-center line-clamp-2 text-[100%]", children: recipe.title }) })] }));
+}
