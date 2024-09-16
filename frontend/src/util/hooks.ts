@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react"
 import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc, Timestamp } from "firebase/firestore"
 import { type FirestoreCollection, type Obj } from "@/types/app"
-import { firestoreTest } from "./fetch"
-import { defaultRecipe, Recipe } from "@/types/recipe"
 import { firestore, storage } from "../../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useToast } from "@/components/ui/use-toast"
@@ -239,33 +237,6 @@ export function useFirestoreDelete() {
 
   return { isWorking, deleteFirestoreDoc }
 }
-
-export function useFirestoreTest() {
-  const { toast } = useToast()
-  const [isFetching, setIsFetching] = useState<boolean>(true)
-  const [data, setData] = useState<Recipe[]>([defaultRecipe])
-
-  useEffect(() => {
-    fetchTest()
-    async function fetchTest() {
-      try {
-        const fetchedTestData: Recipe[] = await firestoreTest()
-        setData(fetchedTestData)
-      } catch (err: any) {
-        toast({
-          title: "Error!",
-          description: err.message,
-          variant: "destructive"
-        })
-      } finally {
-        setIsFetching(false)
-      }
-    }
-  }, [])
-
-  return { isFetching, data, setData }
-}
-
 
 export function useStorageUpload() {
   const [isUploading, setIsUploading] = useState<boolean>(false)
