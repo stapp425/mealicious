@@ -2,7 +2,7 @@ import searchSample, { firestoreData } from "@/test"
 import { defaultRecipe, type Recipe } from "@/types/recipe"
 import { doc, DocumentSnapshot } from "@firebase/firestore"
 import { getDoc } from "firebase/firestore"
-import { firestore } from "../../../firebaseConfig"
+import { firestore } from "../../firebaseConfig"
 
 export default async function fetchFromAPI(httpMethod: string, path: string, queries: {[key: string]: any} | null = null, headers: any = null, body: any = null): Promise<Recipe[]> {
 	const backendURL = `http://localhost:3000`

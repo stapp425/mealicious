@@ -1,6 +1,6 @@
 import { type User } from "firebase/auth"
 import { collection, limit, query, Query, where } from "firebase/firestore"
-import { firestore } from "../../../firebaseConfig"
+import { firestore } from "../../firebaseConfig"
 
 export type Operation = "create" | "replace" | "update" | "remove"
 

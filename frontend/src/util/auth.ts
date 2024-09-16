@@ -8,7 +8,7 @@ import {
   type UserCredential
 } from "firebase/auth"
 import { collection, addDoc } from "firebase/firestore"
-import { auth, googleProvider, firestore } from "../../../firebaseConfig"
+import { auth, googleProvider, firestore } from "../../firebaseConfig"
 
 export type UserInput = {
   name: {

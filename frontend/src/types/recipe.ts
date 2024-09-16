@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore"
-import { firestore } from "../../../firebaseConfig"
+import { firestore } from "../../firebaseConfig"
 
 export type Query = {
   query: string

@@ -2,7 +2,7 @@ import { useState, useEffect, createContext } from "react"
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
-import { auth, firestore } from "../../firebaseConfig"
+import { auth, firestore } from "../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
 import { type App, type CurrentUser, type Breakpoints } from "@/types/app"
 import Login from "./components/Auth/Login"

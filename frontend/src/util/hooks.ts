@@ -3,7 +3,7 @@ import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, 
 import { type FirestoreCollection, type Obj } from "@/types/app"
 import { firestoreTest } from "./fetch"
 import { defaultRecipe, Recipe } from "@/types/recipe"
-import { firestore, storage } from "../../../firebaseConfig"
+import { firestore, storage } from "../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useToast } from "@/components/ui/use-toast"
 import * as dateFns from "date-fns"

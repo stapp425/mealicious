@@ -15,7 +15,7 @@ import {
 import { nanoid } from "nanoid"
 import { AppContext } from "@/App"
 import { collection, addDoc } from "firebase/firestore"
-import { firestore } from "../../../../firebaseConfig"
+import { firestore } from "../../../firebaseConfig"
 import { type CollectionReference } from "firebase/firestore"
 
 type Props = {
