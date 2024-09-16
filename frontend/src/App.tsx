@@ -18,10 +18,9 @@ import EditRecipe from "./components/RecipeTools/EditRecipe"
 import MealCalendar from "./components/Calendar/MealCalendar"
 import AllMeals from "./components/AllMeals/AllMeals"
 import MealTools from "./components/MealTools/MealTools"
-import { now } from "./util/hooks"
 
 export const AppContext = createContext<App>({
-  date: now,
+  date: new Date(),
   user: null,
   screenSizes: {
     any: false, sm: false,
@@ -61,7 +60,7 @@ export default function App() {
   
   return (
     <AppContext.Provider value={{
-      date: now,
+      date: new Date(),
       user: currentUser,
       screenSizes: matches,
     }}>
