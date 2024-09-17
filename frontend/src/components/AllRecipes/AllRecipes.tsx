@@ -72,8 +72,6 @@ export default function AllRecipes(): React.ReactElement {
       setSortedRecipes(recipes)
   }, [recipes])
 
-  console.log(sortedRecipes)
-
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>
       <div className="relative h-[calc(100vh-150px)] grid grid-cols-[33vw_1fr] xl:grid-cols-[1fr_33vw]">

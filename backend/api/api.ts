@@ -5,7 +5,6 @@ dotenv.config()
 const apiRouter = express.Router()
 apiRouter.get("/meals/search", searchMeals)
 
-// TODO: Add spoonacular search
 async function searchMeals(req:Request, res:Response) {
 	const query = new URLSearchParams(req.query as {[key: string]: any})
 	query.append("apiKey", process.env.apiKey as string)

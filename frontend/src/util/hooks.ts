@@ -129,7 +129,6 @@ export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) 
         const data: QuerySnapshot = await getDocs(query)
         const snapshot = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as T))
         const filteredData = snapshot.length > 0 ? await formatFunction(snapshot) : []
-        console.log(filteredData)
         setData(filteredData)
       } catch (err: any) {
         throw err
