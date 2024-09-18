@@ -5,7 +5,7 @@ dotenv.config()
 const apiRouter = express.Router()
 apiRouter.get("/meals/search", searchMeals)
 
-async function searchMeals(req:Request, res:Response) {
+async function searchMeals(req: Request, res: Response) {
 	const query = new URLSearchParams(req.query as {[key: string]: any})
 	query.append("apiKey", process.env.apiKey as string)
 	query.append("addRecipeInstructions", "true")
