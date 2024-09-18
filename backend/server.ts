@@ -3,8 +3,9 @@ import { Request, Response } from "express"
 require("dotenv").config()
 const express = require("express")
 const app = express()
+const cors = require("cors")
 
-app.use(require("cors"))
+app.use(cors())
 app.use(express.json())
 
 app.use("/", (_: Request, res: Response) => {
