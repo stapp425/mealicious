@@ -1,22 +1,20 @@
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
-import apiRouter from "./routes/api"
+import { Request, Response } from "express"
 
-dotenv.config()
+require("dotenv").config()
+const express = require("express")
 const app = express()
 
-app.use(cors())
+app.use(require("cors"))
 app.use(express.json())
 
-app.use("/", (_, res) => {
+app.use("/", (_: Request, res: Response) => {
 	res.json({ message: "Hello, World!" })
 })
 
-app.use("/api", apiRouter)
+app.use("/api", require("./routes/api"))
 
-app.use("*", (_, res) => {
+app.use("*", (_: Request, res: Response) => {
 	res.status(404).json({ message: "ERROR 404: Page not found!" })
 })
 
-export default app
+module.exports = app

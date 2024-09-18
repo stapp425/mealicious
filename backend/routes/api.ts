@@ -1,8 +1,8 @@
-import { Router, Request, Response } from "express"
-import dotenv from "dotenv"
+import { Request, Response } from "express"
 
-dotenv.config()
-const apiRouter = Router()
+require("dotenv").config()
+
+const apiRouter = require("express").Router()
 
 apiRouter.get("/meals/search", searchMeals)
 
@@ -88,4 +88,4 @@ async function searchMeals(req: Request, res: Response) {
 	}
 }
 
-export default apiRouter
+module.exports = apiRouter
