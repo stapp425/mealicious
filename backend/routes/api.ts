@@ -1,32 +1,10 @@
-import express, { Request, Response } from "express"
+import { Router, Request, Response } from "express"
 import dotenv from "dotenv"
 
 dotenv.config()
-const apiRouter = express.Router()
-apiRouter.get("/meals/search", searchMeals)
+const apiRouter = Router()
 
-async function searchMeals(req: Request, res: Response) {
-	const query = new URLSearchParams(req.query as {[key: string]: any})
-	query.append("apiKey", process.env.apiKey as string)
-	query.append("addRecipeInstructions", "true")
-	query.append("addRecipeInformation", "true")
-	query.append("addRecipeNutrition", "true")
-	
-	try {
-		const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?${query.toString()}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json"
-			}
-		})
-		const data = await response.json()
-		const parsedData = await formatResults(data)
-		res.json(parsedData)
-	} catch (err:any) {
-		res.sendStatus(500)
-		console.error(err.message)
-	}
-}
+apiRouter.get("/meals/search", searchMeals)
 
 function formatResults(data: {[key:string]: any}) {
 	return new Promise(resolve => {
@@ -86,6 +64,28 @@ function formatResults(data: {[key:string]: any}) {
 
 		resolve(parsedResults)
 	})
+}
+
+async function searchMeals(req: Request, res: Response) {
+	const query = new URLSearchParams(req.query as {[key: string]: any})
+	query.append("apiKey", process.env.apiKey as string)
+	query.append("addRecipeInstructions", "true")
+	query.append("addRecipeInformation", "true")
+	query.append("addRecipeNutrition", "true")
+	
+	try {
+		const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?${query.toString()}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+		const data = await response.json()
+		const parsedData = await formatResults(data)
+		res.json(parsedData)
+	} catch (err: any) {
+		res.status(500).json({ "ERROR": err.message })
+	}
 }
 
 export default apiRouter
