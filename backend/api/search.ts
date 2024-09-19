@@ -6,7 +6,7 @@ const cors = require("cors")
 const apiRouter = express()
 apiRouter.use(cors())
 
-apiRouter.get("/meals/search", searchMeals)
+apiRouter.get("/", searchMeals)
 
 function formatResults(data: {[key:string]: any}) {
 	const results: {[key:string]: any} = data.results
