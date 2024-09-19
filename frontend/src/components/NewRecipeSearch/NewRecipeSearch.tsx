@@ -26,8 +26,7 @@ export default function NewRecipeSearch() {
 
     try {
       setIsFetching(true)
-      const results: Recipe[] = await fetchFromAPI("GET", "/api/meals/search", searchParams)
-      // const results: Recipe[] = await fetchTest()
+      const results: Recipe[] = await fetchFromAPI("GET", "/search", searchParams)
       setSearchResults(results)
     } catch (err:any) {
       console.error(err.message)

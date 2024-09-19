@@ -1,7 +1,7 @@
 import { type Recipe } from "@/types/recipe"
 
 export default async function fetchFromAPI(httpMethod: string, path: string, queries: {[key: string]: any} | null = null, headers: any = null, body: any = null): Promise<Recipe[]> {
-	const backendURL = `http://localhost:3000`
+	const backendURL = import.meta.env.VITE_API_DOMAIN
 	const passedQueries = new URLSearchParams(queries as {[key: string]: any})
 
   if(httpMethod === "GET" && body)
