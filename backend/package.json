@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "start": "node dist/api/index.js",
+    "start": "node api/index.ts",
     "dev": "nodemon server.ts",
-    "build": "tsc"
+    "build": "echo Hello, World!"
   },
   "keywords": [],
   "author": "",
