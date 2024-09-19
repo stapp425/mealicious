@@ -1,8 +1,10 @@
 import { Request, Response } from "express"
 
-require("dotenv").config()
+const express = require("express")
+const cors = require("cors")
 
-const apiRouter = require("express").Router()
+const apiRouter = express()
+apiRouter.use(cors())
 
 apiRouter.get("/meals/search", searchMeals)
 

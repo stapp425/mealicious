@@ -1,6 +1,7 @@
 { 
   "version": 2, 
   "rewrites": [
-    { "source": "/(.*)", "destination": "dist/api/index.js" }
+    { "source": "/", "destination": "dist/api/index" },
+    { "source": "/search", "destination": "dist/api/search" }
   ]
 }
