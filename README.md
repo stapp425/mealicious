@@ -22,5 +22,6 @@ npm i
 npm run dev
 ```
 **And the project should be good to go!**
+
 *This is a full-stack application I have created over the course of Summer 2024. Changes may not be implemented as quick as I hoped it to be because of school and work-related reasons.* 
 
