@@ -14,7 +14,7 @@ type UserLoginInput = {
   password: string
 }
 
-export default function Login() {  
+const Login: React.FC = () => {  
   const { register, handleSubmit, formState: { errors } } = useForm<UserLoginInput>({ 
     defaultValues: {
       email: "",
@@ -41,12 +41,12 @@ export default function Login() {
   }, [])
 
   return (
-    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 md:grid-cols-2 gap-x-4 *:py-0">
-      <div className="justify-self-center">
+    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 lg:grid-cols-2 gap-6 *:py-0">
+      <div className="relative">
         <img
           src={siteLogo}
           alt="Mealicious Logo"
-          className="w-[200px] pt-4"
+          className="mx-auto w-[clamp(100px,_50%,_200px)] pt-4"
         />
       </div>
       <div className="text-center flex flex-col justify-center items-center -mt-4">
@@ -104,7 +104,7 @@ export default function Login() {
       <div className="text-center">
         Don't have an account? | <Link to="/auth/register" className="text-orange-500 hover:text-orange-700">Sign Up</Link>
       </div>
-      <div className="hidden md:flex justify-center items-center bg-orange-500 row-start-1 col-start-2 row-span-8 rounded-lg overflow-hidden">
+      <div className="hidden lg:flex justify-center items-center bg-orange-500 row-start-1 col-start-2 row-span-8 rounded-lg overflow-hidden">
         <img 
           src={loginImage} 
           alt="Credit: Julie Aagaard (https://www.pexels.com/photo/salad-on-a-plate-2097090/)"
@@ -114,3 +114,5 @@ export default function Login() {
     </form>
   )
 }
+
+export default Login

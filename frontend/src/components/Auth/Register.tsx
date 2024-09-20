@@ -8,7 +8,7 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form"
 import AuthInput from "./AuthInput"
 import GoogleButton from "./GoogleButton"
 
-export default function Register() {
+const Register: React.FC = () => {
   const { 
     register, 
     handleSubmit, 
@@ -64,8 +64,8 @@ export default function Register() {
   }
 
   return (
-    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 md:grid-cols-2 gap-x-4">
-      <div className="hidden md:flex justify-center items-center bg-orange-500 row-start-1 col-start-1 row-span-10 rounded-lg overflow-hidden">
+    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 lg:grid-cols-2 gap-x-4">
+      <div className="hidden lg:flex justify-center items-center bg-orange-500 row-start-1 col-start-1 row-span-10 rounded-lg overflow-hidden">
         <img 
           src={registerImage} 
           alt="Credit: Julie Aagaard (https://www.pexels.com/photo/salad-on-a-plate-2097090/)"
@@ -193,3 +193,5 @@ export default function Register() {
     </form>
   )
 }
+
+export default Register
