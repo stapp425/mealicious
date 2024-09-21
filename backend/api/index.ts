@@ -7,7 +7,7 @@ const cors = require("cors")
 app.use(cors())
 app.use(express.json())
 
-app.use("/", (_: Request, res: Response) => {
+app.use("^/$", (_: Request, res: Response) => {
 	res.json({ message: "Hello, World!" })
 })
 
