@@ -11,4 +11,8 @@ app.use("/", (_: Request, res: Response) => {
 	res.json({ message: "Hello, World!" })
 })
 
+app.get("/search", require("../middleware/search"))
+
+app.listen(3000, () => console.log("Server running on PORT 3000"))
+
 module.exports = app

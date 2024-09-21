@@ -1,14 +1,8 @@
-import { Request, Response } from "express"
+import { Request, Response, NextFunction } from "express"
 
-const express = require("express")
-const cors = require("cors")
+type ExpressFunction = (req: Request, res: Response, next?: NextFunction) => Promise<void> | void
 
-const apiRouter = express()
-apiRouter.use(cors())
-
-apiRouter.get("/search", searchMeals)
-
-function formatResults(data: {[key:string]: any}) {
+const formatResults = (data: {[key:string]: any}) => {
 	const results: {[key:string]: any} = data.results
 	
 	const parsedResults = results.length > 0 ? results.map((result: {[key:string]: any}) => ({
@@ -66,7 +60,7 @@ function formatResults(data: {[key:string]: any}) {
 	return parsedResults
 }
 
-async function searchMeals(req: Request, res: Response) {
+const searchMeals: ExpressFunction = async (req: Request, res: Response) => {	
 	const query = new URLSearchParams(req.query as {[key: string]: any})
 	query.append("apiKey", process.env.apiKey as string)
 	query.append("addRecipeInstructions", "true")
@@ -88,4 +82,4 @@ async function searchMeals(req: Request, res: Response) {
 	}
 }
 
-module.exports = apiRouter
+module.exports = searchMeals
