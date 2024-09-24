@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
 import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc, Timestamp } from "firebase/firestore"
-import { type FirestoreCollection, type Obj } from "@/types/app"
+import { type FirestoreCollection, type Obj } from "@/util/types/app"
 import { firestore, storage } from "../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import { useToast } from "@/components/ui/use-toast"
 import * as dateFns from "date-fns"
-import { isTimestamp } from "@/types/plan"
+import { isTimestamp } from "@/util/types/plan"
 
 interface HasDate extends Obj {
   date: Date | Timestamp

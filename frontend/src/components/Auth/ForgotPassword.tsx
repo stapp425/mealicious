@@ -11,7 +11,7 @@ import { resetPassword } from "@/util/auth"
 import { useToast } from "@/components/ui/use-toast"
 import { SubmitHandler, useForm } from "react-hook-form"
 import AuthInput from "./AuthInput"
-import Button from "../Theme/Button"
+import Button from "../theme/Button"
 
 type EmailInput = { email: string }
 

@@ -1,4 +1,4 @@
-import { type Plan as PlanType } from "@/types/plan"
+import { type Plan as PlanType } from "@/util/types/plan"
 import Meal from "./Meal"
 
 type Props = {

@@ -1,4 +1,4 @@
-import { type Plan } from "@/types/plan"
+import { type Plan } from "@/util/types/plan"
 import { useEventCalendar } from "@/util/hooks"
 import {
   Tabs,

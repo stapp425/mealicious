@@ -1,4 +1,4 @@
-import { type Recipe } from "@/types/recipe"
+import { type Recipe } from "@/util/types/recipe"
 
 export default async function fetchFromAPI(httpMethod: string, path: string, queries: {[key: string]: any} | null = null, headers: any = null, body: any = null): Promise<Recipe[]> {
 	const backendURL = import.meta.env.VITE_API_DOMAIN

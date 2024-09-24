@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import * as dateFns from "date-fns"
-import { type Plan } from "@/types/plan"
+import { type Plan } from "@/util/types/plan"
 import { cn } from "@/lib/utils"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { animate, stagger } from "framer-motion"

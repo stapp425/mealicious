@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { type Plan as PlanType } from '@/types/plan'
+import { type Plan as PlanType } from '@/util/types/plan'
 import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import Plan from './Plan'
-import * as Placeholder from '@/components/Theme/Placeholder'
+import * as Placeholder from '@/components/theme/Placeholder'
 
 type Props = {
   className?: string

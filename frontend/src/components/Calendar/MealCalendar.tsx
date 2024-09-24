@@ -1,15 +1,15 @@
 import { AppContext } from "@/App"
 import { useContext, useEffect } from "react"
 import Calendar from "./Calendar"
-import CreateEvent from "./EventTools/CreateEvent"
-import { formatPlans, type Plan } from "@/types/plan"
+import CreateEvent from "./event-tools/CreateEvent"
+import { formatPlans, type Plan } from "@/util/types/plan"
 import { useFirestoreFetch } from "@/util/hooks"
-import { createQuery } from "@/types/app"
+import { createQuery } from "@/util/types/app"
 import { User } from "firebase/auth"
 import { X } from "lucide-react"
-import { formatMeals, Meal } from "@/types/meal"
-import * as Placeholder from "../Theme/Placeholder"
-import RemoveEvent from "./EventTools/RemoveEvent"
+import { formatMeals, Meal } from "@/util/types/meal"
+import * as Placeholder from "../theme/Placeholder"
+import RemoveEvent from "./event-tools/RemoveEvent"
 
 const MealCalendar: React.FC = () => {
   const { user } = useContext(AppContext)

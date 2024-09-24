@@ -1,4 +1,4 @@
-import { type Meal as MealType } from "@/types/meal"
+import { type Meal as MealType } from "@/util/types/meal"
 
 type Props = {
   meal: MealType
