@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { AppContext } from "@/App"
-import { Calendar, Clock, LayoutGrid, LucideProps, Pencil, X } from "lucide-react"
+import { Calendar, Clock, Heart, LayoutGrid, LucideProps, Pencil, X } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
@@ -19,24 +19,26 @@ import {
 import * as Placeholder from "../theme/Placeholder"
 import * as React from "react"
 import Button from "../theme/Button"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import { Recipe as RecipeType } from "@/util/types/recipe"
+import { Badge } from "../ui/badge"
 
 
-// TODO: Style more components
 const DailyMeals: React.FC = () => (
-  <div className="h-[575px] relative flex flex-col gap-2 p-6">
-    <div className="absolute top-6 right-6 flex justify-between items-center gap-4">
-      <Option to="create" Icon={Pencil} label="Create New"/>
-      <Option to="all" Icon={LayoutGrid} label="All Meals"/>
-      <Option to="calendar" Icon={Calendar} label="Meal Calendar"/>
-    </div>
-    <h1 className="text-3xl font-bold">Daily Meals</h1>
+  <div className="relative pt-6 flex flex-col gap-2">
+    <h1 className="px-6 text-3xl font-bold">Daily Meals</h1>
     <Date/>
     <CurrentMeals/>
+    <div className="absolute top-6 right-6 flex justify-between items-center gap-4">
+      <Option to="create" Icon={Pencil} label="Create New"/>
+      <Option Icon={LayoutGrid} label="All Meals"/>
+      <Option to="calendar" Icon={Calendar} label="Meal Calendar"/>
+    </div>
   </div>
 )
 
 const Date: React.FC = () => (
-  <div className="flex items-center gap-2">
+  <div className="px-6 flex items-center gap-2">
     <Clock size={16} className="text-muted-foreground"/>
     <p className="xl:text-lg text-muted-foreground">{format(useContext(AppContext).date, "EEEE")}</p>
   </div>
@@ -45,12 +47,12 @@ const Date: React.FC = () => (
 type OptionProps = {
   className?: string
   label: string
-  to: "create" | "all" | "calendar"
+  to?: "create" | "calendar"
   Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 
-const Option: React.FC<OptionProps> = ({ className, label, to, Icon }) => (
-  <TooltipProvider>
+const Option: React.FC<OptionProps> = ({ className, label, to = "", Icon }) => (
+  <TooltipProvider delayDuration={0}>
     <Tooltip>
       <TooltipTrigger>
         <button className="p-3 text-white bg-orange-500 rounded-full hover:bg-orange-700 hover:scale-[110%] transition">
@@ -75,29 +77,27 @@ const CurrentMeals: React.FC = () => {
     <div className="flex flex-col">
       {
         !isFetching
-        ? <Meals meals={day.map(d => d.meals).flat()}/>          
+        ? <Meals meals={day.map(d => d.meals).flat()} className="px-6"/>          
         : <Spinner/>
       }
     </div>
   )
 }
 
-type MealsProps = {
-  className?: string
-  meals: MealType[]
-}
-
-const Meals: React.FC<MealsProps> = ({ className, meals }) => {
+const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className, meals }) => {
   const navigate = useNavigate()
   
   return (
     meals.length > 0
-    ? <div className={cn("space-y-2 mt-2", className)}>
-        {meals.map((meal, index) => <Meal key={index} meal={meal}/>)}
-      </div>
+    ? <ScrollArea className="h-[465px]" type="always">
+        <div className={cn("flex gap-6", className)}>
+          {meals.map((meal, index) => <Meal key={index} meal={meal}/>)}
+        </div>
+        <ScrollBar orientation="horizontal"/>
+      </ScrollArea>
     : <Placeholder.Root
         icon={<X size={64}/>}
-        className="size-full"
+        className="h-[450px] border-none"
       >
         <Placeholder.Message>No Plans Found for Today.</Placeholder.Message>
         <Placeholder.Tip>Try adding one!</Placeholder.Tip>
@@ -111,27 +111,38 @@ const Meals: React.FC<MealsProps> = ({ className, meals }) => {
   )
 }
 
-type MealProps = {
-  className?: string
-  meal: MealType
-}
+const Meal: React.FC<{ className?: string, meal: MealType }> = ({ className, meal }) => (
+  <div className={cn("w-[325px] h-[450px] flex flex-col gap-2 border border-slate-400 p-4 rounded-lg", className)}>
+    <h1 className="font-bold text-2xl">{meal.title}</h1>
+    {
+      meal.tags &&
+      <div className="flex flex-wrap gap-2">
+        {meal.tags.map((tag, index) => <Badge key={index} className="bg-orange-500">{tag}</Badge>)}
+      </div>
+    }
+    <ScrollArea className="flex-1">
+      <div className="overflow-hidden space-y-2">
+        {meal.contents.map(({ recipe }, index) => <Recipe key={index} recipe={recipe}/>)}
+      </div>
+      <ScrollBar/>
+    </ScrollArea>
+    
+    <h1 className="tracking-wider text-center font-bold text-lg text-muted-foreground">
+      — {meal.time.toUpperCase()} —
+    </h1>
+  </div>
+)
 
-const Meal: React.FC<MealProps> = ({ className, meal }) => (
-  <div className={cn("border border-slate-400 p-2 rounded-md", className)}>
-    <div className="flex justify-between items-center">
-      <h1 className="font-bold">{meal.title}</h1>
-      <h1 className="text-center min-w-[100px] bg-orange-500 font-[600] text-sm text-white px-3 rounded-md">{meal.time}</h1>
-    </div>
-    <div className="overflow-hidden flex flex-wrap gap-2 xl:justify-between xl:mt-2">
-      {
-        meal.contents.map(({ recipe }) => 
-          <img
-            src={recipe.image}
-            alt={recipe.title}
-            className="size-[25px] xl:size-[75px] rounded-md"
-          />
-        )
-      }
+const Recipe: React.FC<{ recipe: RecipeType }> = ({ recipe }) => (
+  <div className="overflow-hidden w-full min-h-[75px] flex border border-slate-400 rounded-md">
+    <img
+      src={recipe.image}
+      alt={recipe.title}
+      className="w-1/3 object-cover"
+    />
+    <div className="flex-1 h-full flex justify-between items-start p-3">
+      <h2 className="font-bold w-3/4 only:w-full line-clamp-2">{recipe.title}</h2>
+      {recipe.isFavorite && <Heart size={18} className="text-rose-500"/>}
     </div>
   </div>
 )

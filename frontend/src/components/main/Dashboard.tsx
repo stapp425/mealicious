@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react"
 import { AppContext } from "@/App"
 
 const Dashboard: React.FC = () => {  
-  const { screenSizes: { md } } = useContext(AppContext)
+  const { screenSizes: { lg } } = useContext(AppContext)
   
   useEffect(() => {
     document.title = "Dashboard | Mealicious"
@@ -13,7 +13,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      { md && <Banner/> }
+      { lg && <Banner/> }
       <DailyMeals/>
       <SavedRecipes/>
     </div>

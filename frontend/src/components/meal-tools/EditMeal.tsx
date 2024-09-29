@@ -68,7 +68,7 @@ const EditMeal: React.FC = () => {
   }, [meal])
 
   return (
-    <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">
+    <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-100px)] w-screen flex justify-between gap-4">
       <ToolWindow {...sendProps()}/>
       <AnimatePresence>
         { isAddRecipeActive && <AddWindow setValue={setValue} getValues={getValues}/> }

@@ -4,7 +4,7 @@ import defaultProfilePicture from "@/img/default-pfp.svg"
 import { Calendar } from "lucide-react"
 import { format } from "date-fns"
 
-export default function Banner(): React.ReactElement {
+const Banner: React.FC = () => {
   const { date, user } = useContext(AppContext)
   const profilePicture = user?.photoURL || defaultProfilePicture
 
@@ -31,3 +31,5 @@ export default function Banner(): React.ReactElement {
     </div>
   )
 }
+
+export default Banner
