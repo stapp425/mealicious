@@ -237,7 +237,6 @@ export function useFirestoreDelete() {
   return { isWorking, deleteFirestoreDoc }
 }
 
-
 export function useStorageUpload() {
   const [isUploading, setIsUploading] = useState<boolean>(false)
 

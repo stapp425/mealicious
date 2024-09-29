@@ -1,5 +1,5 @@
-import { type FieldArray } from "@/types/form"
-import { type Recipe } from "@/types/recipe"
+import { type FieldArray } from "@/util/types/form"
+import { type Recipe } from "@/util/types/recipe"
 import { useInputChange } from "@/util/hooks"
 import { useWatch } from "react-hook-form"
 import { Input } from "@/components/ui/input"

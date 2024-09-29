@@ -1,11 +1,11 @@
-import { type RequiredFieldArray } from "@/types/form"
+import { type RequiredFieldArray } from "@/util/types/form"
 import Field from "./Field"
 import { useInputChange } from "@/util/hooks"
 import { useWatch } from "react-hook-form"
 import { useEffect } from "react"
 import { Plus } from "lucide-react"
 import Error from "./Error"
-import { type Recipe } from "@/types/recipe"
+import { type Recipe } from "@/util/types/recipe"
 
 const Instructions: React.FC<RequiredFieldArray<Recipe>> = ({ className, control, setValue, error, setError, clearErrors }) => {
   const { input, isEditActive, setIsEditActive, handleChange } = useInputChange<{[key: string]: string}>({ step: "" })

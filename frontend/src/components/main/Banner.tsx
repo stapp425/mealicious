@@ -1,30 +1,32 @@
 import { useContext } from "react"
 import { AppContext } from "@/App"
-import { signOut } from "@/util/auth"
 import defaultProfilePicture from "@/img/default-pfp.svg"
+import { Calendar } from "lucide-react"
+import { format } from "date-fns"
 
 export default function Banner(): React.ReactElement {
-  const { user } = useContext(AppContext)
+  const { date, user } = useContext(AppContext)
   const profilePicture = user?.photoURL || defaultProfilePicture
 
   return (
-    <div className="col-span-3 xl:col-span-2 relative flex items-center border-b border-slate-300 p-4">
-      <div className="flex items-stretch gap-6">
-        <img 
-          src={profilePicture}
-          alt="Profile Picture"
-          className="rounded-full size-20"
-        />
-        <div className="flex flex-col justify-around">
-          <h1 className="font-bold text-3xl">
-            Welcome, {user?.displayName}
-          </h1>
-          <div className="flex items-center gap-2">
-            <button className="text-sm text-white font-[600] py-1 px-3 bg-red-500 rounded-sm" onClick={signOut}>
-              Sign Out
-            </button>
-          </div>
+    <div className="bg-orange-100 col-span-3 xl:col-span-2 relative flex items-center p-6">
+      <img 
+        src={profilePicture}
+        alt="Profile Picture"
+        className="rounded-full size-20 float-start mr-4"
+      />
+      <div className="space-y-2">
+        <h1 className="font-bold text-3xl">
+          Welcome, {user?.displayName}!
+        </h1>
+        <div className="flex items-center gap-1.5">
+          <Calendar size={16} strokeWidth={2}/>
+          <h2 className="text-sm font-bold">
+              {format(date, "MM/dd/yy")}
+          </h2>
         </div>
+        
+        <h3 className="text-sm text-muted-foreground italic">Mealicious User</h3>
       </div>
     </div>
   )

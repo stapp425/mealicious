@@ -13,13 +13,14 @@ type Props = {
   recipe: RecipeType
 }
 
+// TODO: Responsive design for recipes
 const Recipe: React.FC<Props> = ({ recipe }) => {
   return (
     <div className="h-[250px] w-[600px] bg-white border border-slate-400 flex gap-4 p-4 rounded-md">
       <img
         src={recipe.image}
         alt={recipe.title}
-        className="rounded-md max-h-[250px]"
+        className="rounded-md w-[clamp(100px,25vw,250px)]"
       />
       <div className="overflow-hidden flex-1 flex flex-col gap-2">
         <div className="flex justify-between items-center">

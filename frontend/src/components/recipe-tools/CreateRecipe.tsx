@@ -72,10 +72,9 @@ const CreateRecipe: React.FC = () => {
   }, [])
   
   return (
-    <form onSubmit={handleSubmit(submitRecipe)} className="relative min-h-[calc(100vh-150px)] grid grid-cols-[350px_1fr]">
-      <div className="overflow-hidden h-[calc(100vh-150px)] sticky top-[150px] flex flex-col justify-between gap-3 p-4 bg-white border-r border-r-slate-300">
+    <form onSubmit={handleSubmit(submitRecipe)} className="relative h-[calc(100vh-100px)] lg:h-screen grid grid-cols-[350px_1fr]">
+      <div className="overflow-hidden h-[calc(100vh-100px)] lg:h-screen sticky top-[100px] lg:top-0 flex flex-col justify-between gap-3 p-4 bg-white border-r border-r-slate-300">
         <Image
-          className=""
           name="image"
           register={register}
           error={errors}
@@ -102,7 +101,7 @@ const CreateRecipe: React.FC = () => {
           type="submit" 
           className="font-[600] text-xl text-white py-2 bg-orange-500 rounded-md disabled:cursor-not-allowed"
         >
-          { isSubmitting ? "Working on it..."  : "Create Recipe" }
+          { isSubmitting ? "Working on it..." : "Create Recipe" }
         </button>
       </div>
       <div className="grid grid-rows-[repeat(6,max-content)] grid-cols-1 xl:grid-rows-[repeat(4,_max-content)] xl:grid-cols-2 gap-3 p-3 *:border *:border-orange-300 *:p-4 *:rounded-md">

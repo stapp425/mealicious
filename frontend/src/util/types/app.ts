@@ -3,7 +3,7 @@ import { collection, limit, query, Query, where } from "firebase/firestore"
 import { firestore } from "@/../firebaseConfig"
 
 export type Operation = "create" | "replace" | "update" | "remove"
-
+export type ActiveSection = "dashboard" | "recipes" | "meals" | "plans"
 type Option = "add" | "remove" | "update" | "format"
 
 export function modifyData<T extends { id?: string }>(original: T[], option: Option, data?: T): T[] {
@@ -48,6 +48,8 @@ export type Breakpoints = {
 }
 
 export type App = {
+  activeSection: ActiveSection
+  changeActiveSection: (value: ActiveSection) => void,
   date: Date,
   user: CurrentUser
   screenSizes: Breakpoints

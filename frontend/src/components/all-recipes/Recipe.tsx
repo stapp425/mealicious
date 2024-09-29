@@ -33,13 +33,11 @@ function List({ recipe, onChange }: Props): React.ReactElement {
         className="hidden"
       />
       <div className="relative group overflow-hidden flex justify-center items-center basis-1/3 shadow-lg">
-        <div className="h-full relative flex justify-center items-center">
-          <img
-            src={recipe.image}
-            alt={recipe.title}
-            className="scale-[150%] lg:scale-[200%] group-hover:scale-[175%] transition"
-          />
-        </div>
+        <img
+          src={recipe.image}
+          alt={recipe.title}
+          className="object-cover"
+        />
       </div>
       <div className="relative flex flex-col justify-between gap-1 basis-2/3 py-3 px-4">
         <h1 className="font-bold text-lg mx-0 pr-2">{recipe.title}</h1>

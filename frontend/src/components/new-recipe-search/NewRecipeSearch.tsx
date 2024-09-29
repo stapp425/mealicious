@@ -5,17 +5,16 @@ import Search from "@/components/new-recipe-search/Search"
 import SearchResults from "@/components/new-recipe-search/SearchResults"
 import { Toaster } from "@/components/ui/toaster"
 import fetchFromAPI from "@/util/fetch"
-import { defaultRecipe } from "@/util/types/recipe"
 
 export default function NewRecipeSearch() {
   const { toast } = useToast()
-  const [searchResults, setSearchResults] = useState<Recipe[]>([defaultRecipe])
+  const [searchResults, setSearchResults] = useState<Recipe[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(false)
   const originalSearchQuery = useRef<string>("")
 
   async function searchRecipes(searchParams: Query) {
     originalSearchQuery.current = searchParams.query
-    setSearchResults([defaultRecipe])
+    setSearchResults([])
 
     if(!searchParams.query)
       return toast({

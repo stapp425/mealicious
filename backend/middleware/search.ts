@@ -32,30 +32,7 @@ const formatResults = (data: {[key:string]: any}) => {
 			unit: i.unit
 		})),
 		instructions: result.analyzedInstructions[0]?.steps?.map((step:{[key:string]: any}) => step.step)
-	})) : [{
-		resultIndex: 0,
-		title: "",
-		image: "",
-		description: "",
-		source: {
-			name: "",
-			url: ""
-		},
-		diets: [],
-		dishTypes: [],
-		times: {
-			prepTime: 0,
-			cookTime: 0,
-			readyTime: 0
-		},
-		servingSize: {
-			amount: 0,
-			unit: ""
-		},
-		nutrition: [],
-		ingredients: [],
-		instructions: []
-	}]
+	})) : []
 
 	return parsedResults
 }

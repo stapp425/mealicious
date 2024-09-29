@@ -23,7 +23,7 @@ import * as Placeholder from "@/components/theme/Placeholder"
 
 export const ActiveRecipeContext = createContext<string>(defaultRecipe.title)
 
-export default function AllRecipes(): React.ReactElement {
+const AllRecipes: React.FC = () => {
   const navigate = useNavigate()
   const { user } = useContext(AppContext)
   const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"), formatRecipes)
@@ -74,8 +74,8 @@ export default function AllRecipes(): React.ReactElement {
 
   return (
     <ActiveRecipeContext.Provider value={activeRecipe.title}>
-      <div className="relative h-[calc(100vh-150px)] grid grid-cols-[33vw_1fr] xl:grid-cols-[1fr_33vw]">
-        <div className="overflow-hidden h-[calc(100vh-150px)] flex flex-col border border-r-slate-300">
+      <div className="relative h-[calc(100vh-100px)] md:h-screen grid grid-cols-[33vw_1fr] xl:grid-cols-[1fr_33vw]">
+        <div className="overflow-hidden h-[calc(100vh-100px)] md:h-screen flex flex-col border border-r-slate-300">
           <div className="z-20 flex flex-col gap-3 p-4 shadow-scroll-t">
             <div className="flex justify-between">
               <h1 className="font-bold text-2xl xl:text-4xl">All Recipes</h1>
@@ -142,3 +142,5 @@ export default function AllRecipes(): React.ReactElement {
     </ActiveRecipeContext.Provider>
   )
 }
+
+export default AllRecipes

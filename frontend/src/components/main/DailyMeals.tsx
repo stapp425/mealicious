@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { AppContext } from "@/App"
-import { X } from "lucide-react"
+import { Calendar, Clock, LayoutGrid, LucideProps, Pencil, X } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
@@ -10,144 +10,74 @@ import { createQuery } from "@/util/types/app"
 import { type User } from "firebase/auth"
 import Spinner from "../ui/Spinner"
 import { Meal as MealType } from "@/util/types/meal"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import * as Placeholder from "../theme/Placeholder"
 import * as React from "react"
+import Button from "../theme/Button"
 
-type RootProps = {
-  className?: string
-  children: React.ReactNode
-}
 
-const Root: React.FC<RootProps> = ({ className, children }) => (
-  <div className={cn("flex flex-col gap-2", className)}>
-    {children}
+// TODO: Style more components
+const DailyMeals: React.FC = () => (
+  <div className="h-[575px] relative flex flex-col gap-2 p-6">
+    <div className="absolute top-6 right-6 flex justify-between items-center gap-4">
+      <Option to="create" Icon={Pencil} label="Create New"/>
+      <Option to="all" Icon={LayoutGrid} label="All Meals"/>
+      <Option to="calendar" Icon={Calendar} label="Meal Calendar"/>
+    </div>
+    <h1 className="text-3xl font-bold">Daily Meals</h1>
+    <Date/>
+    <CurrentMeals/>
   </div>
 )
 
-type HeaderProps = {
-  className?: string
-  children: React.ReactNode
-}
-
-const Header: React.FC<HeaderProps> = ({ className, children }) => (
-  <div className={cn("flex justify-between", className)}>
-    {children}
-  </div>
-)
-
-type CurrentDateProps = {
-  className?: string
-  date: Date
-}
-
-const Date: React.FC<CurrentDateProps> = ({ className, date }) => (
-  <div className={cn("flex flex-col", className)}>
-    <h1 className="font-bold text-2xl xl:text-4xl">Today's Meals</h1>
-    <p className="text-sm xl:text-lg text-muted-foreground">{format(date, "EEEE")}</p>
-    <p className="text-sm xl:text-lg text-muted-foreground">{format(date, "MMMM do, yyyy")}</p>
-  </div>
-)
-
-type OptionContainerProps = {
-  className?: string
-  children: React.ReactNode
-}
-
-const OptionContainer: React.FC<OptionContainerProps> = ({ className, children }) => (
-  <div className={cn("flex justify-between items-center gap-2", className)}>
-    {children}
+const Date: React.FC = () => (
+  <div className="flex items-center gap-2">
+    <Clock size={16} className="text-muted-foreground"/>
+    <p className="xl:text-lg text-muted-foreground">{format(useContext(AppContext).date, "EEEE")}</p>
   </div>
 )
 
 type OptionProps = {
   className?: string
-  to: "create" | "all" | "calendar"
   label: string
-  children: React.ReactNode
+  to: "create" | "all" | "calendar"
+  Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 
-const Option: React.FC<OptionProps> = ({ className, to, label, children }) => (
-  <div className={cn("group relative group flex flex-col gap-2 items-center", className)}>
-    <button className="p-3 text-white bg-orange-500 rounded-full hover:bg-orange-700 hover:scale-[110%] transition">
-      <Link to={`/meals/${to}`}>
-        {children}
-      </Link>
-    </button>
-    <p className="text-nowrap absolute -bottom-7 group-last:right-0 opacity-0 group-hover:opacity-100 transition text-sm text-muted-foreground">{label}</p>
-  </div>
+const Option: React.FC<OptionProps> = ({ className, label, to, Icon }) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger>
+        <button className="p-3 text-white bg-orange-500 rounded-full hover:bg-orange-700 hover:scale-[110%] transition">
+          <Link to={`/meals/${to}`}>
+            <Icon size={18}/>
+          </Link>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className={cn("group relative group flex flex-col gap-2 items-center", className)}>
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
 )
 
-type DailyMealsProps = {
-  className?: string
-}
-
-const DailyMeals: React.FC<DailyMealsProps> = ({ className }) => {
+const CurrentMeals: React.FC = () => {
   const { user } = useContext(AppContext)
   const { data: plans, isFetching } = useFirestoreFetch<PlanType>(createQuery(user as User, "plans"), formatPlans)
   const { currentEvents: { day } } = useEventCalendar<PlanType>(plans)
   
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className="flex flex-col">
       {
         !isFetching
-        ? <Plans plans={day}/>          
+        ? <Meals meals={day.map(d => d.meals).flat()}/>          
         : <Spinner/>
       }
-    </div>
-  )
-}
-
-type PlansProps = {
-  className?: string
-  plans: PlanType[]
-}
-
-const Plans: React.FC<PlansProps> = ({ className, plans }) => {
-  const navigate = useNavigate()
-
-  return (
-    plans.length > 0
-    ? <div className={cn("h-full flex gap-3 overflow-x-auto", className)}>
-       {plans.map((plan, index) => <Plan key={index} plan={plan}/>)}
-      </div>
-    : <Placeholder.Root
-        icon={<X size={64}/>}
-        className="size-full"
-      >
-        <Placeholder.Message>No Plans Found for Today.</Placeholder.Message>
-        <Placeholder.Tip>Try adding one!</Placeholder.Tip>
-        <Placeholder.Action
-          onClick={() => navigate("/meals/calendar")}
-          className="text-sm"
-        >
-          Go to Event Calendar
-        </Placeholder.Action>
-      </Placeholder.Root>
-  )
-}
-
-type PlanProps = {
-  className?: string
-  plan: PlanType
-}
-
-const Plan: React.FC<PlanProps> = ({ className, plan }) => {
-  const { title, tags, description, meals } = plan
-  
-  return (
-    <div className={cn("min-w-[300px] border border-slate-400 p-3 rounded-md text-nowrap", className)}>
-      <h1 className="font-bold text-xl">{title}</h1>
-      {
-        tags &&
-        <div className="flex flex-wrap items-center gap-2">
-          {tags.map(tag => <div className="text-white font-[600] text-xs px-3">{tag}</div>)}
-        </div>
-      }
-      {
-        description &&
-        <p className="text-muted-foreground font-[600] text-sm">{description}</p>
-      }
-      <Meals meals={meals}/>
     </div>
   )
 }
@@ -157,12 +87,29 @@ type MealsProps = {
   meals: MealType[]
 }
 
-const Meals: React.FC<MealsProps> = ({ className, meals }) => (
-  meals.length > 0 &&
-  <div className={cn("space-y-2 mt-2", className)}>
-    {meals.map((meal, index) => <Meal key={index} meal={meal}/>)}
-  </div>
-)
+const Meals: React.FC<MealsProps> = ({ className, meals }) => {
+  const navigate = useNavigate()
+  
+  return (
+    meals.length > 0
+    ? <div className={cn("space-y-2 mt-2", className)}>
+        {meals.map((meal, index) => <Meal key={index} meal={meal}/>)}
+      </div>
+    : <Placeholder.Root
+        icon={<X size={64}/>}
+        className="size-full"
+      >
+        <Placeholder.Message>No Plans Found for Today.</Placeholder.Message>
+        <Placeholder.Tip>Try adding one!</Placeholder.Tip>
+        <Button
+          onClick={() => navigate("/meals/calendar")}
+          className="text-sm"
+        >
+          Go to Event Calendar
+        </Button>
+      </Placeholder.Root>
+  )
+}
 
 type MealProps = {
   className?: string
@@ -189,11 +136,4 @@ const Meal: React.FC<MealProps> = ({ className, meal }) => (
   </div>
 )
 
-export {
-  Root,
-  Header,
-  Date,
-  OptionContainer,
-  Option,
-  DailyMeals
-}
+export default DailyMeals

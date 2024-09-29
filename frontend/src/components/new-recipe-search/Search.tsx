@@ -9,7 +9,7 @@ type Props = {
   searchRecipes: (query: Query) => void
 }
 
-export default function Search({ searchRecipes }: Props): React.ReactElement {
+const Search: React.FC<Props> = ({ searchRecipes }) =>  {
   const [searchInput, setSearchInput] = useState<Query>({ query: "" })
   const searchRef = useRef<HTMLButtonElement>(null)
 
@@ -49,3 +49,5 @@ export default function Search({ searchRecipes }: Props): React.ReactElement {
     </div>
   )
 }
+
+export default Search

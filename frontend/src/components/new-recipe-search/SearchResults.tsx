@@ -26,7 +26,7 @@ export default function SearchResults({ results, query, isFetching }: Props): Re
   }, [isFetching])
   
   function controlSearchState() {
-    if(results[0].title) {
+    if(results.length > 0) {
       return (
         <div className="w-full flex flex-col justify-between">
           <p className="italic text-muted-foreground text-sm text-center md:text-left">

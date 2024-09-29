@@ -1,4 +1,4 @@
-import { Ingredient, Nutrition, type Recipe } from "@/types/recipe"
+import { Ingredient, Nutrition, type Recipe } from "@/util/types/recipe"
 import {
   Tabs,
   TabsContent,

@@ -57,8 +57,8 @@ const AllMeals: React.FC = () => {
   }, [])
 
   return (
-    <div className="bg-orange-200 min-h-[calc(100vh-150px)]">
-      <div className="relative mx-auto size-fit min-h-[calc(100vh-150px)] min-w-[700px] bg-white p-6 shadow-md">
+    <div className="bg-orange-200 min-h-[calc(100vh-100px)]">
+      <div className="relative mx-auto size-fit min-h-[calc(100vh-100px)] w-[95vw] lg:min-w-[700px] lg:w-fit bg-white p-6 shadow-md">
         <h1 className="font-bold text-5xl mb-8">All Meals</h1>
         <div className="flex justify-center items-start gap-8">
           {

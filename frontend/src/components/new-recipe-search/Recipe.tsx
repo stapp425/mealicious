@@ -48,7 +48,7 @@ function List({ recipe }: Props): React.ReactElement {
             </div>
           </DialogTrigger>
           <DialogContent>
-            <ScrollArea>
+            <ScrollArea type="always">
               <Details recipe={recipe} matches={matches.md}/>
               <ScrollBar/>
             </ScrollArea>
@@ -139,7 +139,7 @@ function Card({ recipe }: Props) {
             </div>
           </DialogTrigger>
           <DialogContent>
-            <ScrollArea>
+            <ScrollArea type="always">
               <Details recipe={recipe} matches={matches.md}/>
             </ScrollArea>
           </DialogContent>
@@ -227,7 +227,7 @@ function Square({ recipe }: Props): React.ReactElement {
           </div>
         </DialogTrigger>
         <DialogContent>
-          <ScrollArea>
+          <ScrollArea type="always">
             <Details recipe={recipe} matches={matches.md}/>
           </ScrollArea>
         </DialogContent>
