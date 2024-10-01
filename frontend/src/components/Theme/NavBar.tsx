@@ -42,7 +42,7 @@ const NavBar: React.FC = () => {
   }
   
   return (
-    <div className="bg-white float-start sticky top-0 left-0 w-[325px] h-screen py-4 space-y-4 shadow-lg">
+    <div className="float-left bg-white sticky top-0 left-0 w-[325px] h-screen py-4 space-y-4 shadow-lg">
       <img
         src={siteLogo}
         alt="Mealicious Logo"
