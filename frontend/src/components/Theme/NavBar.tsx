@@ -136,8 +136,8 @@ const SubSection: React.FC<SectionProps> = ({ Icon, label, to }) => (
 
 const SignOutButton: React.FC = () => (
   <AlertDialog>
-    <AlertDialogTrigger asChild>
-    <Section label="Sign Out" Icon={LogOut} destructive/>
+    <AlertDialogTrigger className="w-full">
+      <Section label="Sign Out" Icon={LogOut} destructive/>
     </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>

@@ -14,6 +14,7 @@ import { Plus, X } from "lucide-react"
 import { useEffect } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Error from "./Error"
+import * as Placeholder from "@/components/theme/Placeholder"
 
 interface NutritionProps extends RequiredFieldArray<Recipe> {
   children: React.ReactNode
@@ -131,15 +132,17 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, setValue, erro
             </div>
             <ScrollBar/>
           </ScrollArea>
-        : <button
-            type="button"
-            onClick={() => setIsEditActive(true)}
-            className="flex-1 flex flex-col justify-center items-center p-6 bg-slate-200 text-slate-500 rounded-md hover:bg-slate-300 active:bg-slate-400 active:text-slate-700 transition-colors"
-          >
-            <X size={84}/>
+        : <Placeholder.Root icon={<X size={84}/>}>
             <h1 className="text-lg font-bold">No Nutrition Found!</h1>
-            <span>Click here to add one!</span>
-          </button>
+            <Placeholder.Tip>Try adding one!</Placeholder.Tip>
+            <Placeholder.Action
+              type="button"
+              onClick={() => setIsEditActive(true)}
+              className="text-sm"
+            >
+              Add Nutrition
+            </Placeholder.Action>
+          </Placeholder.Root>
     }
     {
       error.nutrition &&

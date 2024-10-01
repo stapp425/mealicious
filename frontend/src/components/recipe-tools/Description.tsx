@@ -1,8 +1,8 @@
-import { type RequiredSingleField } from "@/types/form"
+import { type RequiredSingleField } from "@/util/types/form"
 import { Separator } from "@/components/ui/separator"
 import Field from "./Field"
 import Error from "./Error"
-import { type Recipe } from "@/types/recipe"
+import { type Recipe } from "@/util/types/recipe"
 
 const descriptionPlaceholder = 
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh."
