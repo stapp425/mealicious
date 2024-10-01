@@ -1,4 +1,4 @@
-import { Ingredient, Nutrition, type Recipe } from "@/util/types/recipe"
+import { type Recipe } from "@/util/types/recipe"
 import {
   Tabs,
   TabsContent,
@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge"
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Delete from "./Delete"
+import { AppContext } from "@/App"
 
 type Props = {
   isDeleting: boolean
@@ -19,14 +20,15 @@ type Props = {
   activeRecipe: Recipe
 }
 
-export default function Description({ isDeleting, activeRecipe, deleteRecipe }: Props) {
+const Description: React.FC<Props> = ({ isDeleting, activeRecipe, deleteRecipe }) => {
+  const { screenSizes: { md } } = useContext(AppContext)
   const [count, setCount] = useState<number>(1)
   
   return (
-    <div className="size-full grid grid-rows-2 grid-cols-2 gap-4 rounded-lg">
+    <div className="max-h-[calc(100vh-100px)] lg:max-h-screen flex-1 p-4 h-full grid grid-rows-[repeat(2,_minmax(fit-content,_1fr))] grid-cols-2 gap-4 rounded-lg">
       <div className="row-start-1 col-start-1 row-span-1 col-span-1 flex flex-col gap-2">
-        <h1 className="text-3xl font-bold line-clamp-2">{activeRecipe.title}</h1>
-        <div className="flex gap-2 *:flex-1">
+        <h1 className="text-3xl font-bold line-clamp-1 md:line-clamp-2">{activeRecipe.title}</h1>
+        <div className="flex flex-col md:flex-row gap-2 *:flex-1">
           <button className="text-nowrap py-1 px-2 border border-slate-400 hover:bg-slate-200 transition rounded-md">
             <Link to={`/recipes/${activeRecipe.id}`} target="_blank" className="flex justify-between items-center gap-2">
               <span className="font-[600] text-sm">Full Version</span>
@@ -39,20 +41,23 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
             deleteRecipe={deleteRecipe}
           />
         </div>
-        <div className="flex flex-wrap gap-1">
-          {activeRecipe.diets?.map((diet: string) => <Badge key={nanoid()} className="bg-orange-500 pointer-events-none select-none">{diet}</Badge>)}
-        </div>
-        <div className="flex-1 flex flex-wrap justify-between gap-2">
+        {
+          activeRecipe.diets &&
+          <div className="flex flex-wrap gap-1">
+            {activeRecipe.diets.slice(0, md ? activeRecipe.diets.length : 2).map((diet, index) => <Badge key={index} className="bg-orange-500 pointer-events-none max-w-[100px] md:max-w-none select-none line-clamp-1 md:line-clamp-none">{diet}</Badge>)}
+          </div>
+        }
+        <div className="flex-1 flex flex-col justify-between gap-2">
           {
-            activeRecipe.dishTypes && activeRecipe.dishTypes.length > 0 ?
-              activeRecipe.dishTypes?.map((dish: string) => (
-                <div key={nanoid()} className="text-nowrap flex-1 text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 hover:bg-orange-500 hover:text-white transition">
+            activeRecipe.dishTypes && activeRecipe.dishTypes.length > 0
+            ? activeRecipe.dishTypes.slice(0, md ? 4 : 3).map((dish, index) => (
+                <div key={index} className="text-nowrap line-clamp-1 flex-1 md:only:flex-none md:only:h-[100px] text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 hover:bg-orange-500 hover:text-white transition">
                   {dish}
                 </div>
-              )) :
-            <div className="size-full flex justify-center items-center border-2 border-dashed border-slate-400 rounded-md">
-              <h1 className="font-bold text-xl text-slate-400">No diet types found!</h1>
-            </div>
+              ))
+            : <div className="size-full flex justify-center items-center border-2 border-dashed border-slate-400 rounded-md">
+                <h1 className="font-bold text-xl text-slate-400">No diet types found!</h1>
+              </div>
           }
         </div>
         {
@@ -68,18 +73,18 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
       <img 
         src={activeRecipe.image}
         alt={activeRecipe.title}
-        className="row-start-1 col-start-2 row-span-1 col-span-1 size-full rounded-2xl"
+        className="row-start-1 col-start-2 row-span-1 col-span-1 size-full object-cover object-center rounded-2xl"
       />
       <Tabs defaultValue="summary" className="flex flex-col items-center row-start-2 col-start-1 row-span-1 col-span-2">
         <TabsList className="w-full flex justify-around bg-transparent">
-          <TabsTrigger value="summary" className="data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Summary</TabsTrigger>
-          <TabsTrigger value="nutrition" className="data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Nutrition</TabsTrigger>
-          <TabsTrigger value="ingredients" className="data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Ingredients</TabsTrigger>
-          <TabsTrigger value="instructions" className="data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Instructions</TabsTrigger>
+          <TabsTrigger value="summary" className="text-xs md:text-base data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Summary</TabsTrigger>
+          <TabsTrigger value="nutrition" className="text-xs md:text-base data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Nutrition</TabsTrigger>
+          <TabsTrigger value="ingredients" className="text-xs md:text-base data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Ingredients</TabsTrigger>
+          <TabsTrigger value="instructions" className="text-xs md:text-base data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Instructions</TabsTrigger>
         </TabsList>
         <TabsContent value="summary" className="w-full">
-          <ScrollArea className="h-[33vh] rounded-md pr-4" type="always">
-            <div>
+          <ScrollArea className="rounded-md pr-4" type="always">
+            <div className="max-h-[25vh]">
               <h1 className="font-bold text-xl mb-2">Description</h1>
               <p className="indent-8">{activeRecipe.description}</p>
             </div>
@@ -87,8 +92,8 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
           </ScrollArea>
         </TabsContent>
         <TabsContent value="nutrition" className="w-full">
-          <ScrollArea className="h-[33vh] rounded-md pr-4" type="always">
-            <div>
+          <ScrollArea className="rounded-md pr-4" type="always">
+            <div className="max-h-[25vh]">
               <div className="flex justify-between items-center">
                 <h1 className="font-bold text-lg">Serving Size: {`${activeRecipe.servingSize.amount} ${activeRecipe.servingSize.unit}`}</h1>
                 <div className="flex justify-between items-center gap-3">
@@ -99,8 +104,8 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
               </div>
               <div>
                 {
-                  activeRecipe.nutrition.map((nutrition: Nutrition) => (
-                    <div key={nanoid()} className="flex justify-between items-center py-4 border-b border-b-slate-300 last:border-none">
+                  activeRecipe.nutrition.map((nutrition, index) => (
+                    <div key={index} className="flex justify-between items-center py-4 border-b border-b-slate-300 last:border-none">
                       <span>{nutrition.name} <span className="text-sm text-muted-foreground">({nutrition.unit})</span></span>
                       <div className="flex justify-center items-center bg-orange-500 rounded-full min-w-[75px] h-[25px] text-white font-[600] py-2">{Math.round(nutrition.amount) * count}</div>
                     </div>
@@ -112,11 +117,11 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
           </ScrollArea>
         </TabsContent>
         <TabsContent value="ingredients" className="w-full">
-          <ScrollArea className="h-[33vh] w-full rounded-md" type="always">
-            <div className="grid grid-cols-2 gap-2">
+          <ScrollArea className="w-full rounded-md" type="always">
+            <div className="max-h-[25vh] grid grid-cols-2 gap-2">
               {
-                activeRecipe.ingredients.map((ingredient: Ingredient) => (
-                  <div key={nanoid()} className="border border-slate-400 px-2 py-1 odd:last:col-span-2 rounded-md">
+                activeRecipe.ingredients.map((ingredient, index) => (
+                  <div key={index} className="border border-slate-400 px-2 py-1 odd:last:col-span-2 rounded-md">
                     <span className="font-bold text-xl">{ingredient.amount}</span>
                     <span className="text-sm"> {ingredient.unit}</span>  
                     <p className="text-sm text-muted-foreground">{ingredient.name}</p>
@@ -128,8 +133,8 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
           </ScrollArea>
         </TabsContent>
         <TabsContent value="instructions" className="w-full">
-          <ScrollArea className="h-[33vh] w-full rounded-md" type="always">
-            <div className="flex flex-col gap-2">
+          <ScrollArea className="w-full rounded-md" type="always">
+            <div className="max-h-[25vh] flex flex-col gap-2">
               {
                 activeRecipe.instructions.map((instruction: string, index: number) => (
                   <div key={nanoid()} className="p-4 rounded-md bg-orange-100">
@@ -146,3 +151,5 @@ export default function Description({ isDeleting, activeRecipe, deleteRecipe }: 
     </div>
   )
 }
+
+export default Description

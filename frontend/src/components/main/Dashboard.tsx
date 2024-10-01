@@ -3,7 +3,10 @@ import DailyMeals from "./DailyMeals"
 import Banner from "./Banner"
 import { useContext, useEffect } from "react"
 import { AppContext } from "@/App"
+import Container from "../theme/Container"
 
+
+// TODO: Work on revamping recipe paths
 const Dashboard: React.FC = () => {  
   const { screenSizes: { lg } } = useContext(AppContext)
   
@@ -12,11 +15,11 @@ const Dashboard: React.FC = () => {
   }, [])
 
   return (
-    <div>
+    <Container>
       { lg && <Banner/> }
       <DailyMeals/>
       <SavedRecipes/>
-    </div>
+    </Container>
   )
 }
 

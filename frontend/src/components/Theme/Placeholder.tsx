@@ -10,7 +10,7 @@ type PlaceholderProps = {
 
 const Root: FC<PlaceholderProps> = ({ className, icon, children }) => {
   return (
-    <div className={cn("flex flex-col justify-center items-center gap-3 border-2 border-dashed border-slate-400 bg-slate-200 text-slate-600 font-[600] text-2xl py-4 rounded-lg", className)}>
+    <div className={cn("flex flex-col justify-center items-center gap-3 bg-slate-200 text-slate-600 font-[600] text-2xl py-4 rounded-lg", className)}>
       {icon}
       {children}
     </div>

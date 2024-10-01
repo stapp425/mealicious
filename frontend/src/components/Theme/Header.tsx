@@ -9,7 +9,7 @@ export default function Header() {
   const profilePicture = user?.photoURL || defaultProfilePicture
   
   return (
-    <div className="z-50 h-[100px] sticky left-[325px] flex lg:hidden justify-between items-center bg-orange-100 px-6 shadow-b-md">
+    <div className="z-50 h-[100px] sticky top-0 left-[325px] flex lg:hidden justify-between items-center bg-orange-100 px-6 shadow-b-md">
       <NavBarSheet/>
       <img 
         src={siteLogo}

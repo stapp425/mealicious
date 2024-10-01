@@ -77,7 +77,7 @@ const CurrentMeals: React.FC = () => {
     <div className="flex flex-col">
       {
         !isFetching
-        ? <Meals meals={day.map(d => d.meals).flat()} className="px-6"/>          
+        ? <Meals meals={day.map(d => d.meals).flat()} className="px-6 pb-4"/>          
         : <Spinner/>
       }
     </div>
@@ -89,25 +89,27 @@ const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className,
   
   return (
     meals.length > 0
-    ? <ScrollArea className="h-[465px]" type="always">
+    ? <ScrollArea type="always">
         <div className={cn("flex gap-6", className)}>
           {meals.map((meal, index) => <Meal key={index} meal={meal}/>)}
         </div>
         <ScrollBar orientation="horizontal"/>
       </ScrollArea>
-    : <Placeholder.Root
-        icon={<X size={64}/>}
-        className="h-[450px] border-none"
-      >
-        <Placeholder.Message>No Plans Found for Today.</Placeholder.Message>
-        <Placeholder.Tip>Try adding one!</Placeholder.Tip>
-        <Button
-          onClick={() => navigate("/meals/calendar")}
-          className="text-sm"
+    : <div className="px-6">
+        <Placeholder.Root
+          icon={<X size={64}/>}
+          className="w-full h-[450px] text-center border-none px-6"
         >
-          Go to Event Calendar
-        </Button>
-      </Placeholder.Root>
+          <Placeholder.Message>No Plans Found for Today.</Placeholder.Message>
+          <Placeholder.Tip>Try adding one!</Placeholder.Tip>
+          <Button
+            onClick={() => navigate("/meals/calendar")}
+            className="text-sm"
+          >
+            Go to Event Calendar
+          </Button>
+        </Placeholder.Root>
+      </div>
   )
 }
 

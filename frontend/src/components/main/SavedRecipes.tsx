@@ -14,20 +14,18 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 const SavedRecipes: React.FC = () => {
   const { user } = useContext(AppContext)
   const { data: recipes } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"), formatRecipes)
-  
-  console.log("recipes:", recipes)
 
   return (
-    <div className="pb-6 flex flex-col gap-4">
+    <div className="py-6 flex flex-col gap-4">
       <div className="px-6 flex justify-between items-center">
         <h1 className="text-2xl lg:text-3xl font-bold">Saved Recipes</h1>
         <Link to="/recipes" className="h-full text-white text-center px-3 py-1 bg-orange-500 flex flex-col md:flex-row justify-center items-center gap-x-6 rounded-md hover:bg-orange-700 transition-colors">
           <span className="font-[550]">View All Recipes</span>
-          <Eye className="inline"/>
+          <Eye className="hidden lg:inline"/>
         </Link>
       </div>
-      <ScrollArea className="h-[215px]" type="always">
-        <div className="px-6 flex gap-8">
+      <ScrollArea type="always">
+        <div className="flex gap-8 px-6 pb-4">
           { 
             recipes.length > 0 
             ? recipes.map((recipe, index) => <Recipe key={index} recipe={recipe}/>) 
