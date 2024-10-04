@@ -13,7 +13,6 @@ import Diets from "./Diets"
 import DishTypes from "./DishTypes"
 import Times from "./Times"
 import Image from "./Image"
-import Serving from "./Serving"
 import Nutrition from "./Nutrition"
 import Container from "../theme/Container"
 import Button from "../theme/Button"
@@ -74,7 +73,10 @@ const CreateRecipe: React.FC = () => {
   }, [])
   
   return (
-    <Container onSubmit={handleSubmit(submitRecipe)} className="relative bg-red-500 grid grid-rows-[repeat(6,max-content)] grid-cols-1 xl:grid-rows-[repeat(4,_max-content)] xl:grid-cols-2 gap-3 p-3 *:border *:border-orange-300 *:p-4 *:rounded-md">
+    <Container.Form
+      onSubmit={handleSubmit(submitRecipe)}
+      className="grid grid-cols-1 xl:grid-rows-[repeat(6,fit-content)] xl:grid-cols-3 gap-3 p-3"
+    >
       <Image
         name="image"
         register={register}
@@ -82,73 +84,68 @@ const CreateRecipe: React.FC = () => {
         setValue={setValue}
         image={image}
         setImage={setImage}
-        className="row-start-1 col-start-1 p-0"
+        className="xl:row-span-2"
       />
       <Title 
-        className="row-start-1 col-start-2"
         name="title"
         register={register}
         error={errors}
+        className="xl:row-start-1 xl:col-start-2 xl:col-span-2"
       />
-      <Nutrition
-        control={control}
-        setError={setError}
-        clearErrors={clearErrors}
-        error={errors}
-        setValue={setValue}
-      >
-        <Serving
-          className="p-2"
-          name="servingSize"
-          register={register}
-          error={errors}
-        />
-      </Nutrition>
       <Times
-        className="row-start-2"
         register={register}
         error={errors}
+        className="xl:row-start-2 xl:col-start-2 xl:col-span-2"
       />
       <Description 
-        className="flex-1 row-start-3 col-start-1 xl:row-start-1 xl:col-start-2 xl:row-span-2"
         name="description"
         register={register}
         error={errors}
+        className="xl:row-start-3 xl:col-start-2 xl:col-span-2"
+      />
+      <Nutrition
+        register={register}
+        control={control}
+        setError={setError}
+        clearErrors={clearErrors}
+        error={errors}
+        setValue={setValue}
+        className="xl:row-start-3 xl:row-span-2"
       />
       <Diets
-        className="row-start-4 col-start-1 xl:row-start-3"
         control={control}
         setValue={setValue}
+        className="xl:row-start-4 xl:col-start-2"
       />
       <DishTypes
-        className="row-start-5 col-start-1 xl:row-start-3 xl:col-start-2"
         control={control}
         setValue={setValue}
+        className="xl:row-start-4 xl:col-start-3"
       />
       <Ingredients
-        className="row-start-6 col-start-1 xl:row-start-4"
         control={control}
         setValue={setValue}
         error={errors}
         setError={setError}
         clearErrors={clearErrors}
+        className="xl:row-start-5 xl:col-start-2"
       />
       <Instructions
-        className="row-start-7 col-start-1 xl:row-start-4 xl:col-start-2"
         control={control}
         setValue={setValue}
         error={errors}
         setError={setError}
         clearErrors={clearErrors}
+        className="xl:row-start-5 xl:col-start-3"
       />
       <Button
         disabled={isSubmitting}
         type="submit" 
-        className="font-[600] text-xl text-white py-2 bg-orange-500 rounded-md disabled:cursor-not-allowed"
+        className="h-fit text-xl disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Working on it..." : "Create Recipe"}
       </Button>
-    </Container>    
+    </Container.Form>    
   )
 }
 

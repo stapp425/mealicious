@@ -7,25 +7,20 @@ import {
 } from "react-hook-form"
 import { Obj } from "./app"
 
-export interface Field {
-  className?: string
-}
-
-export interface RequiredField<T extends Obj> extends Field {
-  error: FieldErrors<T>
-}
-
-export interface RequiredSingleField<T extends Obj> extends RequiredField<T> {
-  name?: keyof T
+export type ReactHookFormTypes<T extends Obj> = {
+  name: keyof T
   register: UseFormRegister<T>
-}
-
-export interface FieldArray<T extends Obj> extends Field {
+  error: FieldErrors<T>
   control: Control<T>
   setValue: UseFormSetValue<T>
-}
-
-export interface RequiredFieldArray<T extends Obj> extends RequiredField<T>, FieldArray<T> {
   setError: (name: keyof T, error: ErrorOption, options?: { shouldFocus: boolean }) => void
   clearErrors: (name?: keyof T) => void
 }
+
+// export type RequiredField<T extends Obj> = Pick<ReactHookFormTypes<T>, "error" | "name"> & Field
+
+// export type RequiredSingleField<T extends Obj> = RequiredField<T> & Pick<ReactHookFormTypes<T>, "name" | "register">
+
+// export type FieldArray<T extends Obj> = Pick<ReactHookFormTypes<T>, "control" | "setValue"> & Field
+
+// export type RequiredFieldArray<T extends Obj> = Pick<ReactHookFormTypes<T>, "setError" | "clearErrors"> & RequiredField<T> & FieldArray<T>

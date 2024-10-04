@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react"
-import { useFirestoreGet, useScroll } from "@/util/hooks"
+import { useFirestoreGet } from "@/util/hooks"
 import { useParams } from "react-router-dom"
 import { defaultRecipe, formatRecipe, Recipe } from "@/util/types/recipe"
-import { ArrowUp } from "lucide-react"
 import Title from "./Title"
 import Description from "./Description"
 import Nutrition from "./Nutrition"
@@ -10,9 +9,9 @@ import Ingredients from "./Ingredients"
 import Instructions from "./Instructions"
 import Options from "./Options"
 import Sections from "./Sections"
+import Button from "../theme/Button"
 
 export default function RecipeDetails(): React.ReactElement {
-  const { y } = useScroll()
   const { recipeId } = useParams()
   const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -81,13 +80,8 @@ export default function RecipeDetails(): React.ReactElement {
           instructions={data.instructions}
           className="py-6 break-inside-avoid-page"
         />
+        <Button.Scroll/>
       </div>
-      <button 
-        className={`peer fixed bottom-4 right-4 ${y ? "opacity-100" : "opacity-0 pointer-events-none"} flex justify-center items-center text-white bg-orange-500 hover:bg-orange-700 hover:scale-110 transition-all rounded-full size-14`}
-        onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
-      >
-        <ArrowUp size={28}/>
-      </button>
     </div>
   )
 }

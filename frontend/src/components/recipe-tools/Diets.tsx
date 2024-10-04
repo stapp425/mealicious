@@ -1,12 +1,16 @@
-import { type FieldArray } from "@/types/form"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import Field from "./Field";
 import { Input } from "../ui/input"
 import { useInputChange } from "@/util/hooks"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { useWatch } from "react-hook-form"
-import { type Recipe } from "@/types/recipe";
+import { type Recipe } from "@/util/types/recipe";
 
-const Diets: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) => {
+type DietsProps = 
+  Pick<ReactHookFormTypes<Recipe>, "control" | "setValue"> &
+  React.HTMLAttributes<HTMLDivElement>
+
+const Diets: React.FC<DietsProps> = ({ className, control, setValue, ...props }) => {
   const { input, handleChange } = useInputChange<{[key: string]: string}>({ diet: "" })
   
   const diets = useWatch({
@@ -20,7 +24,7 @@ const Diets: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) =
   }
 
   return (
-    <Field className={className}>
+    <Field {...props} className={className}>
       <h1 className="font-bold text-2xl">Diets</h1>
       <div className="flex-1">
         <div className="relative flex justify-between gap-3 mb-3">
@@ -64,7 +68,7 @@ const Diets: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) =
       </div>
       <p className="font-[600] text-muted-foreground">
         Add some diets to your recipe here. <br/>
-        <i className="text-xs text-slate-300">Examples include vegetarian, paleolithic, etc...</i>
+        <i className="text-xs text-slate-400">Examples include vegetarian, paleolithic, etc...</i>
       </p>
     </Field>
   )

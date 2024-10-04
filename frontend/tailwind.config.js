@@ -17,6 +17,12 @@ module.exports = {
   		}
   	},
   	extend: {
+			minHeight: {
+				'site-container': 'calc(100vh - 100px)'
+			},
+			height: {
+				'site-container': 'calc(100vh - 100px)' 
+			},
   		boxShadow: {
   			'scroll-t': '0 15px 10px -5px white'
   		},

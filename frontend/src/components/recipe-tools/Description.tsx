@@ -1,15 +1,19 @@
-import { type RequiredSingleField } from "@/util/types/form"
+import { type Recipe } from "@/util/types/recipe"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import { Separator } from "@/components/ui/separator"
 import Field from "./Field"
-import Error from "./Error"
-import { type Recipe } from "@/util/types/recipe"
+import Error from "../theme/Error"
 
 const descriptionPlaceholder = 
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh."
 
-const Description: React.FC<Required<RequiredSingleField<Recipe>>> = ({ className, name, register, error }) => {
+type DescriptionProps = 
+  Pick<ReactHookFormTypes<Recipe>, "name" | "register" | "error"> &
+  React.HTMLAttributes<HTMLDivElement>
+
+const Description: React.FC<DescriptionProps> = ({ className, name, register, error, ...props }) => {
   return (
-    <Field className={className}>
+    <Field {...props} className={className}>
       <div className="flex justify-between gap-3">
         <h1 className="text-2xl font-bold after:content-['*'] after:text-red-500">Description</h1>
       </div>
@@ -24,13 +28,13 @@ const Description: React.FC<Required<RequiredSingleField<Recipe>>> = ({ classNam
         spellCheck={false}
         placeholder={descriptionPlaceholder}
         autoComplete="off"
-        className="min-h-[100px] resize-y leading-normal box-border flex-1 flex rounded-md"
+        className="min-h-[100px] leading-normal box-border flex-1 flex rounded-md"
       />
       { 
         error.description &&
-        <Error>
+        <Error.Label>
           {error.description.message}
-        </Error> 
+        </Error.Label> 
       }
     </Field>
   )

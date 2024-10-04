@@ -1,16 +1,12 @@
 import { cn } from "@/lib/utils"
 
-type Props = {
-	children: React.ReactNode
-	className?: string
-}
-
-const Field: React.FC<Props> = ({ children, className }) => {  
-  return (
-		<div className={cn("flex flex-col justify-between gap-2 border border-orange-300 p-4 rounded-md", className)}>
-			{ children }
-		</div>
-	)
-}
+const Field: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, ...props }) => (
+	<div 
+		className={cn("flex flex-col justify-between gap-2 border border-orange-400 p-4 rounded-md", className)}
+		{...props}
+	>
+		{ children }
+	</div>
+)
 
 export default Field

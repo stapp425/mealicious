@@ -6,12 +6,13 @@ import { AppContext } from "@/App"
 import Spinner from "@/components/ui/Spinner"
 import { NavBar } from "@/components/theme/NavBar"
 import Container from "@/components/theme/Container"
+import Button from "@/components/theme/Button"
 
 export default function MainLayout() {
   const { user, screenSizes: { lg } } = useContext(AppContext)
   
   return (
-    <div className="relative max-w-screen min-h-screen">
+    <div className="relative w-full min-h-screen">
       { lg ? <NavBar/> : <Header/> }
       { 
         user
@@ -24,6 +25,7 @@ export default function MainLayout() {
       <div className="absolute bottom-0 right-0">
         <Toaster/>
       </div>
+      <Button.Scroll/>
     </div>
   )
 }

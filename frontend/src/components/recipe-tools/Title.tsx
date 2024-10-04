@@ -1,32 +1,33 @@
+import { type Recipe } from "@/util/types/recipe"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import Field from "./Field"
-import Error from "./Error"
-import { type RequiredSingleField } from "@/types/form"
-import { type Recipe } from "@/types/recipe"
+import Error from "../theme/Error"
+import { Input } from "../ui/input"
 
-const Title: React.FC<Required<RequiredSingleField<Recipe>>> = ({ className, name, register, error }) => {
-  return (
-    <Field className={className}>
-      <div className="flex justify-between items-start gap-2 ">
-        <textarea
-          { 
-            ...register(name, {
-              required: "A title is required before submitting."
-            }) 
-          }
-          spellCheck={false}
-          placeholder="Title"
-          className="min-h-[50px] h-[max-content] resize-y flex-1 font-bold text-3xl rounded-md"
-        />
-      </div>
-      <p className="font-[600] text-muted-foreground mt-3">Add a title to your recipe here.</p>
-      { 
-        error.title &&
-        <Error>
-          {error.title.message}
-        </Error> 
+type TitleProps = 
+  Pick<ReactHookFormTypes<Recipe>, "name" | "register" | "error"> & 
+  React.HTMLAttributes<HTMLDivElement>
+
+const Title: React.FC<TitleProps> = ({ className, name, register, error, ...props }) => (
+  <Field {...props} className={className}>
+    <Input
+      {
+        ...register(name, {
+          required: "A title is required before submitting."
+        }) 
       }
-    </Field>
-  )
-}
+      spellCheck={false}
+      placeholder="Title"
+      className="border-none p-0 focus:p-4 h-[50px] font-bold text-3xl rounded-md"
+    />
+    <p className="font-[600] text-muted-foreground mt-3">Add a title to your recipe here.</p>
+    { 
+      error.title &&
+      <Error.Label>
+        {error.title.message}
+      </Error.Label> 
+    }
+  </Field>
+)
 
 export default Title

@@ -30,9 +30,14 @@ import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Calendar, House, List, LogOut, LucideProps, Pencil, Search, Menu } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { signOut } from "@/util/auth"
+import { cn } from "@/lib/utils"
 
 
-const NavBar: React.FC = () => {
+type Props = {
+  className?: string
+}
+
+const NavBar: React.FC<Props> = ({ className }) => {
   const navigate = useNavigate()
   const { activeSection } = useContext(AppContext)
   
@@ -42,7 +47,7 @@ const NavBar: React.FC = () => {
   }
   
   return (
-    <div className="float-left bg-white sticky top-0 left-0 w-[325px] h-screen py-4 space-y-4 shadow-lg">
+    <div className={cn("float-start sticky top-0 left-0 z-50 flex-none bg-white w-[325px] h-screen py-4 space-y-4 shadow-lg", className)}>
       <img
         src={siteLogo}
         alt="Mealicious Logo"

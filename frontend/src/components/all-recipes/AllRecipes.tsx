@@ -73,8 +73,8 @@ const AllRecipes: React.FC = () => {
   }, [recipes])
 
   return (
-    <Container className="min-h-[calc(100vh-100px)] overflow-x-hidden relative flex flex-col md:flex-row">
-      <div className="sticky bottom-0 left-0 md:static w-screen md:w-fit 2xl:w-[50vw] md:h-[calc(100vh-100px)] lg:h-screen flex flex-col border border-r-slate-300">
+    <Container className="flex flex-col md:flex-row">
+      <div className="bg-white sticky top-0 left-0 z-10 md:static w-full md:w-fit 2xl:w-[50vw] md:h-[calc(100vh-100px)] lg:h-screen flex flex-col border border-r-slate-300">
         <div className="p-4 space-y-3">
           <div className="flex justify-between">
             <h1 className="font-bold text-2xl 2xl:text-4xl">All Recipes</h1>
@@ -87,7 +87,7 @@ const AllRecipes: React.FC = () => {
             </Link>
           </div>
           <Select onValueChange={sortRecipes}>
-            <SelectTrigger className="h-[35px] xl:h-[50px] w-[175px] rounded-full">
+            <SelectTrigger className="h-[35px] w-[175px] rounded-full">
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
             <SelectContent>
@@ -99,7 +99,7 @@ const AllRecipes: React.FC = () => {
           </Select>
         </div>
         <ScrollArea type="always">
-          <div className="w-full flex md:flex-col md:flex-wrap gap-4 px-3 pb-3">
+          <div className="w-full flex md:flex-col md:flex-wrap gap-4 px-4 pb-4">
             { 
               isRecipesFetching
               ? <Loading/>

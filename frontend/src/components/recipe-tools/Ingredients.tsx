@@ -1,15 +1,19 @@
 import { useEffect } from "react"
-import { type RequiredFieldArray } from "@/util/types/form"
-import { useWatch } from "react-hook-form"
-import { Input } from "../ui/input"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { type Recipe, type Ingredient } from "@/util/types/recipe"
-import { Plus } from "lucide-react"
-import Field from "./Field"
-import Error from "./Error"
+import { type ReactHookFormTypes } from "@/util/types/form"
+import { useWatch } from "react-hook-form"
 import { useInputChange } from "@/util/hooks"
+import { Plus } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Field from "./Field"
+import Error from "../theme/Error"
 
-const Ingredients: React.FC<RequiredFieldArray<Recipe>> = ({ className, control, setValue, error, setError, clearErrors }) => {
+type IngredientsProps = 
+  Pick<ReactHookFormTypes<Recipe>, "control" | "setValue" | "error" | "setError" | "clearErrors"> & 
+  React.HTMLAttributes<HTMLDivElement>
+
+const Ingredients: React.FC<IngredientsProps> = ({ className, control, setValue, error, setError, clearErrors }) => {
   const { input, isEditActive, setIsEditActive, setInput, handleChange } = useInputChange<Ingredient>({
     name: "",
     amount: 1,
@@ -30,8 +34,6 @@ const Ingredients: React.FC<RequiredFieldArray<Recipe>> = ({ className, control,
     } else
       clearErrors("ingredients")
   }, [ingredients])
-  
-  // "row-start-6 col-start-1 xl:row-start-4"
 
   return (
     <Field className={className}>
@@ -143,9 +145,9 @@ const Ingredients: React.FC<RequiredFieldArray<Recipe>> = ({ className, control,
       }
       { 
         error.ingredients &&
-        <Error>
+        <Error.Label>
           {error.ingredients.message}
-        </Error> 
+        </Error.Label> 
       }
     </Field>
   )

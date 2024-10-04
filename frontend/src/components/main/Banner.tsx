@@ -9,7 +9,7 @@ const Banner: React.FC = () => {
   const profilePicture = user?.photoURL || defaultProfilePicture
 
   return (
-    <div className="bg-orange-100 col-span-3 xl:col-span-2 relative flex items-center p-6">
+    <div className="bg-orange-100 relative flex items-center p-6">
       <img 
         src={profilePicture}
         alt="Profile Picture"
@@ -25,7 +25,6 @@ const Banner: React.FC = () => {
               {format(date, "MM/dd/yy")}
           </h2>
         </div>
-        
         <h3 className="text-sm text-muted-foreground italic">Mealicious User</h3>
       </div>
     </div>
