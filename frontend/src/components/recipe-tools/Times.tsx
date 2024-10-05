@@ -2,7 +2,7 @@ import { Clock, Microwave, Clipboard } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { type ReactHookFormTypes } from "@/util/types/form"
 import { type Recipe } from "@/util/types/recipe"
-import Field from "./Field"
+import Field from "../theme/Field"
 import Error from "../theme/Error"
 
 type TimesProps = Pick<ReactHookFormTypes<Recipe>, "error" | "register"> & React.HTMLAttributes<HTMLDivElement>

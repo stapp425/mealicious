@@ -18,7 +18,7 @@ import { AppContext } from "@/App"
 import { User } from "firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/util/types/app"
-import * as Placeholder from "@/components/theme/Placeholder"
+import Placeholder from "@/components/theme/Placeholder"
 import Container from "../theme/Container"
 
 
@@ -113,7 +113,7 @@ const AllRecipes: React.FC = () => {
             }
             {
               recipes.length === 0 &&
-              <Placeholder.Root icon={<X size={48}/>} className="2xl:col-span-2 py-[50px]">
+              <Placeholder icon={<X size={48}/>} className="2xl:col-span-2 py-[50px]">
                 <Placeholder.Message>No Recipes Found!</Placeholder.Message>
                 <Placeholder.Tip>Try creating one!</Placeholder.Tip>
                 <Placeholder.Action
@@ -122,7 +122,7 @@ const AllRecipes: React.FC = () => {
                 >
                   Create Recipe
                 </Placeholder.Action>
-              </Placeholder.Root>
+              </Placeholder>
             }
           </div>
           <ScrollBar orientation={md ? "vertical" : "horizontal"}/>
@@ -130,13 +130,13 @@ const AllRecipes: React.FC = () => {
       </div>
       { 
         isFirstRender
-        ? <Placeholder.Root 
+        ? <Placeholder 
             icon={<Clipboard size={96}/>}
             className="flex-1 text-slate-500 flex flex-col justify-center items-center gap-3 bg-slate-200 p-4 rounded-none"
           >
             <Placeholder.Message className="font-bold text-xl">Selected Recipes will appear here</Placeholder.Message>
             <Placeholder.Tip>Try selecting one!</Placeholder.Tip>
-          </Placeholder.Root>
+          </Placeholder>
           
         : <Description activeRecipe={activeRecipe} isDeleting={isWorking} deleteRecipe={deleteRecipe}/>
       }

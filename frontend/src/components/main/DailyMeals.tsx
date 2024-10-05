@@ -8,7 +8,7 @@ import { useEventCalendar, useFirestoreFetch } from "@/util/hooks"
 import { formatPlans, type Plan as PlanType } from "@/util/types/plan"
 import { createQuery } from "@/util/types/app"
 import { type User } from "firebase/auth"
-import Spinner from "../ui/Spinner"
+import Spinner from "../theme/Spinner"
 import { Meal as MealType } from "@/util/types/meal"
 import {
   Tooltip,
@@ -16,8 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import * as Placeholder from "../theme/Placeholder"
-import * as React from "react"
+import Placeholder from "../theme/Placeholder"
 import Button from "../theme/Button"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Recipe as RecipeType } from "@/util/types/recipe"
@@ -54,7 +53,7 @@ type OptionProps = {
 const Option: React.FC<OptionProps> = ({ className, label, to = "", Icon }) => (
   <TooltipProvider delayDuration={0}>
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <button className="p-3 text-white bg-orange-500 rounded-full hover:bg-orange-700 hover:scale-[110%] transition">
           <Link to={`/meals/${to}`}>
             <Icon size={18}/>
@@ -96,7 +95,7 @@ const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className,
         <ScrollBar orientation="horizontal"/>
       </ScrollArea>
     : <div className="px-6">
-        <Placeholder.Root
+        <Placeholder
           icon={<X size={64}/>}
           className="w-full h-[450px] text-center border-none px-6"
         >
@@ -108,7 +107,7 @@ const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className,
           >
             Go to Event Calendar
           </Button>
-        </Placeholder.Root>
+        </Placeholder>
       </div>
   )
 }

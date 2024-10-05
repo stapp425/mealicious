@@ -162,7 +162,7 @@ export function useFirestoreGet<T>(path: FirestoreCollection, id: string, format
     }
   }
 
-  return { isFetching, data, fetchData }
+  return { isFetching, data, setData, fetchData }
 }
 
 export function useFirestoreUpdate<T extends Obj>() {

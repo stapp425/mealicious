@@ -8,7 +8,7 @@ import { createQuery } from "@/util/types/app"
 import { User } from "firebase/auth"
 import { X } from "lucide-react"
 import { formatMeals, Meal } from "@/util/types/meal"
-import * as Placeholder from "../theme/Placeholder"
+import Placeholder from "../theme/Placeholder"
 import RemoveEvent from "./event-tools/RemoveEvent"
 
 const MealCalendar: React.FC = () => {
@@ -27,13 +27,13 @@ const MealCalendar: React.FC = () => {
         { 
           plans.length > 0
           ? <Calendar plans={plans} className="flex-1"/>
-          : <Placeholder.Root
+          : <Placeholder
               icon={<X size={64}/>}
               className="flex-1"
             >
               <Placeholder.Message>No Plans Found!</Placeholder.Message>
               <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
-            </Placeholder.Root>
+            </Placeholder>
         }
         <div className="flex justify-center items-center gap-8">
           <CreateEvent

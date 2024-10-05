@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     } catch (err: any) {
       toast({
         title: "Uh Oh!",
-        description: "Invalid username/password." || err.message,
+        description: err.message || "Invalid username/password.",
         variant: "destructive"
       })
     }

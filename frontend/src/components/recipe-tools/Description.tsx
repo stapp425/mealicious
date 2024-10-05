@@ -1,7 +1,7 @@
 import { type Recipe } from "@/util/types/recipe"
 import { type ReactHookFormTypes } from "@/util/types/form"
 import { Separator } from "@/components/ui/separator"
-import Field from "./Field"
+import Field from "../theme/Field"
 import Error from "../theme/Error"
 
 const descriptionPlaceholder = 

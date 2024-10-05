@@ -7,20 +7,20 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid"
 
-type Props = {
+type RecipeProps = {
   recipe: Recipe
   onChange: (recipe: Recipe) => void
   activeRecipe: string
 }
 
-const Recipe: React.FC<Props> = (props) => {
+const Recipe: React.FC<RecipeProps> = (props) => {
   const { screenSizes: { xxl } } = useContext(AppContext)
   const Variant = xxl ? List : Square
 
   return <Variant {...props}/>
 }
 
-const List: React.FC<Props> = ({ recipe, onChange, activeRecipe }) => (
+const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
   <label className={`w-full overflow-hidden border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
     <input
       type="radio"
@@ -101,7 +101,7 @@ const List: React.FC<Props> = ({ recipe, onChange, activeRecipe }) => (
   </label>
 )
 
-const Square: React.FC<Props> = ({ recipe, onChange, activeRecipe }) => (
+const Square: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
   <label className={`relative overflow-hidden size-[150px] md:size-[250px] border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex flex-col justify-between pb-4 rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
     <input
       type="radio"

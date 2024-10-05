@@ -4,13 +4,12 @@ import { type Plan as PlanType } from "@/util/types/plan"
 import { format } from "date-fns"
 import { useWatch, type UseFormRegister } from "react-hook-form"
 import { PlanQueries } from "./RemoveEvent"
-import { type RequiredFieldArray } from "@/util/types/form"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import { useEffect } from "react"
 
 type PlansProps = {
   plans: PlanType[]
-  register: UseFormRegister<PlanQueries>
-} & React.FormHTMLAttributes<HTMLFormElement> & Omit<RequiredFieldArray<PlanQueries>, "setValue" | "error">
+} & React.FormHTMLAttributes<HTMLFormElement> & Pick<ReactHookFormTypes<PlanQueries>, "control" | "setError" | "clearErrors" | "register">
 
 type PlanProps = {
   plan: PlanType

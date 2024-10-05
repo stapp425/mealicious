@@ -9,7 +9,7 @@ import { motion } from "framer-motion"
 import Box from "./Box"
 import DayIcon from "./DayIcon"
 
-type Props<T = Plan> = {
+type MonthProps<T = Plan> = {
   className?: string
   days: Date[]
   currentMonth: Date
@@ -19,7 +19,7 @@ type Props<T = Plan> = {
   setMonth: (value: number) => void
 }
 
-const Month: React.FC<Props> = ({ days, currentMonth, previousMonth, nextMonth, className, setMonth, getEventsOfInterval }) => {
+const Month: React.FC<MonthProps> = ({ days, currentMonth, previousMonth, nextMonth, className, setMonth, getEventsOfInterval }) => {
   const calendarRef = useRef<HTMLDivElement>(null)
   
   useEffect(() => {

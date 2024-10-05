@@ -9,12 +9,12 @@ import {
 import Month from "./month/Month"
 import Day from "./day/Day"
 
-type Props = {
+type CalendarProps = {
   className?: string
   plans: Plan[]
 }
 
-const Calendar: React.FC<Props> = ({ className, plans }) => {
+const Calendar: React.FC<CalendarProps> = ({ className, plans }) => {
   const {
     currentDay,
     setDay,

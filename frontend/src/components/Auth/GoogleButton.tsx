@@ -1,11 +1,11 @@
 import googleLogo from "@/img/logo/google-logo.svg"
 import { signInWithGoogle } from "@/util/auth"
 
-type Props = {
+type GoogleButtonProps = {
   mode: "login" | "register"
 }
 
-const GoogleButton: React.FC<Props> = ({ mode }) => (
+const GoogleButton: React.FC<GoogleButtonProps> = ({ mode }) => (
   <div className="flex justify-center items-stretch">
     <button type="button" className="gsi-material-button" onClick={signInWithGoogle}>
       <div className="gsi-material-button-state"></div>

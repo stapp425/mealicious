@@ -1,6 +1,6 @@
 import { type Recipe } from "@/util/types/recipe"
 import { type ReactHookFormTypes } from "@/util/types/form"
-import Field from "./Field"
+import Field from "../theme/Field"
 import Error from "../theme/Error"
 import { Input } from "../ui/input"
 

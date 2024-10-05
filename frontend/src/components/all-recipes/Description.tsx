@@ -13,13 +13,13 @@ import { useContext, useState } from "react"
 import Delete from "./Delete"
 import { AppContext } from "@/App"
 
-type Props = {
+type DescriptionProps = {
   isDeleting: boolean
   deleteRecipe: (id: string) => void
   activeRecipe: Recipe
 }
 
-const Description: React.FC<Props> = ({ isDeleting, activeRecipe, deleteRecipe }) => {
+const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, deleteRecipe }) => {
   const { screenSizes: { md } } = useContext(AppContext)
   const [count, setCount] = useState<number>(1)
   
@@ -30,7 +30,7 @@ const Description: React.FC<Props> = ({ isDeleting, activeRecipe, deleteRecipe }
           <h1 className="text-3xl font-bold line-clamp-1 md:line-clamp-2">{activeRecipe.title}</h1>
           <div className="flex flex-col md:flex-row gap-2 *:flex-1">
             <button className="text-nowrap py-1 px-2 border border-slate-400 hover:bg-slate-200 transition rounded-md">
-              <Link to={`/recipes/${activeRecipe.id}`} target="_blank" className="flex justify-between items-center gap-2">
+              <Link to={`/recipes/${activeRecipe.id}`} className="flex justify-between items-center gap-2">
                 <span className="font-[600] text-sm">Full Version</span>
                 <ArrowUpRight size={20}/>
               </Link>

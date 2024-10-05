@@ -1,12 +1,13 @@
 type Props = {
+  className?: string
   color?: string
   backgroundColor?: string
   size?: number
 }
 
-const Spinner: React.FC<Props> = ({ color = "#f97316", backgroundColor = "#e5e7eb", size = 12 }) => {
+const Spinner: React.FC<Props> = ({ className, color = "#f97316", backgroundColor = "#e5e7eb", size = 12 }) => {
   return (
-    <div role="status">
+    <div role="status" className={className}>
       <svg 
         aria-hidden="true"
         className="inline animate-spin"

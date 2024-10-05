@@ -4,7 +4,7 @@ import { useInputChange } from "@/util/hooks"
 import { useWatch } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import Field from "./Field"
+import Field from "../theme/Field"
 
 type DishTypesProps = 
   Pick<ReactHookFormTypes<Recipe>, "control" | "setValue"> &

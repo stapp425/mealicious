@@ -1,10 +1,10 @@
 import { type Meal as MealType } from "@/util/types/meal"
 
-type Props = {
+type MealProps = {
   meal: MealType
 }
 
-const Meal: React.FC<Props> = ({ meal }) => (
+const Meal: React.FC<MealProps> = ({ meal }) => (
   <div className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-slate-300 [&:not(:last-child)]:pb-3 pt-3">
     <div className="flex justify-between items-center">
       <h1 className="font-[600]">

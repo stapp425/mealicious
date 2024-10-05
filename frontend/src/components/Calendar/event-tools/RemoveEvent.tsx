@@ -13,11 +13,11 @@ import Plans from "./Plans"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
 import { useFirestoreDelete } from "@/util/hooks"
-import Spinner from "@/components/ui/Spinner"
+import Spinner from "@/components/theme/Spinner"
 import Error from "../Error"
 import { useEffect, useState } from "react"
 
-type Props = {
+type RemoveEventProps = {
   plans: Plan[]
   setPlans: React.Dispatch<React.SetStateAction<Plan[]>>
 }
@@ -26,7 +26,7 @@ export type PlanQueries = {
   plans: (Plan & { selected: boolean })[]
 }
 
-const RemoveEvent: React.FC<Props> = ({ plans, setPlans }) => {
+const RemoveEvent: React.FC<RemoveEventProps> = ({ plans, setPlans }) => {
   const { toast } = useToast()
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)

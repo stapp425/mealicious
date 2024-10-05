@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 
 type Day = "Su" | "Mo" | "Tu" | "We" | "Th" | "Fr" | "Sa"
 
-type Props = {
+type DayIconProps = {
   className?: string
   day: Day
   fullDay?: boolean
@@ -29,7 +29,7 @@ function getFullDay(day: Day): string {
   }
 }
 
-const DayIcon: React.FC<Props> = ({ className, day, fullDay }) => {
+const DayIcon: React.FC<DayIconProps> = ({ className, day, fullDay }) => {
   return (
     <div className={cn("flex justify-center items-center bg-orange-500 size-[36px] font-[600] rounded-full text-white", className)}>
       {fullDay ? getFullDay(day) : day}

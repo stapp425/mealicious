@@ -4,16 +4,16 @@ import { format } from 'date-fns'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import Plan from './Plan'
-import * as Placeholder from '@/components/theme/Placeholder'
+import Placeholder from '@/components/theme/Placeholder'
 
-type Props = {
+type DayProps = {
   className?: string
   currentDay: Date
   setDay: (value: number) => void
   events?: PlanType[]
 }
 
-const Day: React.FC<Props> = ({ className, setDay, currentDay, events }) => (    
+const Day: React.FC<DayProps> = ({ className, setDay, currentDay, events }) => (    
   <motion.div
     initial={{ y: -100, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
@@ -48,12 +48,12 @@ const Day: React.FC<Props> = ({ className, setDay, currentDay, events }) => (
                   {events.map((event, index) => <Plan key={index} plan={event}/>)}
                   <ScrollBar/>
                 </ScrollArea>
-              : <Placeholder.Root
+              : <Placeholder
                   icon={<X size={64}/>}
                   className="my-auto size-full"
                 >
                   <Placeholder.Message>No Meals Found!</Placeholder.Message>
-                </Placeholder.Root>
+                </Placeholder>
           }
         </motion.div>
       </AnimatePresence>

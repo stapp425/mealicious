@@ -16,6 +16,7 @@ import Image from "./Image"
 import Nutrition from "./Nutrition"
 import Container from "../theme/Container"
 import Button from "../theme/Button"
+import Spinner from "../theme/Spinner"
 
 const CreateRecipe: React.FC = () => {
   const { toast } = useToast()
@@ -35,10 +36,12 @@ const CreateRecipe: React.FC = () => {
     setValue,
     setError,
     clearErrors,
+    reset,
     control,
     formState: { 
       errors,
-      isSubmitting
+      isSubmitting,
+      isSubmitSuccessful
     }
   } = useForm<Recipe>({ defaultValues: defaultRecipe })  
   
@@ -71,6 +74,10 @@ const CreateRecipe: React.FC = () => {
   useEffect(() => {
     document.title = "Create Recipe | Mealicious"
   }, [])
+
+  useEffect(() => {
+    reset()
+  }, [isSubmitSuccessful])
   
   return (
     <Container.Form
@@ -143,9 +150,9 @@ const CreateRecipe: React.FC = () => {
         type="submit" 
         className="h-fit text-xl disabled:cursor-not-allowed"
       >
-        {isSubmitting ? "Working on it..." : "Create Recipe"}
+        {isSubmitting ? <><Spinner className="inline mr-2"/> Working on it...</> : "Create Recipe"}
       </Button>
-    </Container.Form>    
+    </Container.Form>
   )
 }
 

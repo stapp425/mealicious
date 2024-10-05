@@ -2,21 +2,21 @@ import { useEffect, useState } from "react"
 import { Label } from "../../ui/label"
 import Button from "../../theme/Button"
 import { useWatch } from "react-hook-form"
-import { RequiredFieldArray } from "@/util/types/form"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import { X } from "lucide-react"
 import { type Meal } from "@/util/types/meal"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import Error from "../Error"
 import { Plan } from "@/util/types/plan"
-import * as Placeholder from "../../theme/Placeholder"
+import Placeholder from "../../theme/Placeholder"
 import { Link } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
-interface Props extends RequiredFieldArray<Plan> {
+type DragAndDropProps = {
   meals: Meal[]
-}
+} & Pick<ReactHookFormTypes<Plan>, "control" | "setValue" | "setError" | "clearErrors" | "error">
 
-const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clearErrors, error }) => {
+const DragAndDrop: React.FC<DragAndDropProps> = ({ meals, control, setValue, setError, clearErrors, error }) => {
   const [isAllMealsVisible, setIsAllMealsVisible] = useState<boolean>(false)
 
   const mealsInput = useWatch({
@@ -119,7 +119,7 @@ const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clea
                         className="flex flex-col h-[90%] border border-slate-400 p-3 space-y-1 rounded-sm"
                       />
                     )
-                  : <Placeholder.Root 
+                  : <Placeholder
                       icon={<X size={64}/>}
                       className="w-full"
                     >
@@ -130,7 +130,7 @@ const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clea
                           Create Meal
                         </Link>
                       </Button>
-                    </Placeholder.Root>
+                    </Placeholder>
               }
             </div>
             <ScrollBar orientation="horizontal"/>

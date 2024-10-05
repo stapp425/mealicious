@@ -24,7 +24,7 @@ import {
 import Button from "../../theme/Button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import Spinner from "@/components/ui/Spinner"
+import Spinner from "@/components/theme/Spinner"
 import Error from "../Error"
 import DragAndDrop from "./DragAndDrop"
 import { defaultPlan, type Plan } from "@/util/types/plan"
@@ -35,12 +35,12 @@ const dateFormat = "yyyy-MM-dd"
 const minDate = startOfWeek(addDays(now, 7), { weekStartsOn: 1 }) // Monday of the following week
 const maxDate = startOfWeek(addMonths(minDate, 2), { weekStartsOn: 0 }) // Sunday 2 months in the future
 
-type Props = {
+type CreateEventProps = {
   meals: Meal[]
   setPlans: React.Dispatch<React.SetStateAction<Plan[]>>
 }
 
-const CreateEvent: React.FC<Props> = ({ meals, setPlans }) => {
+const CreateEvent: React.FC<CreateEventProps> = ({ meals, setPlans }) => {
   const { toast } = useToast()
   const { user } = useContext(AppContext)
   const [date, setDate] = useState<Date>(minDate)

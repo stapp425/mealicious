@@ -7,12 +7,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-type Props =  {
+type BoxProps =  {
   day: Date
   children: React.ReactNode
 }
 
-const Box: React.FC<Props> = ({ day, children }) => {
+const Box: React.FC<BoxProps> = ({ day, children }) => {
   return (
     <Dialog>
       <DialogTrigger>

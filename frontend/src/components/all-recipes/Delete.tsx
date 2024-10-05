@@ -1,14 +1,14 @@
 import { Trash2 } from "lucide-react"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
-import Spinner from "../ui/Spinner"
+import Spinner from "../theme/Spinner"
 
-type Props = {
+type DeleteProps = {
   isDeleting: boolean
   deleteRecipe: (id: string) => void
   id: string
 }
 
-const Delete: React.FC<Props> = ({ isDeleting, id, deleteRecipe }) => {  
+const Delete: React.FC<DeleteProps> = ({ isDeleting, id, deleteRecipe }) => {  
   return (
     <AlertDialog>
       <AlertDialogTrigger className="w-full" asChild>

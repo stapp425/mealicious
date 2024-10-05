@@ -1,16 +1,16 @@
 import { AppContext } from "@/App"
 import { useContext, useEffect } from "react"
+import { type User } from "@firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/util/types/app"
 import { formatMeals, type Meal as MealEntry } from "@/util/types/meal"
 import { useToast } from "@/components/ui/use-toast"
-import Meal from "./Meal"
-import Spinner from "@/components/ui/Spinner"
-import { User } from "@firebase/auth"
 import { X } from "lucide-react"
-import Button from "../theme/Button"
 import { Link } from "react-router-dom"
-import * as Placeholder from "../theme/Placeholder"
+import Meal from "./Meal"
+import Spinner from "@/components/theme/Spinner"
+import Button from "../theme/Button"
+import Placeholder from "../theme/Placeholder"
 
 const AllMeals: React.FC = () => {
   const { user, screenSizes: { xl } } = useContext(AppContext)
@@ -74,7 +74,7 @@ const AllMeals: React.FC = () => {
                             removeMeal={removeMeal}
                           />
                         )
-                        : <Placeholder.Root icon={<X size={64}/>}>
+                        : <Placeholder icon={<X size={64}/>}>
                             <Placeholder.Message>No Meals Found!</Placeholder.Message>
                             <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
                             <Button className="text-sm">
@@ -82,7 +82,7 @@ const AllMeals: React.FC = () => {
                                 Create Meal
                               </Link>
                             </Button>
-                          </Placeholder.Root>
+                          </Placeholder>
                     }
                   </div>
                 )

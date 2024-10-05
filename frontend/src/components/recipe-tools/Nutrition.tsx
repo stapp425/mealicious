@@ -13,8 +13,8 @@ import {
 import { Plus, X } from "lucide-react"
 import { useEffect } from "react"
 import Error from "../theme/Error"
-import * as Placeholder from "@/components/theme/Placeholder"
-import Field from "./Field"
+import Placeholder from "@/components/theme/Placeholder"
+import Field from "../theme/Field"
 import Serving from "./Serving"
 
 type NutritionProps = 
@@ -131,7 +131,7 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, register, setV
             }
           </div>
         : <>
-          <Placeholder.Root icon={<X size={84}/>} className="relative h-full">
+          <Placeholder icon={<X size={84}/>} className="relative h-full">
             <h1 className="text-lg font-bold">No Nutrition Found!</h1>
             <Placeholder.Tip>Try adding one!</Placeholder.Tip>
             <Placeholder.Action
@@ -141,15 +141,13 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, register, setV
             >
               Add Nutrition
             </Placeholder.Action>
-            <div className="w-full absolute bottom-0 p-4">
-              {
-                error.nutrition &&
-                <Error.Label className="w-full text-black font-normal text-base">
-                  {error.nutrition.message}
-                </Error.Label>
-              }
-            </div>
-          </Placeholder.Root>
+          </Placeholder>
+          {
+            error.nutrition &&
+            <Error.Label className="w-full text-black font-normal text-base">
+              {error.nutrition.message}
+            </Error.Label>
+          }
           {
             error.servingSize?.amount &&
             <Error.Label>

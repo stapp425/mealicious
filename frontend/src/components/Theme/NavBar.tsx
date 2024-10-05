@@ -32,12 +32,11 @@ import { Link, useNavigate } from "react-router-dom"
 import { signOut } from "@/util/auth"
 import { cn } from "@/lib/utils"
 
-
-type Props = {
+type NavBarProps = {
   className?: string
 }
 
-const NavBar: React.FC<Props> = ({ className }) => {
+const NavBar: React.FC<NavBarProps> = ({ className }) => {
   const navigate = useNavigate()
   const { activeSection } = useContext(AppContext)
   
@@ -88,16 +87,16 @@ const NavBarSheet: React.FC = () => (
       <Menu size={26}/>
     </SheetTrigger>
     <SheetContent side="left" className="p-0 w-fit">
+      <NavBar/>
       <VisuallyHidden.Root>
         <SheetHeader className="hidden">
+          <SheetTitle>Mealicious Navigation Menu</SheetTitle>
           <SheetDescription className="hidden">
-            <SheetTitle>Mealicious Navigation Menu</SheetTitle>
             Allows the user to navigate to different pages of the website.
             Open by default on large screen sizes and collapsible on smaller sizes.
           </SheetDescription>
         </SheetHeader>
       </VisuallyHidden.Root>
-      <NavBar/>
     </SheetContent>
   </Sheet>
 )

@@ -32,12 +32,12 @@ const SavedRecipes: React.FC = () => {
             : <Placeholder.Root icon={<X size={48}/>} className="w-full border-none">
                 <Placeholder.Message>No Recipes Found!</Placeholder.Message>
                 <Placeholder.Tip>Try creating some!</Placeholder.Tip>
+                <Placeholder.Action className="text-xs">Create recipe</Placeholder.Action>
               </Placeholder.Root>
           }
         </div>
         <ScrollBar orientation="horizontal"/>
       </ScrollArea>
-      
     </div>
   )
 }

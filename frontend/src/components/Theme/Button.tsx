@@ -5,7 +5,7 @@ import { ArrowUp } from "lucide-react"
 
 type ButtonRef = React.ForwardRefExoticComponent<React.ButtonHTMLAttributes<HTMLButtonElement> & React.RefAttributes<HTMLButtonElement>>
 
-type ButtonComponent = {
+export type ButtonComponent = {
   Scroll: ButtonRef
 } & ButtonRef
 

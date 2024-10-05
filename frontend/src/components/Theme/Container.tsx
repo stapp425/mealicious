@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils"
 
 type ContainerComponent = {
-  Form: React.FC<Props & React.HTMLAttributes<HTMLFormElement>> 
-} & React.FC<Props & React.HTMLAttributes<HTMLDivElement>>
+  Form: React.FC<ContainerProps & React.HTMLAttributes<HTMLFormElement>> 
+} & React.FC<ContainerProps & React.HTMLAttributes<HTMLDivElement>>
 
-type Props = {
+type ContainerProps = {
   className?: string
 } 
 
