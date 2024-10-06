@@ -11,9 +11,10 @@ import Meal from "./Meal"
 import Spinner from "@/components/theme/Spinner"
 import Button from "../theme/Button"
 import Placeholder from "../theme/Placeholder"
+import Container from "../theme/Container"
 
 const AllMeals: React.FC = () => {
-  const { user, screenSizes: { xl } } = useContext(AppContext)
+  const { user, screenSizes: { xxl } } = useContext(AppContext)
   const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
   const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(createQuery(user as User, "meals"), formatMeals)
@@ -57,43 +58,43 @@ const AllMeals: React.FC = () => {
   }, [])
 
   return (
-    <div className="bg-orange-200 min-h-[calc(100vh-100px)]">
-      <div className="relative mx-auto size-fit min-h-[calc(100vh-100px)] w-[95vw] lg:min-w-[700px] lg:w-fit bg-white p-6 shadow-md">
-        <h1 className="font-bold text-5xl mb-8">All Meals</h1>
-        <div className="flex justify-center items-start gap-8">
+    <Container className="bg-orange-200">
+      <div className="relative mx-auto size-fit min-h-site-container lg:min-h-screen lg:min-w-[700px] w-full lg:w-fit bg-white p-6 shadow-md">
+        <h1 className="font-bold text-2xl lg:text-5xl mb-8">All Meals</h1>
+        <div className="flex justify-center items-start gap-4">
           {
             !isFetching
-              ? evenlySplitArray(fetchedMeals, xl ? 2 : 1).map((meals, index) => 
-                  <div key={index} className="w-full flex flex-col gap-8">
-                    {
-                      meals.length > 0
-                        ? meals.map((meal, index) => 
-                          <Meal 
-                            key={index}
-                            meal={meal}
-                            removeMeal={removeMeal}
-                          />
-                        )
-                        : <Placeholder icon={<X size={64}/>}>
-                            <Placeholder.Message>No Meals Found!</Placeholder.Message>
-                            <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
-                            <Button className="text-sm">
-                              <Link to="/meals/create">
-                                Create Meal
-                              </Link>
-                            </Button>
-                          </Placeholder>
-                    }
-                  </div>
-                )
-              : <div className="flex-1 flex flex-col justify-center items-center gap-6">
-                  <Spinner size={75}/>
-                  <h1 className="font-[600] text-3xl">Loading...</h1>
+            ? evenlySplitArray(fetchedMeals, xxl ? 2 : 1).map((meals, index) => 
+                <div key={index} className="w-full flex flex-col gap-8">
+                  {
+                    meals.length > 0
+                    ? meals.map((meal, index) => 
+                      <Meal 
+                        key={index}
+                        meal={meal}
+                        removeMeal={removeMeal}
+                      />
+                    )
+                    : <Placeholder icon={<X size={64}/>}>
+                        <Placeholder.Message>No Meals Found!</Placeholder.Message>
+                        <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
+                        <Button className="text-sm">
+                          <Link to="/meals/create">
+                            Create Meal
+                          </Link>
+                        </Button>
+                      </Placeholder>
+                  }
                 </div>
+              )
+            : <div className="flex-1 flex flex-col justify-center items-center gap-6">
+                <Spinner size={75}/>
+                <h1 className="font-[600] text-3xl">Loading...</h1>
+              </div>
           }
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
 

@@ -21,7 +21,7 @@ const Recipe: React.FC<RecipeProps> = (props) => {
 }
 
 const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
-  <label className={`w-full overflow-hidden border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
+  <label className={`max-h-[200px] w-full overflow-hidden border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
     <input
       type="radio"
       name="recipe"

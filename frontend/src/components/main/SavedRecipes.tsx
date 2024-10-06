@@ -8,7 +8,7 @@ import { createQuery } from "@/util/types/app"
 import { useContext } from "react"
 import { AppContext } from "@/App"
 import { type User } from "firebase/auth"
-import * as Placeholder from "@/components/theme/Placeholder"
+import Placeholder from "@/components/theme/Placeholder"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const SavedRecipes: React.FC = () => {
@@ -29,11 +29,11 @@ const SavedRecipes: React.FC = () => {
           { 
             recipes.length > 0 
             ? recipes.map((recipe, index) => <Recipe key={index} recipe={recipe}/>) 
-            : <Placeholder.Root icon={<X size={48}/>} className="w-full border-none">
+            : <Placeholder icon={<X size={48}/>} className="w-full border-none">
                 <Placeholder.Message>No Recipes Found!</Placeholder.Message>
                 <Placeholder.Tip>Try creating some!</Placeholder.Tip>
                 <Placeholder.Action className="text-xs">Create recipe</Placeholder.Action>
-              </Placeholder.Root>
+              </Placeholder>
           }
         </div>
         <ScrollBar orientation="horizontal"/>

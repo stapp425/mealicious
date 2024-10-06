@@ -25,9 +25,9 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
   
   return (
     <div className="md:h-site-container lg:h-screen flex-1 rounded-lg">
-      <div className="md:h-1/2 flex justify-between gap-4 p-4">
-        <div className="w-1/2 flex flex-col gap-2">
-          <h1 className="text-3xl font-bold line-clamp-1 md:line-clamp-2">{activeRecipe.title}</h1>
+      <div className="w-screen md:w-auto md:h-1/2 flex justify-between">
+        <div className="w-1/2 flex flex-col gap-2 p-4 pr-2">
+          <h1 className="max-w-[200px] text-3xl font-bold truncate">{activeRecipe.title}</h1>
           <div className="flex flex-col md:flex-row gap-2 *:flex-1">
             <button className="text-nowrap py-1 px-2 border border-slate-400 hover:bg-slate-200 transition rounded-md">
               <Link to={`/recipes/${activeRecipe.id}`} className="flex justify-between items-center gap-2">
@@ -70,11 +70,13 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
             </div>
           }
         </div>
-        <img 
-          src={activeRecipe.image}
-          alt={activeRecipe.title}
-          className="h-full w-1/2 object-cover object-center rounded-2xl"
-        />
+        <div className="w-1/2 p-4 pl-2 rounded-2xl">
+          <img 
+            src={activeRecipe.image}
+            alt={activeRecipe.title}
+            className="size-full object-cover rounded-2xl"
+          />
+        </div>
       </div>
       <Tabs defaultValue="summary" className="md:h-1/2 flex flex-col items-center">
         <TabsList className="w-full flex justify-around bg-transparent">
