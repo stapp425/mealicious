@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { type DocumentSnapshot, getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc, Timestamp } from "firebase/firestore"
+import { getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc, collection, deleteDoc, Timestamp } from "firebase/firestore"
 import { type FirestoreCollection, type Obj } from "@/util/types/app"
 import { firestore, storage } from "../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
@@ -117,9 +117,9 @@ export function useEventCalendar<T extends HasDate>(data: T[]) {
   }
 }
 
-export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) => Promise<T[]>, initialData: T[] = []) {
+export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) => Promise<T[]>, options: { initialData: T[], defaultData: T }) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const [data, setData] = useState<T[]>(initialData)
+  const [data, setData] = useState<T[]>(options.initialData)
   
   useEffect(() => {
     fetchData()
@@ -127,7 +127,7 @@ export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) 
     async function fetchData() {
       try {
         const data: QuerySnapshot = await getDocs(query)
-        const snapshot = data.docs.map(doc => ({ ...doc.data(), id: doc.id } as T))
+        const snapshot = data.docs.map(doc => ({ ...(doc.exists() ? doc.data() : options.defaultData), id: doc.id } as T))
         const filteredData = snapshot.length > 0 ? await formatFunction(snapshot) : []
         setData(filteredData)
       } catch (err: any) {
@@ -141,9 +141,9 @@ export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) 
   return { isFetching, data, setData }
 }
 
-export function useFirestoreGet<T>(path: FirestoreCollection, id: string, formatFunction: (value: T) => Promise<T>, initialData: T) {
+export function useFirestoreGet<T>(path: FirestoreCollection, id: string, formatFunction: (value: T) => Promise<T | null>, initialData: T) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const [data, setData] = useState<T>(initialData)
+  const [data, setData] = useState<T | null>(initialData)
 
   useEffect(() => {
     fetchData()
@@ -151,10 +151,8 @@ export function useFirestoreGet<T>(path: FirestoreCollection, id: string, format
 
   async function fetchData() {
     try {
-      const result: DocumentSnapshot = await getDoc(doc(firestore, path, id))
-      const snapshot = { ...result.data(), id: result.id } as T
-      const filteredData = await formatFunction(snapshot)
-      setData(filteredData)
+      const result = await getDoc(doc(firestore, path, id))
+      setData(result.exists() ? await formatFunction({ ...result.data(), id: result.id } as T) : null)
     } catch (err: any) {
       throw err
     } finally {

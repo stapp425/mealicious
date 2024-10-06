@@ -26,7 +26,10 @@ import Container from "../theme/Container"
 const AllRecipes: React.FC = () => {
   const navigate = useNavigate()
   const { user, screenSizes: { md } } = useContext(AppContext)
-  const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"), formatRecipes)
+  const { data: recipes, isFetching: isRecipesFetching } = useFirestoreFetch<RecipeType>(
+    createQuery(user as User, "recipes"), 
+    formatRecipes, { initialData: [], defaultData: defaultRecipe }
+  )
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)

@@ -1,15 +1,15 @@
-import { useContext } from "react"
+import { createContext, useContext } from "react"
 import { AppContext } from "@/App"
 import { Calendar, Clock, Heart, LayoutGrid, LucideProps, Pencil, X } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { useEventCalendar, useFirestoreFetch } from "@/util/hooks"
-import { formatPlans, type Plan as PlanType } from "@/util/types/plan"
-import { createQuery } from "@/util/types/app"
+import { useEventCalendar, useFirestoreFetch, useFirestoreUpdate } from "@/util/hooks"
+import { defaultPlan, formatPlans, Plan, type Plan as PlanType } from "@/util/types/plan"
+import { createQuery, ReactState } from "@/util/types/app"
 import { type User } from "firebase/auth"
 import Spinner from "../theme/Spinner"
-import { Meal as MealType } from "@/util/types/meal"
+import { type Meal as MealType } from "@/util/types/meal"
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +22,7 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Recipe as RecipeType } from "@/util/types/recipe"
 import { Badge } from "../ui/badge"
 
+const CurrentMealsContext = createContext<ReactState<Plan[]>>([[defaultPlan], () => {}])
 
 const DailyMeals: React.FC = () => (
   <div className="relative pt-6 flex flex-col gap-2">
@@ -69,17 +70,19 @@ const Option: React.FC<OptionProps> = ({ className, label, to = "", Icon }) => (
 
 const CurrentMeals: React.FC = () => {
   const { user } = useContext(AppContext)
-  const { data: plans, isFetching } = useFirestoreFetch<PlanType>(createQuery(user as User, "plans"), formatPlans)
+  const { data: plans, setData: setPlans, isFetching } = useFirestoreFetch<PlanType>(createQuery(user as User, "plans"), formatPlans, { initialData: [], defaultData: defaultPlan })
   const { currentEvents: { day } } = useEventCalendar<PlanType>(plans)
-  
+
   return (
-    <div className="flex flex-col">
-      {
-        !isFetching
-        ? <Meals meals={day.map(d => d.meals).flat()} className="px-6 pb-4"/>          
-        : <Spinner/>
-      }
-    </div>
+    <CurrentMealsContext.Provider value={[plans, setPlans]}>
+      <div className="flex flex-col">
+        {
+          !isFetching
+          ? <Meals meals={day.map(d => d.meals).flat()} className="px-6 pb-4"/>          
+          : <Spinner/>
+        }
+      </div>
+    </CurrentMealsContext.Provider>
   )
 }
 
@@ -90,7 +93,10 @@ const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className,
     meals.length > 0
     ? <ScrollArea type="always">
         <div className={cn("flex gap-6", className)}>
-          {meals.map((meal, index) => <Meal key={index} meal={meal}/>)}
+          {
+            meals.map((meal, index) => meal.title 
+            ? <Meal key={index} meal={meal}/>
+            : <NotFound key={index} id={meal.id as string}/>)}
         </div>
         <ScrollBar orientation="horizontal"/>
       </ScrollArea>
@@ -127,7 +133,6 @@ const Meal: React.FC<{ className?: string, meal: MealType }> = ({ className, mea
       </div>
       <ScrollBar/>
     </ScrollArea>
-    
     <h1 className="tracking-wider text-center font-bold text-lg text-muted-foreground">
       — {meal.time.toUpperCase()} —
     </h1>
@@ -147,5 +152,27 @@ const Recipe: React.FC<{ recipe: RecipeType }> = ({ recipe }) => (
     </div>
   </div>
 )
+
+const NotFound: React.FC<{ id: string }> = ({ id }) => {
+  const [plans, setPlans] = useContext(CurrentMealsContext)
+  const { updateFirestoreDoc } = useFirestoreUpdate()
+
+  async function deleteRemovedMealFromPlans() {
+    try {
+      const plansWithRemovedMeals = plans.filter(p => p.meals.some(m => m.id === id))
+      setPlans(plans => plans.map(p => p.meals.every(m => m.id !== id) ? p : ({ ...p, meals: p.meals.filter(m => m.id !== id) })))
+      await Promise.all(plansWithRemovedMeals.map(p => updateFirestoreDoc("plans", p.id as string, { ...p, meals: p.meals.filter(m => m.id !== id) })))
+    } catch (err: any) {
+      console.error(err.message)
+    }
+  }
+  
+  return (
+    <Placeholder icon={<X size={64}/>} className="w-[325px] h-[450px]">
+      <Placeholder.Message>Meal does not exist.</Placeholder.Message>
+      <Placeholder.Action onClick={deleteRemovedMealFromPlans} className="text-sm bg-red-500 hover:bg-red-600">Delete</Placeholder.Action>
+    </Placeholder>
+  )
+}
 
 export default DailyMeals

@@ -1,26 +1,23 @@
+import { type ReactHookFormTypes } from "@/util/types/form"
 import { cn } from "@/lib/utils"
-import { Meal } from "@/types/meal"
-import { FieldErrors } from "react-hook-form"
-import Error from "./Error"
+import { Meal } from "@/util/types/meal"
+import Error from "../theme/Error"
 
-type Props<T extends {[key: string]: unknown}> = {
+type ErrorsProps = {
   className?: string
-  errors: FieldErrors<T>
-}
+} & Pick<ReactHookFormTypes<Meal>, "error">
 
-const Errors: React.FC<Props<Meal>> = ({ className, errors }) => {
-  return (
-    <>
-    {
-      errors &&
-        <div className={cn("size-fit flex flex-col gap-2", className)}>
-          { errors.title && <Error>{errors.title.message}</Error> }
-          { errors.time && <Error>{errors.time.message}</Error> }
-          { errors.contents && <Error>{errors.contents.message}</Error> }
-        </div>
-    }
-    </>
-  )
-}
+const Errors: React.FC<ErrorsProps> = ({ className, error }) => (
+  <>
+  {
+    error &&
+    <div className={cn("size-fit flex flex-col gap-2", className)}>
+      { error.title && <Error>{error.title.message}</Error> }
+      { error.time && <Error>{error.time.message}</Error> }
+      { error.contents && <Error>{error.contents.message}</Error> }
+    </div>
+  }
+  </>
+)
 
 export default Errors

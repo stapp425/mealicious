@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react"
 import { type User } from "@firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/util/types/app"
-import { formatMeals, type Meal as MealEntry } from "@/util/types/meal"
+import { defaultMeal, formatMeals, type Meal as MealEntry } from "@/util/types/meal"
 import { useToast } from "@/components/ui/use-toast"
 import { X } from "lucide-react"
 import { Link } from "react-router-dom"
@@ -17,7 +17,10 @@ const AllMeals: React.FC = () => {
   const { user, screenSizes: { xxl } } = useContext(AppContext)
   const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
-  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(createQuery(user as User, "meals"), formatMeals)
+  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(
+    createQuery(user as User, "meals"), 
+    formatMeals, { initialData: [], defaultData: defaultMeal }
+  )
   
   function evenlySplitArray<T = MealEntry>(arr: T[], sections: number): T[][] {
     if(sections <= 0 || sections % 1)

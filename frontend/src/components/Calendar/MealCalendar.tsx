@@ -2,19 +2,25 @@ import { AppContext } from "@/App"
 import { useContext, useEffect } from "react"
 import Calendar from "./Calendar"
 import CreateEvent from "./event-tools/CreateEvent"
-import { formatPlans, type Plan } from "@/util/types/plan"
+import { defaultPlan, formatPlans, type Plan } from "@/util/types/plan"
 import { useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/util/types/app"
 import { User } from "firebase/auth"
 import { X } from "lucide-react"
-import { formatMeals, Meal } from "@/util/types/meal"
+import { defaultMeal, formatMeals, Meal } from "@/util/types/meal"
 import Placeholder from "../theme/Placeholder"
 import RemoveEvent from "./event-tools/RemoveEvent"
 
 const MealCalendar: React.FC = () => {
   const { user } = useContext(AppContext)
-  const { data: plans, setData: setPlans } = useFirestoreFetch<Plan>(createQuery(user as User, "plans"), formatPlans)
-  const { data: meals } = useFirestoreFetch<Meal>(createQuery(user as User, "meals"), formatMeals)
+  const { data: plans, setData: setPlans } = useFirestoreFetch<Plan>(
+    createQuery(user as User, "plans"), 
+    formatPlans, { initialData: [], defaultData: defaultPlan }
+  )
+  const { data: meals } = useFirestoreFetch<Meal>(
+    createQuery(user as User, "meals"), 
+    formatMeals, { initialData: [], defaultData: defaultMeal }
+  )
 
   useEffect(() => {
     document.title = "Meal Calendar | Mealicious"

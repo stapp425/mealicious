@@ -9,7 +9,7 @@ import { useInputChange } from "@/util/hooks"
 import { Clipboard, Clock, Heart, Microwave, MoveLeft, Plus, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import * as Placeholder from "@/components/theme/Placeholder"
+import Placeholder from "@/components/theme/Placeholder"
 import { useNavigate } from "react-router-dom"
 
 type Props<T extends Obj> = {
@@ -83,11 +83,11 @@ const AddWindow: React.FC<Props<Meal>> = ({ setValue, getValues }) => {
                           </div>
                         </button>
                       ))
-                    : <Placeholder.Root icon={<X size={20}/>}>
+                    : <Placeholder icon={<X size={20}/>}>
                         <Placeholder.Message>No Recipes Found!</Placeholder.Message>
                         <Placeholder.Tip>Try Creating One!</Placeholder.Tip>
                         <Placeholder.Action onClick={() => navigate("/recipes/create")} className="text-sm">Create Recipe</Placeholder.Action>
-                      </Placeholder.Root>
+                      </Placeholder>
                   }
                 </div>
                 <ScrollBar/>

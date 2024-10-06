@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom"
 import { Eye, Heart, SquareArrowUpRight, X } from "lucide-react"
 import { useFirestoreFetch } from "@/util/hooks"
-import { formatRecipes, type Recipe as RecipeType } from "@/util/types/recipe"
+import { defaultRecipe, formatRecipes, type Recipe as RecipeType } from "@/util/types/recipe"
 import { createQuery } from "@/util/types/app"
 import { useContext } from "react"
 import { AppContext } from "@/App"
@@ -13,7 +13,10 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const SavedRecipes: React.FC = () => {
   const { user } = useContext(AppContext)
-  const { data: recipes } = useFirestoreFetch<RecipeType>(createQuery(user as User, "recipes"), formatRecipes)
+  const { data: recipes } = useFirestoreFetch<RecipeType>(
+    createQuery(user as User, "recipes"), 
+    formatRecipes, { initialData: [], defaultData: defaultRecipe }
+  )
 
   return (
     <div className="py-6 flex flex-col gap-4">
