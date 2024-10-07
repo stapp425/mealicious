@@ -1,9 +1,7 @@
-import { useContext, useEffect } from "react"
-import { type Obj } from "@/types/app"
-import { type RequiredFieldArray as SelectField } from "@/types/form"
-import { type Meal, type MealTime } from "@/types/meal"
-import { type UseFormSetValue, useWatch } from "react-hook-form"
-import { cn } from "@/lib/utils"
+import { useEffect } from "react"
+import { type ReactHookFormTypes } from "@/util/types/form"
+import { type Meal, type MealTime } from "@/util/types/meal"
+import { useWatch } from "react-hook-form"
 import {
   Select,
   SelectContent,
@@ -12,17 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import Button from "../theme/Button"
-import { MealEditContext } from "./MealTools"
+import Error from "../theme/Error"
 
-interface Props<T extends Obj> extends SelectField<T> {
-  className?: string
-  setValue: UseFormSetValue<T>
-}
+type TimeProps = { className?: string } & Pick<ReactHookFormTypes<Meal>, "setValue" | "control" | "error" | "setError" | "clearErrors">
 
-const Time: React.FC<Props<Meal>> = ({ className, setValue, control, setError, clearErrors }) => {
-  const { mode } = useContext(MealEditContext)
-  
+const Time: React.FC<TimeProps> = ({ className, setValue, control, error, setError, clearErrors }) => {
   const mealTime = useWatch({
     control,
     name: "time"
@@ -39,12 +31,12 @@ const Time: React.FC<Props<Meal>> = ({ className, setValue, control, setError, c
   }, [mealTime])
 
   return (
-    <div className={cn("flex justify-between", className)}>
+    <div className="space-y-2">
       <Select defaultValue={mealTime} onValueChange={value => setValue("time", value as MealTime)}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder={mealTime}/>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className={className}>
           <SelectGroup>
             <SelectItem value="breakfast">Breakfast</SelectItem>
             <SelectItem value="brunch">Brunch</SelectItem>
@@ -55,10 +47,10 @@ const Time: React.FC<Props<Meal>> = ({ className, setValue, control, setError, c
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button>
-        { mode === "create" && "Create Meal" }
-        { mode === "edit" && "Update Meal" }
-      </Button>
+      {
+        error.time &&
+        <Error>{error.time.message}</Error>
+      }
     </div>
   )
 }

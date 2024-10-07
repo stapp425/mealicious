@@ -123,23 +123,26 @@ export const defaultRecipe: Recipe = {
   dishTypes: [],
   nutrition: [],
   ingredients: [],
-  instructions: [],
-  id: ""
+  instructions: []
 }
 
 export async function formatRecipe(recipe: string | Recipe) {
-  if(typeof recipe === "string")
+  if(typeof recipe === "string") {
     try {
       const docRef = doc(firestore, "recipes", recipe)
       const recipeSnapshot = await getDoc(docRef)
-      const filteredRecipe = { ...recipeSnapshot.data(), id: recipeSnapshot.id } as Recipe
-
-      return filteredRecipe
+      
+      if(!recipeSnapshot.exists())
+        throw new Error()
+      
+      return { ...recipeSnapshot.data(), id: recipeSnapshot.id } as Recipe
     } catch (err: any) {
-      throw err
+      console.warn(`Requested document with id ${recipe} does not exist!`)
+      return { ...defaultRecipe, id: recipe }
     }
-  else if(isRecipe(recipe))
+  } else if(isRecipe(recipe)) {
     return recipe
+  }
   
   throw new Error("Unrecognized recipe type found")
 }

@@ -39,8 +39,10 @@ export async function formatMeal(meal: string | Meal) {
     try {
       const docRef = doc(firestore, "meals", meal)
       const mealSnapshot = await getDoc(docRef)
+
       if(mealSnapshot.exists()) {
-        const mealData = { ...mealSnapshot.data(), id: mealSnapshot.id } as Meal
+        console.log("meal exists")
+        const mealData = { ...(mealSnapshot.exists() ? mealSnapshot.data() : defaultMeal), id: mealSnapshot.id } as Meal
 
         const filteredData: Meal = {
           ...mealData,
@@ -49,9 +51,6 @@ export async function formatMeal(meal: string | Meal) {
 
         return filteredData
       }
-      
-      // fall-through case: reference document was not found
-      return defaultMeal
     } catch (err: any) {
       console.error(err.message)
     }

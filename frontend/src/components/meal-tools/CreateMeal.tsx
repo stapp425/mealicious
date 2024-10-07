@@ -1,18 +1,29 @@
 import { useContext, useEffect } from "react"
-import { MealEditContext } from "./MealTools"
+import { type User } from "firebase/auth"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { type Meal, defaultMeal } from "@/util/types/meal"
-import { AnimatePresence } from "framer-motion"
-import { useFirestorePost } from "@/util/hooks"
+import { useFirestoreFetch, useFirestorePost } from "@/util/hooks"
+import { defaultRecipe, formatRecipes, type Recipe } from "@/util/types/recipe"
+import { createQuery } from "@/util/types/app"
 import { AppContext } from "@/App"
 import { useToast } from "@/components/ui/use-toast"
-import ToolWindow from "./ToolWindow"
 import AddWindow from "./AddWindow"
+import Container from "../theme/Container"
+import Title from "./Title"
+import Tag from "./Tag"
+import Description from "./Description"
+import Time from "./Time"
+import Button from "../theme/Button"
+import RecipeList from "./RecipeList"
+import Spinner from "../theme/Spinner"
 
 const CreateMeal: React.FC = () => {
   const { toast } = useToast()
-  const { isAddRecipeActive } = useContext(MealEditContext)
   const { user }  = useContext(AppContext)
+  const { data: recipes } = useFirestoreFetch<Recipe>(
+    createQuery(user as User, "recipes"), 
+    formatRecipes, { initialData: [], defaultData: defaultRecipe }
+  )
 
   const {
     control,
@@ -20,56 +31,82 @@ const CreateMeal: React.FC = () => {
     handleSubmit,
     setValue,
     getValues,
-    reset,
     setError,
     clearErrors,
-    formState: { errors }
+    formState: { 
+      errors, 
+      isSubmitting
+    }
   } = useForm<Meal>({ defaultValues: defaultMeal })
   const { addFirestoreDoc: addMeal } = useFirestorePost()
 
   const submitMeal: SubmitHandler<Meal> = async (data) => {
-    if(user) {
-      try {
-        const addedData = {
-          ...data,
-          contents: data.contents.map(({ type, recipe }) => ({
-            type,
-            recipe: recipe.id as string
-          })),
-          userId: user.uid
-        }
-        
-        await addMeal("meals", addedData)
-      } catch (err: any) {
-        toast({
-          title: "Error!",
-          description: err.message,
-          variant: "destructive"
-        })
+    try {
+      const addedData = {
+        ...data,
+        contents: data.contents.map(({ type, recipe }) => ({
+          type,
+          recipe: recipe.id as string
+        })),
+        userId: user?.uid
       }
-    }
-  }
-
-  function sendProps() {
-    return {
-      register, control,
-      setValue, reset,
-      error: errors,
-      setError, clearErrors
+      
+      await addMeal("meals", addedData)
+    } catch (err: any) {
+      toast({
+        title: "Error!",
+        description: err.message,
+        variant: "destructive"
+      })
     }
   }
 
   useEffect(() => {
     document.title = "Create Meal | Mealicious"
+    window.addEventListener("beforeunload", handleUnload)
+
+    return () => window.removeEventListener("beforeunload", handleUnload)
+
+    function handleUnload(event: BeforeUnloadEvent) {
+      event.preventDefault()
+    }
   }, [])
   
   return (
-    <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">
-      <ToolWindow {...sendProps()}/>
-      <AnimatePresence>
-        { isAddRecipeActive && <AddWindow setValue={setValue} getValues={getValues}/> }
-      </AnimatePresence>
-    </form>
+    <Container.Form onSubmit={handleSubmit(submitMeal)} className="justify-between gap-4 p-0 bg-orange-200">
+      <div className="mx-auto max-w-[1000px] min-h-site-container lg:min-h-screen p-4 space-y-3 bg-white">
+        <Title
+          register={register}
+          error={errors}
+        />
+        <Tag
+          control={control}
+          setValue={setValue}
+        />
+        <Description
+          register={register}
+          className="w-full"
+        />
+        <div className="flex justify-between items-start">
+          <Time
+            setValue={setValue}
+            control={control}
+            error={errors}
+            setError={setError}
+            clearErrors={clearErrors}
+          />
+          <Button>{ isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Meal"}</Button>
+        </div>
+        <AddWindow className="w-full" recipes={recipes} error={errors} setValue={setValue} getValues={getValues}/>
+        <RecipeList
+          control={control}
+          setValue={setValue}
+          setError={setError}
+          clearErrors={clearErrors}
+          className="flex-1"
+        />
+      </div>
+    </Container.Form>
   )
 }
 

@@ -1,5 +1,5 @@
 import { type Recipe as RecipeType } from "@/util/types/recipe"
-import { ArrowUpRight, Earth } from "lucide-react"
+import { ArrowUpRight, Earth, X } from "lucide-react"
 import { 
   Tooltip,
   TooltipContent,
@@ -7,6 +7,10 @@ import {
   TooltipTrigger
 } from "@/components/ui/tooltip"
 import { Link } from "react-router-dom"
+import Placeholder from "../theme/Placeholder"
+import { useContext } from "react"
+import { AllMealsContext } from "./AllMeals"
+import { useFirestoreUpdate } from "@/util/hooks"
 
 type RecipeProps = {
   recipe: RecipeType
@@ -61,4 +65,28 @@ const Recipe: React.FC<RecipeProps> = ({ recipe }) => (
   </div>
 )
 
-export default Recipe
+const NotFound: React.FC<{ id: string }> = ({ id }) => {
+  const { state: [meals, setMeals] } = useContext(AllMealsContext)
+  const { updateFirestoreDoc } = useFirestoreUpdate()
+
+  async function deleteRemovedRecipeFromMeals() {
+    try {
+      const mealsWithRemovedRecipes = meals.filter(m => m.contents.some(c => c.recipe.id === id))
+      setMeals(meals => meals.map(m => m.contents.every(c => c.recipe.id !== id) ? m : ({ ...m, contents: m.contents.filter(c => c.recipe.id !== id) })))
+      await Promise.all(mealsWithRemovedRecipes.map(m => updateFirestoreDoc("meals", m.id as string, { ...m, contents: m.contents.filter(c => c.recipe.id !== id) })))
+    } catch (err: any) {
+      console.error(err.message)
+    }
+  }
+  
+  return (
+    <Placeholder icon={<X size={64} className="hidden md:block"/>} className="w-full lg:w-[600px] h-[33vw] lg:h-[25vw] lg:max-h-[300px]">
+      <Placeholder.Message className="text-base md:text-lg">Recipe does not exist.</Placeholder.Message>
+      <Placeholder.Action onClick={deleteRemovedRecipeFromMeals} className="text-sm bg-red-500 hover:bg-red-600 transition-colors">Delete</Placeholder.Action>
+    </Placeholder>
+  )
+}
+  
+
+
+export { Recipe, NotFound }

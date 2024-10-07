@@ -17,7 +17,8 @@ import CreateRecipe from "./components/recipe-tools/CreateRecipe"
 import EditRecipe from "./components/recipe-tools/EditRecipe"
 import MealCalendar from "./components/calendar/MealCalendar"
 import AllMeals from "./components/all-meals/AllMeals"
-import MealTools from "./components/meal-tools/MealTools"
+import CreateMeal from "./components/meal-tools/CreateMeal"
+import EditMeal from "./components/meal-tools/EditMeal"
 
 export const AppContext = createContext<App>({
   activeSection: "dashboard",
@@ -80,8 +81,8 @@ export default function App() {
           <Route path="dashboard" element={<Dashboard/>}/>
           <Route path="meals">
             <Route index element={<AllMeals/>}/>
-            <Route path="create" element={<MealTools mode="create"/>}/>
-            <Route path="edit/:mealId" element={<MealTools mode="edit"/>}/>
+            <Route path="create" element={<CreateMeal/>}/>
+            <Route path="edit/:mealId" element={<EditMeal/>}/>
             <Route path="calendar" element={<MealCalendar/>}/>
           </Route>
           <Route path="recipes">
