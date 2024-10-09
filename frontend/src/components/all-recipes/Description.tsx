@@ -25,7 +25,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
   
   return (
     <div className="md:h-site-container lg:h-screen flex-1 rounded-lg">
-      <div className="w-screen md:w-auto md:h-1/2 flex justify-between">
+      <div className="w-full md:w-auto md:h-1/2 flex justify-between">
         <div className="w-1/2 flex flex-col gap-2 p-4 pr-2">
           <h1 className="max-w-[200px] text-3xl font-bold truncate">{activeRecipe.title}</h1>
           <div className="flex flex-col md:flex-row gap-2 *:flex-1">

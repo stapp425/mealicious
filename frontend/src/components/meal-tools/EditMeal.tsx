@@ -15,6 +15,7 @@ import Time from "./Time"
 import Description from "./Description"
 import Tag from "./Tag"
 import Title from "./Title"
+import Spinner from "../theme/Spinner"
 
 const EditMeal: React.FC = () => {
   const { mealId } = useParams()
@@ -30,10 +31,13 @@ const EditMeal: React.FC = () => {
     handleSubmit,
     setValue,
     getValues,
-    reset,
     setError,
     clearErrors,
-    formState: { errors }
+    reset,
+    formState: { 
+      errors,
+      isSubmitting
+    }
   } = useForm<Meal>({ defaultValues: defaultMeal })
   const { updateFirestoreDoc: updateMeal } = useFirestoreUpdate()
 
@@ -43,10 +47,10 @@ const EditMeal: React.FC = () => {
         ...data,
         contents: data.contents.map(content => ({
           type: content.type,
-          recipe: content.recipe.id as string
+          recipe: content.recipe.id
         })),
         userId: user.uid }
-      
+
       updateMeal("meals", mealId as string, editedData)
     }
   }
@@ -90,7 +94,7 @@ const EditMeal: React.FC = () => {
             setError={setError}
             clearErrors={clearErrors}
           />
-          <Button>Submit Meal</Button>
+          <Button>{ isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Meal"}</Button>
         </div>
         <AddWindow className="w-full" recipes={recipes} error={errors} setValue={setValue} getValues={getValues}/>
         <RecipeList

@@ -33,9 +33,11 @@ const CreateMeal: React.FC = () => {
     getValues,
     setError,
     clearErrors,
+    reset,
     formState: { 
       errors, 
-      isSubmitting
+      isSubmitting,
+      isSubmitSuccessful
     }
   } = useForm<Meal>({ defaultValues: defaultMeal })
   const { addFirestoreDoc: addMeal } = useFirestorePost()
@@ -71,9 +73,14 @@ const CreateMeal: React.FC = () => {
       event.preventDefault()
     }
   }, [])
+
+  useEffect(() => {
+    if(isSubmitSuccessful)
+      reset()
+  }, [isSubmitSuccessful])
   
   return (
-    <Container.Form onSubmit={handleSubmit(submitMeal)} className="justify-between gap-4 p-0 bg-orange-200">
+    <Container.Form onSubmit={handleSubmit(submitMeal)} className="bg-orange-200">
       <div className="mx-auto max-w-[1000px] min-h-site-container lg:min-h-screen p-4 space-y-3 bg-white">
         <Title
           register={register}

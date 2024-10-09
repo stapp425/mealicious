@@ -12,7 +12,7 @@ export default function MainLayout() {
   const { user, screenSizes: { lg } } = useContext(AppContext)
   
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="w-full min-h-screen">
       { lg ? <NavBar/> : <Header/> }
       { 
         user

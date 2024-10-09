@@ -21,11 +21,17 @@ module.exports = {
 				'site-container': 'calc(100vh - 100px)'
 			},
 			height: {
-				'site-container': 'calc(100vh - 100px)' 
+				'site-container': 'calc(100vh - 100px)',
 			},
-  		boxShadow: {
-  			'scroll-t': '0 15px 10px -5px white'
-  		},
+  		width: {
+				'exclude-navbar': 'calc(100% - 325px)'
+			},
+			margin: {
+				'navbar-width': '325px'
+			},
+			inset: {
+				'header-height': '100px'
+			},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

@@ -9,6 +9,8 @@ type Option = "add" | "remove" | "update" | "format"
 
 export type ReactState<T> = [T, React.Dispatch<React.SetStateAction<T>>]
 
+export type RefComponent<T, K> = React.ForwardRefExoticComponent<K & React.RefAttributes<T>>
+
 export type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 
 export function modifyData<T extends { id?: string }>(original: T[], option: Option, data?: T): T[] {

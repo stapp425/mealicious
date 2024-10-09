@@ -141,9 +141,9 @@ export function useFirestoreFetch<T>(query: Query, formatFunction: (value: T[]) 
   return { isFetching, data, setData }
 }
 
-export function useFirestoreGet<T>(path: FirestoreCollection, id: string, formatFunction: (value: T) => Promise<T | null>, initialData: T) {
+export function useFirestoreGet<T>(path: FirestoreCollection, id: string, formatFunction: (value: T) => Promise<T>, initialData: T,) {
   const [isFetching, setIsFetching] = useState<boolean>(true)
-  const [data, setData] = useState<T | null>(initialData)
+  const [data, setData] = useState<T>(initialData)
 
   useEffect(() => {
     fetchData()
@@ -152,7 +152,7 @@ export function useFirestoreGet<T>(path: FirestoreCollection, id: string, format
   async function fetchData() {
     try {
       const result = await getDoc(doc(firestore, path, id))
-      setData(result.exists() ? await formatFunction({ ...result.data(), id: result.id } as T) : null)
+      setData(result.exists() ? await formatFunction({ ...result.data(), id: result.id } as T) : initialData)
     } catch (err: any) {
       throw err
     } finally {

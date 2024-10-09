@@ -15,9 +15,9 @@ type OptionsProps = {
 }
 
 const Options: React.FC<OptionsProps> = ({ className, printContent }) => (
-  <div className={cn("sticky top-[100px] left-0 lg:static shadow-md lg:shadow-none bg-white", className)}>
+  <div className={cn("shadow-md lg:shadow-none bg-white", className)}>
     <h1 className="hidden lg:block font-bold text-2xl px-3 py-2">Options</h1>
-    <div className="w-full overflow-hidden flex justify-between *:flex-1 lg:block border-none lg:border border-slate-400">
+    <div className="w-full flex justify-between *:flex-1 lg:block border-none lg:border border-slate-400">
       <Edit/>
       <Favorite/>
       <Save printContent={printContent}/>

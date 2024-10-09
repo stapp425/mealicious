@@ -56,9 +56,7 @@ const AllMeals: React.FC = () => {
         variant: "destructive"
       })
     }
-  }
-
-  
+  }  
 
   useEffect(() => {
     document.title = "All Meals | Mealicious"
