@@ -61,7 +61,7 @@ const All: React.FC<AllProps> = ({ className, plans }) => {
           <ScrollText className="inline"/> <span className="text-xs md:text-base">{lg ? "View" : "View Plans"}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[90vw] md:w-[500px] h-[min(650px,90vh)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent p-4 md:p-6">
+      <DialogContent className="w-[90vw] md:w-[500px] h-[min(650px,90vh)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent p-4 md:p-6 space-y-4">
         <DialogHeader>
           <DialogTitle className="font-bold text-3xl">All Plans</DialogTitle>
           <VisuallyHidden>
@@ -70,21 +70,19 @@ const All: React.FC<AllProps> = ({ className, plans }) => {
             </DialogDescription>
           </VisuallyHidden>
         </DialogHeader>
+        <Select onValueChange={sortPlans}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Sort Option" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="date">Date</SelectItem>
+              <SelectItem value="title">Title</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <div className="space-y-2">
-          <Select onValueChange={sortPlans}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Sort Option" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="date">Date</SelectItem>
-                <SelectItem value="title">Title</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <div className="space-y-2">
-            {sortedPlans.map((plan, index) => <Plan key={index} plan={plan}/>)}
-          </div>
+          {sortedPlans.map((plan, index) => <Plan key={index} plan={plan}/>)}
         </div>
       </DialogContent>
     </Dialog>

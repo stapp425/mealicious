@@ -41,14 +41,12 @@ const Login: React.FC = () => {
   }, [])
 
   return (
-    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 lg:grid-cols-2 gap-6 *:py-0">
-      <div className="relative">
-        <img
-          src={siteLogo}
-          alt="Mealicious Logo"
-          className="mx-auto w-[clamp(100px,_50%,_200px)] pt-4"
-        />
-      </div>
+    <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 *:py-0">
+      <img
+        src={siteLogo}
+        alt="Mealicious Logo"
+        className="mx-auto w-[clamp(100px,50%,200px)] pt-4"
+      />
       <div className="text-center flex flex-col justify-center items-center -mt-4">
         <h1 className="font-bold text-3xl">Welcome Back!</h1>
         <p className="text-muted-foreground">Log In to Continue</p>
@@ -108,7 +106,7 @@ const Login: React.FC = () => {
         <img 
           src={loginImage} 
           alt="Credit: Julie Aagaard (https://www.pexels.com/photo/salad-on-a-plate-2097090/)"
-          className="h-full"
+          className="h-full object-cover"
         />
       </div>
     </form>

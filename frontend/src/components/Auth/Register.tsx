@@ -65,18 +65,18 @@ const Register: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(submitUserInput)} className="size-full grid grid-cols-1 lg:grid-cols-2 gap-x-4">
-      <div className="hidden lg:flex justify-center items-center bg-orange-500 row-start-1 col-start-1 row-span-10 rounded-lg overflow-hidden">
+      <div className="hidden lg:flex justify-center items-center bg-orange-500 row-start-1 col-start-1 rounded-lg overflow-hidden">
         <img 
           src={registerImage} 
           alt="Credit: Julie Aagaard (https://www.pexels.com/photo/salad-on-a-plate-2097090/)"
-          className="h-full"
+          className="h-full object-cover"
         />
       </div>
-      <div className="h-[658px] flex flex-col justify-between">
+      <div className="h-full flex flex-col justify-between">
         <img
           src={siteLogo}
           alt="Mealicious Logo"
-          className="w-[200px] pt-4 relative left-1/2 -translate-x-1/2"
+          className="w-[150px] md:w-[200px] pt-4 relative left-1/2 -translate-x-1/2"
         />
         <div className="grid grid-cols-2 place-items-stretch gap-4 px-6">
           <AuthInput
@@ -178,7 +178,7 @@ const Register: React.FC = () => {
           errorMessage={errors.confirmPassword?.message}
           className="w-full"
         />
-        <hr className="or"/>
+        <hr className="or hidden sm:block"/>
         <GoogleButton mode="register"/>
         <div className="w-full flex flex-col justify-center px-6">
           <button type="submit" className="self-stretch px-6 py-3 bg-orange-500 hover:bg-orange-700 transition text-white font-bold rounded-md my-2">
