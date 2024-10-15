@@ -15,7 +15,7 @@ cd frontend
 npm i
 npm run dev
 ```
-Then, navigate to the backend folder and run these commands:
+Then, create a new terminal, navigate to the backend folder, and run these commands:
 ```
 cd ../backend
 npm i
