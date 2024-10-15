@@ -189,7 +189,6 @@ const Register: React.FC = () => {
           Already have an account? | <Link to="/auth/login" className="text-orange-500 hover:text-orange-700">Log In</Link>
         </div>
       </div>
-      
     </form>
   )
 }
