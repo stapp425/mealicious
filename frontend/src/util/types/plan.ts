@@ -19,6 +19,8 @@ export const defaultPlan: Plan = {
   meals: [],
 }
 
+export type PlanSort = "date" | "title"
+
 export function isDate(value: unknown): value is Date {
   return value instanceof Date
 }

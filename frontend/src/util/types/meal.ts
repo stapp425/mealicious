@@ -41,7 +41,6 @@ export async function formatMeal(meal: string | Meal) {
       const mealSnapshot = await getDoc(docRef)
 
       if(mealSnapshot.exists()) {
-        console.log("meal exists")
         const mealData = { ...(mealSnapshot.exists() ? mealSnapshot.data() : defaultMeal), id: mealSnapshot.id } as Meal
 
         const filteredData: Meal = {

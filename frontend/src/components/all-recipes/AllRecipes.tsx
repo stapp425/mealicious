@@ -43,16 +43,16 @@ const AllRecipes: React.FC = () => {
   function sortRecipes(sort: RecipeSort) {
     switch(sort) {
       case "favorite":
-        setSortedRecipes((d: RecipeType[]) => [...d.filter((recipe: RecipeType) => recipe.isFavorite), ...d.filter((recipe: RecipeType) => !recipe.isFavorite)])
+        setSortedRecipes(d => [...d.filter(recipe => recipe.isFavorite), ...d.filter(recipe => !recipe.isFavorite)])
         break
       case "title":
-        setSortedRecipes((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.title.localeCompare(b.title)))
+        setSortedRecipes(d => [...d].sort((a, b) => a.title.localeCompare(b.title)))
         break
       case "calories":
-        setSortedRecipes((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.nutrition[0].amount - b.nutrition[0].amount))
+        setSortedRecipes(d => [...d].sort((a, b) => a.nutrition[0].amount - b.nutrition[0].amount))
         break
       case "time":
-        setSortedRecipes((d: RecipeType[]) => [...d].sort((a: RecipeType, b: RecipeType) => a.times.readyTime - b.times.readyTime))
+        setSortedRecipes(d => [...d].sort((a, b) => a.times.readyTime - b.times.readyTime))
         break
     }
   }

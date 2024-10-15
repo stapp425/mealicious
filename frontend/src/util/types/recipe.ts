@@ -39,49 +39,7 @@ export type Dish =
   "dessert" | "drink" | 
   "breakfast" | "lunch" | "dinner"
 
-export type RecipeQuery = {
-  query: string,
-  cuisine?: string,
-  diet?: Diet,
-  dish?: Dish,
-  minCalories?: number,
-  maxCalories?: number,
-  minCarbs?: number,
-  maxCarbs?: number,
-  minProtein?: number,
-  maxProtein?: number,
-  minFat?: number,
-  maxFat?: number,
-  minCholesterol?: number,
-  maxCholesterol?: number,
-  minSodium?: number,
-  maxSodium?: number,
-  minSugar?: number,
-  maxSugar?: number
-}
-
 export type RecipeSort = "favorite" | "title" | "calories" | "time"
-
-export const defaultQueryValues: RecipeQuery = {
-  query: "",
-  cuisine: "",
-  diet: "any",
-  dish: "any",
-  minCalories: 100,
-  maxCalories: 1000,
-  minProtein: 0,
-  maxProtein: 20,
-  minCarbs: 0,
-  maxCarbs: 100,
-  minFat: 0,
-  maxFat: 100,
-  minCholesterol: 0,
-  maxCholesterol: 250,
-  minSodium: 0,
-  maxSodium: 2000,
-  minSugar: 0,
-  maxSugar: 100
-}
 
 export type Recipe = {
   title: string

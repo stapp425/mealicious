@@ -81,53 +81,53 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, register, setV
             }
             {
               isEditActive
-                ? <div className="grid grid-rows-2 grid-cols-[repeat(2,_1fr)_max-content] gap-2">
-                    <Input
-                      type="text"
-                      name="name"
-                      value={input.name}
-                      placeholder="Name"
-                      autoComplete="off"
-                      onChange={handleChange}
-                      className="row-start-1 col-start-1 col-span-3"
-                    />
-                    <Input
-                      type="number"
-                      name="amount"
-                      min={1}
-                      value={input.amount}
-                      placeholder="Amount"
-                      autoComplete="off"
-                      onChange={handleChange}
-                      className="row-start-2 col-start-1"
-                    />
-                    <Select onValueChange={(value: string) => setInput(n => ({ ...n, unit: value }))}>
-                      <SelectTrigger className="row-start-2 col-start-2">
-                        <SelectValue placeholder="unit" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="kcal">kcal</SelectItem>
-                        <SelectItem value="g">g</SelectItem>
-                        <SelectItem value="mg">mg</SelectItem>
-                        <SelectItem value="μg">μg</SelectItem>
-                        <SelectItem value="%">%</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <button
-                      type="button"
-                      onClick={() => (input.name && input.unit) && setValue("nutrition", [ ...nutrition, input ])}
-                      className="row-start-2 col-start-3 aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
-                    >
-                      <Plus size={18}/>
-                    </button>
-                  </div>
-                : <button 
+              ? <div className="grid grid-rows-2 grid-cols-[repeat(2,_1fr)_max-content] gap-2">
+                  <Input
+                    type="text"
+                    name="name"
+                    value={input.name}
+                    placeholder="Name"
+                    autoComplete="off"
+                    onChange={handleChange}
+                    className="row-start-1 col-start-1 col-span-3"
+                  />
+                  <Input
+                    type="number"
+                    name="amount"
+                    min={1}
+                    value={input.amount}
+                    placeholder="Amount"
+                    autoComplete="off"
+                    onChange={handleChange}
+                    className="row-start-2 col-start-1"
+                  />
+                  <Select onValueChange={(value: string) => setInput(n => ({ ...n, unit: value }))}>
+                    <SelectTrigger className="row-start-2 col-start-2">
+                      <SelectValue placeholder="unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="kcal">kcal</SelectItem>
+                      <SelectItem value="g">g</SelectItem>
+                      <SelectItem value="mg">mg</SelectItem>
+                      <SelectItem value="μg">μg</SelectItem>
+                      <SelectItem value="%">%</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <button
                     type="button"
-                    onClick={() => setIsEditActive(true)}
-                    className="w-full h-10 flex justify-center items-center text-white bg-orange-500 py-2 rounded-md"
+                    onClick={() => (input.name && input.unit) && setValue("nutrition", [ ...nutrition, input ])}
+                    className="row-start-2 col-start-3 aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
                   >
                     <Plus size={18}/>
                   </button>
+                </div>
+              : <button 
+                  type="button"
+                  onClick={() => setIsEditActive(true)}
+                  className="w-full h-10 flex justify-center items-center text-white bg-orange-500 py-2 rounded-md"
+                >
+                  <Plus size={18}/>
+                </button>
             }
           </div>
         : <>
