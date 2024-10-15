@@ -38,17 +38,15 @@ function List({ recipe }: Props): React.ReactElement {
       <div className="relative group overflow-hidden flex justify-center items-center basis-1/3 shadow-lg">
         <Dialog>
           <DialogTrigger>
-            <div>
-              <img
-                src={recipe.image}
-                alt={recipe.title}
-                className="scale-[175%] lg:scale-[200%] group-hover:scale-[175%] transition"
-              />
-              <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
-            </div>
+            <img
+              src={recipe.image}
+              alt={recipe.title}
+              className="scale-[175%] lg:scale-[200%] group-hover:scale-[175%] transition"
+            />
+            <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
           </DialogTrigger>
-          <DialogContent>
-            <ScrollArea type="always">
+          <DialogContent className="w-[90vw] md:w-[500px] h-[min(650px,90vh)]">
+            <ScrollArea type="always" className="size-full">
               <Details recipe={recipe} matches={matches.md}/>
               <ScrollBar/>
             </ScrollArea>
@@ -103,9 +101,9 @@ function List({ recipe }: Props): React.ReactElement {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                <Link to={recipe.source.url} target="_blank">
-                  <Earth color="#1e293b"/>
-                </Link>
+                  <Link to={recipe.source.url} target="_blank">
+                    <Earth color="#1e293b"/>
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                   {recipe.source.name}
@@ -129,14 +127,12 @@ function Card({ recipe }: Props) {
       <div className="group relative overflow-hidden basis-[30%]">
         <Dialog>
           <DialogTrigger>
-            <div>
-              <img
-                src={recipe.image}
-                alt={recipe.title}
-                className="scale-[175%] lg:scale-[200%] group-hover:scale-[175%] transition"
-              />
-              <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
-            </div>
+            <img
+              src={recipe.image}
+              alt={recipe.title}
+              className="scale-[175%] lg:scale-[200%] group-hover:scale-[175%] transition"
+            />
+            <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
           </DialogTrigger>
           <DialogContent>
             <ScrollArea type="always">
@@ -193,9 +189,9 @@ function Card({ recipe }: Props) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                <Link to={recipe.source.url} target="_blank">
-                  <Earth color="#1e293b"/>
-                </Link>
+                  <Link to={recipe.source.url} target="_blank">
+                    <Earth color="#1e293b"/>
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                   {recipe.source.name}
@@ -217,14 +213,12 @@ function Square({ recipe }: Props): React.ReactElement {
     <div className="group relative overflow-hidden aspect-square w-3/4 md:w-full rounded-lg shadow-md">
       <Dialog>
         <DialogTrigger>
-          <div>
             <img
-              src={recipe.image}
-              alt={recipe.title}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[150%] lg:scale-[175%] group-hover:scale-[200%] transition"
-            />
-            <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
-          </div>
+            src={recipe.image}
+            alt={recipe.title}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[150%] lg:scale-[175%] group-hover:scale-[200%] transition"
+          />
+          <div className="opacity-0 absolute top-0 left-0 size-full bg-black group-hover:opacity-25 transition"/>
         </DialogTrigger>
         <DialogContent>
           <ScrollArea type="always">
@@ -237,7 +231,7 @@ function Square({ recipe }: Props): React.ReactElement {
           <div className="absolute top-2 left-2">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Button className="opacity-75 p-0 size-10 bg-white hover:bg-white hover:opacity-100">
                     <Link to={recipe.source.url} target="_blank">
                       <Earth color="#000000"/>

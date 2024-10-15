@@ -48,7 +48,7 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
     <>
       {
         matches
-          ? <div className="aspect-[9/10] min-w-[630px] min-h-[700px] max-w-[675px] max-h-[750px] rounded-lg">
+          ? <div className="size-full rounded-lg">
               <div className="overflow-hidden row-span-1 col-span-1 grid grid-rows-1 grid-cols-2 p-2 gap-5 size-full">
                 <div className="grid grid-rows-[40%_repeat(2,_auto)] grid-cols-[100%] row-span-1 gap-3">
                   <div className="overflow-hidden row-span-1 col-span-1 rounded-2xl border-none">
@@ -102,7 +102,7 @@ export default function Details({ recipe, matches }: Props): React.ReactElement 
                 </div>
                 <div className="grid grid-rows-[minmax(0,_auto)_minmax(40%,_1fr)] grid-cols-1 gap-2">
                   <div>
-                    <DialogTitle className="font-bold text-[min(3vw,_36px)] leading-[min(4vh,_2.5rem)]">
+                    <DialogTitle className="font-bold text-md md:text-lg">
                       {recipe.title}
                     </DialogTitle>
                     <div className="flex items-center gap-2">

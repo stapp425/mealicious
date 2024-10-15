@@ -7,8 +7,6 @@ export default async function fetchFromAPI(httpMethod: string, path: string, que
   if(httpMethod === "GET" && body)
     throw new Error("An HTTP GET request must not have a body.")
 
-  console.log(`${backendURL}${path}${passedQueries && "?" + passedQueries}`)
-
   try {
     const response = httpMethod === "GET"
       ? await fetch(`${backendURL}${path}${passedQueries && "?" + passedQueries}`, {
