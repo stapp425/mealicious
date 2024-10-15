@@ -1,10 +1,17 @@
 import { type User } from "firebase/auth"
 import { collection, limit, query, Query, where } from "firebase/firestore"
 import { firestore } from "@/../firebaseConfig"
+import { LucideProps } from "lucide-react"
 
 export type Operation = "create" | "replace" | "update" | "remove"
-
+export type ActiveSection = "dashboard" | "recipes" | "meals" | "plans"
 type Option = "add" | "remove" | "update" | "format"
+
+export type ReactState<T> = [T, React.Dispatch<React.SetStateAction<T>>]
+
+export type RefComponent<T, K> = React.ForwardRefExoticComponent<K & React.RefAttributes<T>>
+
+export type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 
 export function modifyData<T extends { id?: string }>(original: T[], option: Option, data?: T): T[] {
   if(option === "format") {
@@ -48,6 +55,8 @@ export type Breakpoints = {
 }
 
 export type App = {
+  activeSection: ActiveSection
+  changeActiveSection: (value: ActiveSection) => void,
   date: Date,
   user: CurrentUser
   screenSizes: Breakpoints

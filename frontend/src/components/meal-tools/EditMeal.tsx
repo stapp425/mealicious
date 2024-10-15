@@ -2,28 +2,42 @@ import { useEffect, useContext } from "react"
 import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { type Meal, defaultMeal, formatMeal } from "@/util/types/meal"
-import { AnimatePresence } from "framer-motion"
-import { useFirestoreGet, useFirestoreUpdate } from "@/util/hooks"
-import ToolWindow from "./ToolWindow"
+import { useFirestoreFetch, useFirestoreGet, useFirestoreUpdate } from "@/util/hooks"
 import AddWindow from "./AddWindow"
 import { useParams } from "react-router-dom"
-import { MealEditContext } from "./MealTools"
+import Container from "../theme/Container"
+import { defaultRecipe, formatRecipes, Recipe } from "@/util/types/recipe"
+import { createQuery } from "@/util/types/app"
+import { type User } from "firebase/auth"
+import RecipeList from "./RecipeList"
+import Button from "../theme/Button"
+import Time from "./Time"
+import Description from "./Description"
+import Tag from "./Tag"
+import Title from "./Title"
+import Spinner from "../theme/Spinner"
 
 const EditMeal: React.FC = () => {
-  const { isAddRecipeActive } = useContext(MealEditContext)
   const { mealId } = useParams()
   const { user } = useContext(AppContext)
   const { data: meal } = useFirestoreGet<Meal>("meals", mealId as string, formatMeal, defaultMeal)
+  const { data: recipes } = useFirestoreFetch<Recipe>(
+    createQuery(user as User, "recipes"), 
+    formatRecipes, { initialData: [], defaultData: defaultRecipe }
+  )
   const {
     control,
     register,
     handleSubmit,
     setValue,
     getValues,
-    reset,
     setError,
     clearErrors,
-    formState: { errors }
+    reset,
+    formState: { 
+      errors,
+      isSubmitting
+    }
   } = useForm<Meal>({ defaultValues: defaultMeal })
   const { updateFirestoreDoc: updateMeal } = useFirestoreUpdate()
 
@@ -33,21 +47,11 @@ const EditMeal: React.FC = () => {
         ...data,
         contents: data.contents.map(content => ({
           type: content.type,
-          recipe: content.recipe.id as string
+          recipe: content.recipe.id
         })),
         userId: user.uid }
-      
-      updateMeal("meals", mealId as string, editedData)
-    }
-  }
 
-  function sendProps() {
-    return {
-      register, control,
-      setValue, reset,
-      error: errors,
-      setError,
-      clearErrors
+      updateMeal("meals", mealId as string, editedData)
     }
   }
 
@@ -68,12 +72,40 @@ const EditMeal: React.FC = () => {
   }, [meal])
 
   return (
-    <form onSubmit={handleSubmit(submitMeal)} className="overflow-hidden h-[calc(100vh-150px)] w-screen flex justify-between gap-4">
-      <ToolWindow {...sendProps()}/>
-      <AnimatePresence>
-        { isAddRecipeActive && <AddWindow setValue={setValue} getValues={getValues}/> }
-      </AnimatePresence>
-    </form>
+    <Container.Form onSubmit={handleSubmit(submitMeal)} className="justify-between gap-4 p-0 bg-orange-200">
+      <div className="mx-auto max-w-[1000px] min-h-site-container lg:min-h-screen p-4 space-y-3 bg-white">
+        <Title
+          register={register}
+          error={errors}
+        />
+        <Tag
+          control={control}
+          setValue={setValue}
+        />
+        <Description
+          register={register}
+          className="w-full"
+        />
+        <div className="flex justify-between items-start">
+          <Time
+            setValue={setValue}
+            control={control}
+            error={errors}
+            setError={setError}
+            clearErrors={clearErrors}
+          />
+          <Button>{ isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Meal"}</Button>
+        </div>
+        <AddWindow className="w-full" recipes={recipes} error={errors} setValue={setValue} getValues={getValues}/>
+        <RecipeList
+          control={control}
+          setValue={setValue}
+          setError={setError}
+          clearErrors={clearErrors}
+          className="flex-1"
+        />
+      </div>
+    </Container.Form>
   )
 }
 

@@ -1,13 +1,17 @@
-import { type RequiredFieldArray } from "@/types/form"
-import Field from "./Field"
+import { type Recipe } from "@/util/types/recipe"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import { useInputChange } from "@/util/hooks"
 import { useWatch } from "react-hook-form"
 import { useEffect } from "react"
 import { Plus } from "lucide-react"
-import Error from "./Error"
-import { type Recipe } from "@/types/recipe"
+import Error from "../theme/Error"
+import Field from "../theme/Field"
 
-const Instructions: React.FC<RequiredFieldArray<Recipe>> = ({ className, control, setValue, error, setError, clearErrors }) => {
+type InstructionsProps = 
+  Pick<ReactHookFormTypes<Recipe>, "control" | "setValue" | "error" | "setError" | "clearErrors"> & 
+  React.HTMLAttributes<HTMLDivElement>
+
+const Instructions: React.FC<InstructionsProps> = ({ className, control, setValue, error, setError, clearErrors }) => {
   const { input, isEditActive, setIsEditActive, handleChange } = useInputChange<{[key: string]: string}>({ step: "" })
   
   const instructions = useWatch({
@@ -34,15 +38,45 @@ const Instructions: React.FC<RequiredFieldArray<Recipe>> = ({ className, control
         </div>
         { 
           isEditActive && 
-            <button
-              type="button"
-              onClick={() => setIsEditActive(false)}
-              className="text-red-600 hover:text-red-500 transition-colors font-[600]"
-            >
-              Cancel
-            </button> 
+          <button
+            type="button"
+            onClick={() => setIsEditActive(false)}
+            className="text-red-600 hover:text-red-500 transition-colors font-[600]"
+          >
+            Cancel
+          </button> 
         }
       </div>
+      {
+        isEditActive
+        ? <div className="flex-1 flex justify-between gap-3">
+            <textarea
+              name="step"
+              value={input.step}
+              placeholder="Add an instruction here..."
+              autoComplete="off"
+              onChange={handleChange}
+              className="flex-1 h-10 resize-none focus:resize-y border border-slate-300 p-2 rounded-md"
+              autoFocus
+            />
+            <button
+              type="button" 
+              onClick={() => input && setValue("instructions", [...instructions, input.step])}
+              className="aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+            >
+              <Plus size={18}/>
+            </button>
+          </div>
+        : <div className="flex-1">
+            <button
+              type="button" 
+              onClick= {() => setIsEditActive(true)}
+              className="flex-1 w-full h-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+            >
+              <Plus size={18}/>
+            </button>
+          </div>
+      }
       {
         instructions.length > 0 &&
         <div className="flex-1">
@@ -64,41 +98,12 @@ const Instructions: React.FC<RequiredFieldArray<Recipe>> = ({ className, control
             }
           </div>
         </div>
-        
-      }
-      {
-        isEditActive
-          ? <div className="h-fit flex justify-between gap-3">
-              <textarea
-                name="step"
-                value={input.step}
-                placeholder="Add an instruction here..."
-                autoComplete="off"
-                onChange={handleChange}
-                className="flex-1 h-10 resize-none focus:resize-y border border-slate-300 p-2 rounded-md"
-                autoFocus
-              />
-              <button
-                type="button" 
-                onClick={() => input && setValue("instructions", [...instructions, input.step])}
-                className="aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
-              >
-                <Plus size={18}/>
-              </button>
-            </div>
-          : <button
-              type="button" 
-              onClick= {() => setIsEditActive(true)}
-              className="w-full h-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
-            >
-              <Plus size={18}/>
-            </button>
       }
       { 
         error.instructions &&
-        <Error>
+        <Error.Label>
           {error.instructions.message}
-        </Error> 
+        </Error.Label> 
       }
     </Field>
   )

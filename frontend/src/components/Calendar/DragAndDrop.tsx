@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react"
-import { Label } from "../../ui/label"
-import Button from "../../theme/Button"
+import { Label } from "../ui/label"
+import Button from "../theme/Button"
 import { useWatch } from "react-hook-form"
-import { RequiredFieldArray } from "@/util/types/form"
+import { type ReactHookFormTypes } from "@/util/types/form"
 import { X } from "lucide-react"
 import { type Meal } from "@/util/types/meal"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import Error from "../Error"
+import Error from "@/components/theme/Error"
 import { Plan } from "@/util/types/plan"
-import * as Placeholder from "../../theme/Placeholder"
+import Placeholder from "../theme/Placeholder"
 import { Link } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
-interface Props extends RequiredFieldArray<Plan> {
+type DragAndDropProps = {
   meals: Meal[]
-}
+} & Pick<ReactHookFormTypes<Plan>, "control" | "setValue" | "setError" | "clearErrors" | "error">
 
-const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clearErrors, error }) => {
+const DragAndDrop: React.FC<DragAndDropProps> = ({ meals, control, setValue, setError, clearErrors, error }) => {
   const [isAllMealsVisible, setIsAllMealsVisible] = useState<boolean>(false)
 
   const mealsInput = useWatch({
     control,
     name: "meals"
   })
+
+  function addMeal(meal: Meal) {
+    setValue("meals", [...mealsInput, meal])
+  }
   
   function toggleViewMeals() {
     setIsAllMealsVisible(a => !a)
@@ -49,7 +53,7 @@ const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clea
     if(mealsInput.length === 0) {
       setError("meals", {
         type: "missing",
-        message: "At least one meal is required before submitting."
+        message: "At least one meal is required."
       })
     } else {
       clearErrors("meals")
@@ -71,22 +75,22 @@ const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clea
         >
           { 
             isAllMealsVisible
-              ? "Hide Meals"
-              : "View All Meals"
+            ? "Hide Meals"
+            : "View All Meals"
           }
         </Button>
       </div>
       {
         error.meals &&
-          <Error>
-            {error.meals.message}
-          </Error>
+        <Error>
+          {error.meals.message}
+        </Error>
       }
       <ScrollArea
         type="always"
         onDragOver={handleOnDragOver}
         onDrop={handleOnDrop}
-        className="h-[75px] border border-dashed border-slate-500 rounded-md"
+        className="h-[75px] border border-slate-300 rounded-md"
       >
         <div className="h-full flex flex-wrap items-start gap-2 p-2">
           {
@@ -107,34 +111,35 @@ const DragAndDrop: React.FC<Props> = ({ meals, control, setValue, setError, clea
       </ScrollArea>
       {
         isAllMealsVisible &&
-          <ScrollArea type="always" className="w-full h-fit">
-            <div className="h-[175px] flex gap-3">
-              {
-                meals.length > 0 && meals[0].title
-                  ? meals.map((meal, index) => 
-                      <DraggableMeal
-                        key={index}
-                        onDragStart={handleOnDrag}
-                        meal={meal}
-                        className="flex flex-col h-[90%] border border-slate-400 p-3 space-y-1 rounded-sm"
-                      />
-                    )
-                  : <Placeholder.Root 
-                      icon={<X size={64}/>}
-                      className="w-full"
-                    >
-                      <Placeholder.Message className="text-lg">No Meals Found!</Placeholder.Message>
-                      <Placeholder.Tip className="text-xs">Try creating a new one!</Placeholder.Tip>
-                      <Button className="text-xs">
-                        <Link to="/meals/create">
-                          Create Meal
-                        </Link>
-                      </Button>
-                    </Placeholder.Root>
-              }
-            </div>
-            <ScrollBar orientation="horizontal"/>
-          </ScrollArea>
+        <ScrollArea type="always" className="w-full h-fit">
+          <div className="h-[175px] flex gap-3">
+            {
+              meals.length > 0 && meals[0].title
+              ? meals.map((meal, index) => 
+                  <DraggableMeal
+                    key={index}
+                    onDragStart={handleOnDrag}
+                    addMeal={addMeal}
+                    meal={meal}
+                    className="flex flex-col h-[90%] border border-slate-400 p-3 space-y-1 rounded-sm"
+                  />
+                )
+              : <Placeholder
+                  icon={<X size={64}/>}
+                  className="w-full"
+                >
+                  <Placeholder.Message className="text-lg">No Meals Found!</Placeholder.Message>
+                  <Placeholder.Tip className="text-xs">Try creating a new one!</Placeholder.Tip>
+                  <Button className="text-xs">
+                    <Link to="/meals/create">
+                      Create Meal
+                    </Link>
+                  </Button>
+                </Placeholder>
+            }
+          </div>
+          <ScrollBar orientation="horizontal"/>
+        </ScrollArea>
       }
     </div>
   )
@@ -144,11 +149,13 @@ type DraggableMealProps = {
   className?: string
   meal: Meal
   onDragStart: (event: React.DragEvent<HTMLDivElement>, data: string) => void
+  addMeal: (meal: Meal) => void
 }
 
-const DraggableMeal: React.FC<DraggableMealProps> = ({ className, meal, onDragStart }) => (  
+const DraggableMeal: React.FC<DraggableMealProps> = ({ className, meal, onDragStart, addMeal }) => (  
   <div
     onDragStart={event => onDragStart(event, JSON.stringify(meal))}
+    onClick={() => addMeal(meal)}
     className={cn("cursor-grab active:cursor-grabbing", className)}
     draggable
   >
@@ -159,29 +166,15 @@ const DraggableMeal: React.FC<DraggableMealProps> = ({ className, meal, onDragSt
       <div className="space-y-1">
         {
           meal.contents.map((content, index) => 
-            <MealContent
-              key={index}
-              className="min-w-[150px] text-xs text-center font-[600] bg-orange-100 p-2 rounded-md"
-            >
+            <p key={index} className="min-w-[150px] text-xs text-center font-[600] bg-orange-100 p-2 rounded-md">
               {content.recipe.title}
-            </MealContent>
+            </p>
           )
         }
       </div>
       <ScrollBar/>
     </ScrollArea>
   </div>
-)
-
-type MealContentProps = {
-  className?: string
-  children: React.ReactNode
-}
-
-const MealContent: React.FC<MealContentProps> = ({ className, children }) => (
-  <p className={className}>
-    {children}
-  </p>
 )
 
 export default DragAndDrop

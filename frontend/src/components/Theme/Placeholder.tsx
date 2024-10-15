@@ -1,45 +1,40 @@
-import { type FC, type ReactNode } from "react"
+import { forwardRef } from 'react'
+import { type ReactNode } from "react"
 import { cn } from "@/lib/utils"
-import Button, { Props as ButtonProps } from "./Button"
+import Button, { ButtonComponent } from "./Button"
+import { RefComponent } from '@/util/types/app'
+import { motion } from 'framer-motion'
+import { X } from 'lucide-react'
+
+type PlaceholderComponent = {
+  Message: React.FC<Omit<PlaceholderProps, "icon">>
+  Tip: React.FC<Omit<PlaceholderProps, "icon">>
+  Action: ButtonComponent
+} & RefComponent<HTMLDivElement, PlaceholderProps>
 
 type PlaceholderProps = {
   className?: string
   children: ReactNode
-  icon: ReactNode
+  icon?: ReactNode
 }
 
-const Root: FC<PlaceholderProps> = ({ className, icon, children }) => {
-  return (
-    <div className={cn("flex flex-col justify-center items-center gap-3 border-2 border-dashed border-slate-400 bg-slate-200 text-slate-600 font-[600] text-2xl py-4 rounded-lg", className)}>
-      {icon}
-      {children}
-    </div>
-  )
-}
+const Placeholder: PlaceholderComponent = forwardRef<HTMLDivElement, PlaceholderProps>(({ className, icon = <X size={64}/>, children }, ref) => (
+  <div ref={ref} className={cn("flex flex-col justify-center items-center gap-3 bg-slate-200 text-slate-600 font-[600] text-2xl py-4 rounded-lg", className)}>
+    {icon}
+    {children}
+  </div>
+)) as PlaceholderComponent
 
-type MessageProps = {
-  className?: string
-  children: ReactNode
-}
+export const MotionPlaceholder = motion(Placeholder)
 
-const Message: FC<MessageProps> = ({ className, children }) => {
-  return <h1 className={className}>{children}</h1>
-}
+Placeholder.Message = ({ className, children }) => (
+  <h1 className={className}>{children}</h1>
+)
 
-type TipProps = {
-  className?: string
-  children: ReactNode
-}
-
-const Tip: FC<TipProps> = ({ className, children }) => (
+Placeholder.Tip = ({ className, children }) => (
   <p className={cn("text-sm font-[500]", className)}>{children}</p>
 )
 
-const Action: FC<ButtonProps> = Button
+Placeholder.Action = Button
 
-export {
-  Root,
-  Message,
-  Tip,
-  Action
-}
+export default Placeholder

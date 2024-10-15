@@ -18,14 +18,17 @@ import { EllipsisVertical, Pencil, Trash } from "lucide-react"
 import { Separator } from "../ui/separator"
 import { Link } from "react-router-dom"
 import { type Meal } from "@/util/types/meal"
+import { useContext } from "react"
+import { AllMealsContext } from "./AllMeals"
 
-type Props = {
+type MenuProps = {
   meal: Meal
-  removeMeal: (value: Meal) => void
   id: string
 }
 
-const Menu: React.FC<Props> = ({ meal, id, removeMeal }) => {
+const Menu: React.FC<MenuProps> = ({ meal, id }) => {
+  const { removeMeal } = useContext(AllMealsContext)
+  
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -41,21 +44,17 @@ const Menu: React.FC<Props> = ({ meal, id, removeMeal }) => {
           </Link>
           <Separator className="relative mx-auto w-[85%]"/>
           <AlertDialog>
-            <AlertDialogTrigger className="w-full">
-              <button className="w-full flex justify-between font-[600] hover:bg-red-500 active:bg-red-600 hover:text-white transition-colors p-4">
-                <Trash/>
-                <span>Delete</span>
-              </button>
+            <AlertDialogTrigger className="w-full flex justify-between font-[600] hover:bg-red-500 active:bg-red-600 hover:text-white transition-colors p-4">
+              <Trash/>
+              <span>Delete</span>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>
-                  <h1 className="font-bold text-2xl">Are you sure?</h1>
+                <AlertDialogTitle className="font-bold text-2xl">
+                  Are you sure?
                 </AlertDialogTitle>
-                <AlertDialogDescription>
-                  <p className="text-base">
-                    Deleting this meal will permanently remove it from our servers! No changes will be made with the recipes within.
-                  </p>
+                <AlertDialogDescription className="text-base">
+                  Deleting this meal will permanently remove it from our servers! No changes will be made with the recipes within.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

@@ -1,93 +1,77 @@
-import { useEffect, useRef, useState } from "react"
-import { useFirestoreGet, useScroll } from "@/util/hooks"
+import { createContext, useEffect, useRef } from "react"
+import { useFirestoreGet } from "@/util/hooks"
 import { useParams } from "react-router-dom"
-import { defaultRecipe, formatRecipe, Recipe } from "@/util/types/recipe"
-import { ArrowUp } from "lucide-react"
-import Title from "./Title"
+import { defaultRecipe, formatRecipe, type Recipe } from "@/util/types/recipe"
+import { Clipboard, Clock, Microwave } from "lucide-react"
+import Main from "./Main"
 import Description from "./Description"
 import Nutrition from "./Nutrition"
 import Ingredients from "./Ingredients"
 import Instructions from "./Instructions"
 import Options from "./Options"
 import Sections from "./Sections"
+import Container from "../theme/Container"
+
+export const RecipeDetailsContext = createContext<{data: Recipe, setData: React.Dispatch<React.SetStateAction<Recipe>>}>({data: defaultRecipe, setData: () => {}})
 
 export default function RecipeDetails(): React.ReactElement {
-  const { y } = useScroll()
   const { recipeId } = useParams()
-  const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
-  const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const { data: recipe, setData: setRecipe } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
   const contentRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLDivElement>(null)
+  const mainRef = useRef<HTMLDivElement>(null)
   const descriptionRef = useRef<HTMLDivElement>(null)
   const nutritionRef = useRef<HTMLDivElement>(null)
   const ingredientsRef = useRef<HTMLDivElement>(null)
   const instructionsRef = useRef<HTMLDivElement>(null)
   
   useEffect(() => {
-    document.title = `${data.title} | Mealicious`
-    
-    data.isFavorite && 
-    setIsFavorite(data.isFavorite)
-  }, [data])
+    document.title = `${recipe.title} | Mealicious`
+  }, [recipe])
   
   return (
-    <div className="relative flex">
-      <div className="sticky top-[150px] left-0 border-r border-r-slate-300 w-1/4 max-w-[300px] h-[calc(100vh-150px)] flex flex-col pt-3">
-        <Sections
-          title={titleRef.current as HTMLDivElement}
-          description={descriptionRef.current as HTMLDivElement}
-          nutrition={nutritionRef.current as HTMLDivElement}
-          ingredients={ingredientsRef.current as HTMLDivElement}
-          instructions={instructionsRef.current as HTMLDivElement}
-        />
-        <Options
-          content={contentRef.current as HTMLDivElement}
-          recipe={data}
-          isFavorite={isFavorite}
-          setIsFavorite={setIsFavorite}
-          className="px-3"
-        />
-      </div>
-      <div ref={contentRef} className="h-min flex-1 flex flex-col *:max-w-[1000px] *:print:p-6 *:print:max-w-none *:print:w-full *:px-6">
-        <Title
-          ref={titleRef}
-          title={data.title}
-          isFavorite={isFavorite}
-          image={data.image}
-          times={data.times}
-          diets={data.diets}
-          dishTypes={data.dishTypes}
-          source={data.source}
-          className="h-fit flex gap-3 pt-6"
-        />
-        <Description
-          ref={descriptionRef}
-          description={data.description}
-          className="pt-6"
-        />
-        <Nutrition
-          ref={nutritionRef}
-          servingSize={data.servingSize}
-          nutrition={data.nutrition.filter(nutrition => Math.floor(nutrition.amount) > 0)}
-          className="pt-6 break-inside-avoid-page"
-        />
-        <Ingredients
-          ref={ingredientsRef}
-          ingredients={data.ingredients}
-          className="pt-6 break-inside-avoid"
-        />
-        <Instructions
-          ref={instructionsRef}
-          instructions={data.instructions}
-          className="py-6 break-inside-avoid-page"
-        />
-      </div>
-      <button 
-        className={`peer fixed bottom-4 right-4 ${y ? "opacity-100" : "opacity-0 pointer-events-none"} flex justify-center items-center text-white bg-orange-500 hover:bg-orange-700 hover:scale-110 transition-all rounded-full size-14`}
-        onClick={() => scrollTo({ top: 0, behavior: "smooth" })}
-      >
-        <ArrowUp size={28}/>
-      </button>
-    </div>
+    <RecipeDetailsContext.Provider value={{data: recipe, setData: setRecipe}}>
+      <Container className="mx-auto lg:flex">
+        <Options printContent={contentRef.current as HTMLDivElement} className="block lg:hidden lg:static sticky top-header-height left-0"/>
+        <div ref={contentRef} className="lg:w-[50vw] lg:max-w-[1000px] space-y-6 *:print:p-6 *:print:max-w-none *:print:w-full">
+          <Main ref={mainRef} className="lg:px-6 lg:pt-6">
+            <Main.Image src={recipe.image} alt={recipe.title}/>
+            <div className="space-y-2.5 px-3 lg:px-0">
+              <Main.Title>{recipe.title}</Main.Title>
+              { recipe.isFavorite && <Main.Favorite/> }
+              <Main.Times>
+                <Main.Time Icon={Clock}>{recipe.times.readyTime}</Main.Time>
+                <Main.Time Icon={Microwave}>{recipe.times.cookTime}</Main.Time>
+                <Main.Time Icon={Clipboard}>{recipe.times.prepTime}</Main.Time>
+              </Main.Times>
+              { recipe.diets && <Main.Diets diets={recipe.diets}/> }
+              { recipe.dishTypes && <Main.DishTypes dishTypes={recipe.dishTypes}/> }
+              { recipe.source && <Main.Source to={recipe.source.url}>{recipe.source.name}</Main.Source> }
+            </div>
+          </Main>
+          <Description ref={descriptionRef} className="px-3 lg:px-6 break-inside-avoid">{recipe.description}</Description>
+          <Nutrition ref={nutritionRef} className="px-3 lg:px-6">
+            <Nutrition.Serving>{recipe.servingSize.amount} {recipe.servingSize.unit}</Nutrition.Serving>
+            <Nutrition.Content nutrients={recipe.nutrition}/>
+          </Nutrition>
+          <Ingredients ref={ingredientsRef} ingredients={recipe.ingredients} className="px-3 lg:px-6"/>
+          <Instructions
+            ref={instructionsRef}
+            instructions={recipe.instructions}
+            className="px-3 pb-3 lg:px-6 lg:pb-6"
+          />
+        </div>
+        <div className="hidden lg:block w-1/4 max-w-[300px] h-fit sticky top-[24px] left-0 border border-slate-400 mt-6 rounded-md">
+          <Sections
+            main={mainRef.current as HTMLDivElement}
+            description={descriptionRef.current as HTMLDivElement}
+            nutrition={nutritionRef.current as HTMLDivElement}
+            ingredients={ingredientsRef.current as HTMLDivElement}
+            instructions={instructionsRef.current as HTMLDivElement}
+            className="hidden md:flex md:flex-col"
+          />
+          <Options printContent={contentRef.current as HTMLDivElement}/>
+        </div>
+      </Container>
+    </RecipeDetailsContext.Provider>
   )
 }

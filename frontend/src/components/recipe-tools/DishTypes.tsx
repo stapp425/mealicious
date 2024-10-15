@@ -1,12 +1,16 @@
-import { type FieldArray } from "@/types/form"
-import { type Recipe } from "@/types/recipe"
+import { type ReactHookFormTypes } from "@/util/types/form"
+import { type Recipe } from "@/util/types/recipe"
 import { useInputChange } from "@/util/hooks"
 import { useWatch } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import Field from "./Field"
+import Field from "../theme/Field"
 
-const DishTypes: React.FC<FieldArray<Recipe>> = ({ className, control, setValue }) => {
+type DishTypesProps = 
+  Pick<ReactHookFormTypes<Recipe>, "control" | "setValue"> &
+  React.HTMLAttributes<HTMLDivElement>
+
+const DishTypes: React.FC<DishTypesProps> = ({ className, control, setValue, ...props }) => {
   const { input, handleChange } = useInputChange<{[key: string]: string}>({ dishType: "" })
   
   const dishTypes = useWatch({
@@ -20,7 +24,7 @@ const DishTypes: React.FC<FieldArray<Recipe>> = ({ className, control, setValue 
   }
   
   return (
-    <Field className={className}>
+    <Field {...props} className={className}>
       <h1 className="font-bold text-2xl">Dish Types</h1>
       <div className="flex-1">
         <div className="relative flex justify-between gap-3 mb-3">
@@ -64,7 +68,7 @@ const DishTypes: React.FC<FieldArray<Recipe>> = ({ className, control, setValue 
       </div>
       <p className="font-[600] text-muted-foreground mt-2">
         Add some dish types to your recipe here. <br/>
-        <i className="text-xs text-slate-300 font-[600]">Examples include breakfast, lunch, dinner, main course, side, etc...</i>
+        <i className="text-xs text-slate-400 font-[600]">Examples include breakfast, lunch, dinner, main course, side, etc...</i>
       </p>
     </Field>
   )

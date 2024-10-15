@@ -13,8 +13,10 @@ import Diets from "./Diets"
 import DishTypes from "./DishTypes"
 import Times from "./Times"
 import Image from "./Image"
-import Serving from "./Serving"
 import Nutrition from "./Nutrition"
+import Container from "../theme/Container"
+import Button from "../theme/Button"
+import Spinner from "../theme/Spinner"
 
 const CreateRecipe: React.FC = () => {
   const { toast } = useToast()
@@ -34,10 +36,12 @@ const CreateRecipe: React.FC = () => {
     setValue,
     setError,
     clearErrors,
+    reset,
     control,
     formState: { 
       errors,
       isSubmitting,
+      isSubmitSuccessful
     }
   } = useForm<Recipe>({ defaultValues: defaultRecipe })  
   
@@ -70,87 +74,85 @@ const CreateRecipe: React.FC = () => {
   useEffect(() => {
     document.title = "Create Recipe | Mealicious"
   }, [])
+
+  useEffect(() => {
+    reset()
+  }, [isSubmitSuccessful])
   
   return (
-    <form onSubmit={handleSubmit(submitRecipe)} className="relative min-h-[calc(100vh-150px)] grid grid-cols-[350px_1fr]">
-      <div className="overflow-hidden h-[calc(100vh-150px)] sticky top-[150px] flex flex-col justify-between gap-3 p-4 bg-white border-r border-r-slate-300">
-        <Image
-          className=""
-          name="image"
-          register={register}
-          error={errors}
-          setValue={setValue}
-          image={image}
-          setImage={setImage}
-        />
-        <Nutrition
-          control={control}
-          setError={setError}
-          clearErrors={clearErrors}
-          error={errors}
-          setValue={setValue}
-        >
-          <Serving
-            className="p-2"
-            name="servingSize"
-            register={register}
-            error={errors}
-          />
-        </Nutrition>
-        <button
-          disabled={isSubmitting}
-          type="submit" 
-          className="font-[600] text-xl text-white py-2 bg-orange-500 rounded-md disabled:cursor-not-allowed"
-        >
-          { isSubmitting ? "Working on it..."  : "Create Recipe" }
-        </button>
-      </div>
-      <div className="grid grid-rows-[repeat(6,max-content)] grid-cols-1 xl:grid-rows-[repeat(4,_max-content)] xl:grid-cols-2 gap-3 p-3 *:border *:border-orange-300 *:p-4 *:rounded-md">
-        <Title 
-          className="row-start-1 col-start-1"
-          name="title"
-          register={register}
-          error={errors}
-        />
-        <Times
-          className="row-start-2"
-          register={register}
-          error={errors}
-        />
-        <Description 
-          className="flex-1 row-start-3 col-start-1 xl:row-start-1 xl:col-start-2 xl:row-span-2"
-          name="description"
-          register={register}
-          error={errors}
-        />
-        <Diets
-          className="row-start-4 col-start-1 xl:row-start-3"
-          control={control}
-          setValue={setValue}
-        />
-        <DishTypes
-          className="row-start-5 col-start-1 xl:row-start-3 xl:col-start-2"
-          control={control}
-          setValue={setValue}
-        />
-        <Ingredients
-          className="row-start-6 col-start-1 xl:row-start-4"
-          control={control}
-          setValue={setValue}
-          error={errors}
-          setError={setError}
-          clearErrors={clearErrors}
-        />
-        <Instructions
-          className="row-start-7 col-start-1 xl:row-start-4 xl:col-start-2"
-          control={control}
-          setValue={setValue}
-          error={errors}
-          setError={setError}
-          clearErrors={clearErrors}
-        />
-      </div>
-    </form>    
+    <Container.Form
+      onSubmit={handleSubmit(submitRecipe)}
+      className="grid grid-cols-1 xl:grid-rows-[repeat(6,fit-content)] xl:grid-cols-3 gap-3 p-3"
+    >
+      <Image
+        name="image"
+        register={register}
+        error={errors}
+        setValue={setValue}
+        image={image}
+        setImage={setImage}
+        className="xl:row-span-2"
+      />
+      <Title 
+        name="title"
+        register={register}
+        error={errors}
+        className="xl:row-start-1 xl:col-start-2 xl:col-span-2"
+      />
+      <Times
+        register={register}
+        error={errors}
+        className="xl:row-start-2 xl:col-start-2 xl:col-span-2"
+      />
+      <Description 
+        name="description"
+        register={register}
+        error={errors}
+        className="xl:row-start-3 xl:col-start-2 xl:col-span-2"
+      />
+      <Nutrition
+        register={register}
+        control={control}
+        setError={setError}
+        clearErrors={clearErrors}
+        error={errors}
+        setValue={setValue}
+        className="xl:row-start-3 xl:row-span-2"
+      />
+      <Diets
+        control={control}
+        setValue={setValue}
+        className="xl:row-start-4 xl:col-start-2"
+      />
+      <DishTypes
+        control={control}
+        setValue={setValue}
+        className="xl:row-start-4 xl:col-start-3"
+      />
+      <Ingredients
+        control={control}
+        setValue={setValue}
+        error={errors}
+        setError={setError}
+        clearErrors={clearErrors}
+        className="xl:row-start-5 xl:col-start-2"
+      />
+      <Instructions
+        control={control}
+        setValue={setValue}
+        error={errors}
+        setError={setError}
+        clearErrors={clearErrors}
+        className="xl:row-start-5 xl:col-start-3"
+      />
+      <Button
+        disabled={isSubmitting}
+        type="submit" 
+        className="h-fit text-xl disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? <><Spinner className="inline mr-2"/> Working on it...</> : "Create Recipe"}
+      </Button>
+    </Container.Form>
   )
 }
 

@@ -1,11 +1,6 @@
 import { formatMeals, isMeal, type Meal } from "./meal"
 import { Timestamp } from "firebase/firestore"
 
-export type Macronutrient = {
-  amount: number
-  unit: string
-}
-
 export type Plan = {
   date: Date
   title: string
@@ -23,6 +18,8 @@ export const defaultPlan: Plan = {
   tags: [],
   meals: [],
 }
+
+export type PlanSort = "date" | "title"
 
 export function isDate(value: unknown): value is Date {
   return value instanceof Date

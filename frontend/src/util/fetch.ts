@@ -1,11 +1,13 @@
 import { type Recipe } from "@/util/types/recipe"
 
 export default async function fetchFromAPI(httpMethod: string, path: string, queries: {[key: string]: any} | null = null, headers: any = null, body: any = null): Promise<Recipe[]> {
-	const backendURL = import.meta.env.VITE_API_DOMAIN
+	const backendURL = import.meta.env.VITE_API_DOMAIN || "http://localhost:3000"
 	const passedQueries = new URLSearchParams(queries as {[key: string]: any})
 
   if(httpMethod === "GET" && body)
     throw new Error("An HTTP GET request must not have a body.")
+
+  console.log(`${backendURL}${path}${passedQueries && "?" + passedQueries}`)
 
   try {
     const response = httpMethod === "GET"

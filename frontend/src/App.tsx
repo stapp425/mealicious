@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
 import { auth, firestore } from "../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
-import { type App, type CurrentUser, type Breakpoints } from "@/util/types/app"
+import { type App, type CurrentUser, type Breakpoints, ActiveSection } from "@/util/types/app"
 import Login from "./components/auth/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/main/Dashboard"
@@ -17,9 +17,12 @@ import CreateRecipe from "./components/recipe-tools/CreateRecipe"
 import EditRecipe from "./components/recipe-tools/EditRecipe"
 import MealCalendar from "./components/calendar/MealCalendar"
 import AllMeals from "./components/all-meals/AllMeals"
-import MealTools from "./components/meal-tools/MealTools"
+import CreateMeal from "./components/meal-tools/CreateMeal"
+import EditMeal from "./components/meal-tools/EditMeal"
 
 export const AppContext = createContext<App>({
+  activeSection: "dashboard",
+  changeActiveSection: () => {},
   date: new Date(),
   user: null,
   screenSizes: {
@@ -29,8 +32,10 @@ export const AppContext = createContext<App>({
   }
 })
 
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState<CurrentUser>(null)
+  const [activeSection, setActiveSection] = useState<ActiveSection>("dashboard")
   const navigate = useNavigate()
   const location = useLocation()
   const matches: Breakpoints = {
@@ -42,8 +47,13 @@ export default function App() {
     xxl: useMediaQuery("(min-width: 1536px)")
   }
 
+  function changeActiveSection(section: ActiveSection) {
+    setActiveSection(section)
+  }
+
   useEffect(() => {
     document.title = "Mealicious"
+    changeActiveSection("dashboard")
     
     const unsubscribe = onAuthStateChanged(auth, user => {
       if(user?.uid) {
@@ -60,6 +70,8 @@ export default function App() {
   
   return (
     <AppContext.Provider value={{
+      activeSection,
+      changeActiveSection,
       date: new Date(),
       user: currentUser,
       screenSizes: matches,
@@ -68,9 +80,9 @@ export default function App() {
         <Route path="/" element={<MainLayout/>}>
           <Route path="dashboard" element={<Dashboard/>}/>
           <Route path="meals">
-            <Route path="all" element={<AllMeals/>}/>
-            <Route path="create" element={<MealTools mode="create"/>}/>
-            <Route path="edit/:mealId" element={<MealTools mode="edit"/>}/>
+            <Route index element={<AllMeals/>}/>
+            <Route path="create" element={<CreateMeal/>}/>
+            <Route path="edit/:mealId" element={<EditMeal/>}/>
             <Route path="calendar" element={<MealCalendar/>}/>
           </Route>
           <Route path="recipes">

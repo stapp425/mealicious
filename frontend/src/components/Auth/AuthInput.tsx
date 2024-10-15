@@ -3,10 +3,10 @@ import { ChangeHandler } from "react-hook-form"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Eye, EyeOff } from "lucide-react"
-import Error from "../Error"
+import Error from "../theme/Error"
 import { cn } from "@/lib/utils"
 
-type ComponentWithRef<T, K> = React.ForwardRefExoticComponent<K & React.RefAttributes<T>>
+type InputElement = React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>
 
 type InputProps = {
   className?: string
@@ -21,8 +21,8 @@ type InputProps = {
 }
 
 type Input = {
-  Password: ComponentWithRef<HTMLInputElement, InputProps>
-} & ComponentWithRef<HTMLInputElement, InputProps>
+  Password: InputElement
+} & InputElement
 
 const AuthInput = forwardRef<HTMLInputElement, InputProps>(({ className, placeholder, id, label, autoFocus = false, errorMessage, ...props }, ref) => (
   <div className={className}>
@@ -73,7 +73,7 @@ AuthInput.Password = forwardRef<HTMLInputElement, InputProps>(({ className, plac
           onClick={toggleVisibility}
           className="absolute top-1/2 -translate-y-1/2 right-3 text-slate-500 cursor-pointer hover:text-slate-600 active:text-slate-700 transition-colors"
         >
-          <Icon size={20}/>
+          <Icon size={20} strokeWidth={1}/>
         </button>
       </div>
     </div>

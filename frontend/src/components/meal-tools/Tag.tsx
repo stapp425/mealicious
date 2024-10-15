@@ -1,16 +1,18 @@
-import { type FieldArray } from "@/types/form"
-import { type Meal } from "@/types/meal"
+import { type ReactHookFormTypes } from "@/util/types/form"
+import { type Meal } from "@/util/types/meal"
 import { cn } from "@/lib/utils"
 import { useWatch } from "react-hook-form"
 import { useInputChange } from "@/util/hooks"
 import { Plus } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
+type TagProps = Pick<ReactHookFormTypes<Meal>, "control" | "setValue"> & React.HTMLAttributes<HTMLDivElement>
+
 type Tag = {
   tag: ""
 }
 
-const Tag: React.FC<FieldArray<Meal>> = ({ control, className, setValue }) => {
+const Tag: React.FC<TagProps> = ({ control, className, setValue, ...props }) => {
   const { input, handleChange, isEditActive, setIsEditActive } = useInputChange<Tag>({ tag: "" })
   
   const tags = useWatch({
@@ -24,7 +26,7 @@ const Tag: React.FC<FieldArray<Meal>> = ({ control, className, setValue }) => {
   } 
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-2", className)} {...props}>
       <AnimatePresence>
         { 
           tags?.map((tag, index) => (

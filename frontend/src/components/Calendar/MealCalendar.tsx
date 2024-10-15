@@ -1,53 +1,79 @@
 import { AppContext } from "@/App"
 import { useContext, useEffect } from "react"
 import Calendar from "./Calendar"
-import CreateEvent from "./event-tools/CreateEvent"
-import { formatPlans, type Plan } from "@/util/types/plan"
+import CreateEvent from "./CreateEvent"
+import { defaultPlan, formatPlans, type Plan } from "@/util/types/plan"
 import { useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/util/types/app"
 import { User } from "firebase/auth"
 import { X } from "lucide-react"
-import { formatMeals, Meal } from "@/util/types/meal"
-import * as Placeholder from "../theme/Placeholder"
-import RemoveEvent from "./event-tools/RemoveEvent"
+import { defaultMeal, formatMeals, Meal } from "@/util/types/meal"
+import Placeholder from "../theme/Placeholder"
+import RemoveEvent from "./RemoveEvents"
+import Container from "../theme/Container"
+import All from "./All"
 
 const MealCalendar: React.FC = () => {
-  const { user } = useContext(AppContext)
-  const { data: plans, setData: setPlans } = useFirestoreFetch<Plan>(createQuery(user as User, "plans"), formatPlans)
-  const { data: meals } = useFirestoreFetch<Meal>(createQuery(user as User, "meals"), formatMeals)
+  const { user, screenSizes: { lg } } = useContext(AppContext)
+  const { data: plans, setData: setPlans } = useFirestoreFetch<Plan>(
+    createQuery(user as User, "plans"), 
+    formatPlans, { initialData: [], defaultData: defaultPlan }
+  )
+  const { data: meals } = useFirestoreFetch<Meal>(
+    createQuery(user as User, "meals"), 
+    formatMeals, { initialData: [], defaultData: defaultMeal }
+  )
 
   useEffect(() => {
     document.title = "Meal Calendar | Mealicious"
   }, [])
 
   return (
-    <div className="relative min-h-[calc(100vh-150px)] flex flex-col items-start gap-2 bg-orange-100">
-      <div className="flex flex-col h-[calc(100vh-150px)] min-w-[450px] bg-white px-6 py-4 mx-auto space-y-4">
-        <h1 className="font-bold text-4xl">Meal Calendar</h1>
+    <Container className="space-y-2 lg:bg-orange-100">
+      <div className="relative w-full max-w-full md:w-fit lg:min-h-screen px-6 py-4 mx-auto space-y-4 bg-white">
+        <div className="flex justify-between items-center gap-8">
+          <h1 className="w-full md:w-auto text-center font-bold text-4xl">Meal Calendar</h1>
+          {
+            lg &&
+            <div className="flex items-center gap-3">
+              <All plans={plans} className="inline-block text-black bg-transparent border border-slate-400 hover:bg-slate-400 active:bg-slate-500 transition-colors"/>
+              <CreateEvent meals={meals} setPlans={setPlans} className="inline-block"/>
+              <RemoveEvent plans={plans} setPlans={setPlans} className="inline-block"/>
+            </div>
+          }
+        </div>
         { 
           plans.length > 0
           ? <Calendar plans={plans} className="flex-1"/>
-          : <Placeholder.Root
+          : <Placeholder
               icon={<X size={64}/>}
-              className="flex-1"
+              className="mx-auto flex-1 w-[90vw] lg:w-[min(800px,100%)]"
             >
               <Placeholder.Message>No Plans Found!</Placeholder.Message>
               <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
-            </Placeholder.Root>
+            </Placeholder>
         }
-        <div className="flex justify-center items-center gap-8">
+      </div>
+      {
+        !lg &&
+        <div className="w-full fixed bottom-0 left-0 flex *:flex-1">
+          <All
+            plans={plans}
+            className="bg-white text-black rounded-none border border-slate-400 hover:border-slate-500 hover:text-white hover:bg-slate-500 active:bg-slate-600"
+          />
           <CreateEvent
             meals={meals}
             setPlans={setPlans}
+            className="bg-white text-black rounded-none border border-slate-400 hover:border-orange-500 hover:text-white hover:bg-orange-500 active:bg-orange-600"
           />
           <RemoveEvent
             plans={plans}
             setPlans={setPlans}
+            className="bg-white text-black rounded-none border border-slate-400 hover:border-red-500 hover:text-white hover:bg-red-500 active:bg-red-600 disabled:bg-transparent disabled:text-slate-200 disabled:border-slate-200"
           />
         </div>
-      </div>
-      
-    </div>
+      }
+    </Container>
   )
 }
 

@@ -1,22 +1,28 @@
 import { AppContext } from "@/App"
-import { useContext, useEffect } from "react"
+import { createContext, useContext, useEffect } from "react"
+import { type User } from "@firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
-import { createQuery } from "@/util/types/app"
-import { formatMeals, type Meal as MealEntry } from "@/util/types/meal"
+import { createQuery, ReactState } from "@/util/types/app"
+import { defaultMeal, formatMeals, type Meal as MealEntry } from "@/util/types/meal"
 import { useToast } from "@/components/ui/use-toast"
-import Meal from "./Meal"
-import Spinner from "@/components/ui/Spinner"
-import { User } from "@firebase/auth"
 import { X } from "lucide-react"
-import Button from "../theme/Button"
 import { Link } from "react-router-dom"
-import * as Placeholder from "../theme/Placeholder"
+import Meal from "./Meal"
+import Spinner from "@/components/theme/Spinner"
+import Button from "../theme/Button"
+import Placeholder from "../theme/Placeholder"
+import Container from "../theme/Container"
+
+export const AllMealsContext = createContext<{state: ReactState<MealEntry[]>, removeMeal: (meal: MealEntry) => void}>({state: [[defaultMeal], () => {}], removeMeal: () => {}})
 
 const AllMeals: React.FC = () => {
-  const { user, screenSizes: { xl } } = useContext(AppContext)
+  const { user, screenSizes: { xxl } } = useContext(AppContext)
   const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
-  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(createQuery(user as User, "meals"), formatMeals)
+  const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(
+    createQuery(user as User, "meals"), 
+    formatMeals, { initialData: [], defaultData: defaultMeal }
+  )
   
   function evenlySplitArray<T = MealEntry>(arr: T[], sections: number): T[][] {
     if(sections <= 0 || sections % 1)
@@ -50,39 +56,36 @@ const AllMeals: React.FC = () => {
         variant: "destructive"
       })
     }
-  }
+  }  
 
   useEffect(() => {
     document.title = "All Meals | Mealicious"
   }, [])
 
   return (
-    <div className="bg-orange-200 min-h-[calc(100vh-150px)]">
-      <div className="relative mx-auto size-fit min-h-[calc(100vh-150px)] min-w-[700px] bg-white p-6 shadow-md">
-        <h1 className="font-bold text-5xl mb-8">All Meals</h1>
-        <div className="flex justify-center items-start gap-8">
-          {
-            !isFetching
-              ? evenlySplitArray(fetchedMeals, xl ? 2 : 1).map((meals, index) => 
+    <AllMealsContext.Provider value={{state: [fetchedMeals, setMeals], removeMeal}}>
+      <Container className="bg-orange-200">
+        <div className="relative mx-auto size-fit min-h-site-container lg:min-h-screen lg:min-w-[700px] w-full lg:w-fit bg-white p-6 shadow-md">
+          <h1 className="font-bold text-2xl md:text-5xl mb-8">All Meals</h1>
+          <div className="flex justify-center items-start gap-4">
+            {
+              !isFetching
+              ? evenlySplitArray(fetchedMeals, xxl ? 2 : 1).map((meals, index) => 
                   <div key={index} className="w-full flex flex-col gap-8">
                     {
                       meals.length > 0
-                        ? meals.map((meal, index) => 
-                          <Meal 
-                            key={index}
-                            meal={meal}
-                            removeMeal={removeMeal}
-                          />
-                        )
-                        : <Placeholder.Root icon={<X size={64}/>}>
-                            <Placeholder.Message>No Meals Found!</Placeholder.Message>
-                            <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
-                            <Button className="text-sm">
-                              <Link to="/meals/create">
-                                Create Meal
-                              </Link>
-                            </Button>
-                          </Placeholder.Root>
+                      ? meals.map((meal, index) => 
+                        <Meal key={index} meal={meal}/>
+                      )
+                      : <Placeholder icon={<X size={64}/>}>
+                          <Placeholder.Message>No Meals Found!</Placeholder.Message>
+                          <Placeholder.Tip>Try creating a new one!</Placeholder.Tip>
+                          <Button className="text-sm">
+                            <Link to="/meals/create">
+                              Create Meal
+                            </Link>
+                          </Button>
+                        </Placeholder>
                     }
                   </div>
                 )
@@ -90,10 +93,11 @@ const AllMeals: React.FC = () => {
                   <Spinner size={75}/>
                   <h1 className="font-[600] text-3xl">Loading...</h1>
                 </div>
-          }
+            }
+          </div>
         </div>
-      </div>
-    </div>
+      </Container>
+    </AllMealsContext.Provider>
   )
 }
 

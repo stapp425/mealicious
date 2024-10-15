@@ -3,29 +3,20 @@ import {
   type UseFormSetValue, 
   type ErrorOption,
   type UseFormRegister, 
-  type FieldErrors
+  type FieldErrors,
+  UseFormReset,
+  UseFormGetValues
 } from "react-hook-form"
 import { Obj } from "./app"
 
-export interface Field {
-  className?: string
-}
-
-export interface RequiredField<T extends Obj> extends Field {
-  error: FieldErrors<T>
-}
-
-export interface RequiredSingleField<T extends Obj> extends RequiredField<T> {
-  name?: keyof T
+export type ReactHookFormTypes<T extends Obj> = {
+  name: keyof T
   register: UseFormRegister<T>
-}
-
-export interface FieldArray<T extends Obj> extends Field {
+  error: FieldErrors<T>
   control: Control<T>
   setValue: UseFormSetValue<T>
-}
-
-export interface RequiredFieldArray<T extends Obj> extends RequiredField<T>, FieldArray<T> {
+  getValues: UseFormGetValues<T>
   setError: (name: keyof T, error: ErrorOption, options?: { shouldFocus: boolean }) => void
   clearErrors: (name?: keyof T) => void
+  reset: UseFormReset<T>
 }
