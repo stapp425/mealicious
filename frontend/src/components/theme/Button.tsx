@@ -1,11 +1,7 @@
 import { forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
-type ButtonRef = React.ForwardRefExoticComponent<React.ButtonHTMLAttributes<HTMLButtonElement> & React.RefAttributes<HTMLButtonElement>>
-
-export type ButtonComponent = {
-  Scroll: ButtonRef
-} & ButtonRef
+export type ButtonRef = React.ForwardRefExoticComponent<React.ButtonHTMLAttributes<HTMLButtonElement> & React.RefAttributes<HTMLButtonElement>>
 
 const Button: ButtonRef = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(({ className, children, ...props }, ref) => (
   <button

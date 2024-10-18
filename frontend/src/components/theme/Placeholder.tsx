@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import { type ReactNode } from "react"
 import { cn } from "@/lib/utils"
-import Button, { ButtonComponent } from "./Button"
+import Button, { ButtonRef } from "./Button"
 import { RefComponent } from '@/util/types/app'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
@@ -9,7 +9,7 @@ import { X } from 'lucide-react'
 type PlaceholderComponent = {
   Message: React.FC<Omit<PlaceholderProps, "icon">>
   Tip: React.FC<Omit<PlaceholderProps, "icon">>
-  Action: ButtonComponent
+  Action: ButtonRef
 } & RefComponent<HTMLDivElement, PlaceholderProps>
 
 type PlaceholderProps = {
