@@ -5,7 +5,6 @@ import { type Meal } from "@/util/types/meal"
 import { type Recipe as RecipeType } from "@/util/types/recipe"
 import { type SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { type ReactHookFormTypes } from "@/util/types/form"
-import { useToast } from "@/components/ui/use-toast"
 import { useFirestoreDelete } from "@/util/hooks"
 import { format } from "date-fns"
 import { X } from "lucide-react"
@@ -36,7 +35,6 @@ export type PlanQueries = {
 
 const RemoveEvents: React.FC<RemoveEventsProps> = ({ className, plans, setPlans }) => {
   const { screenSizes: { lg } } = useContext(AppContext)
-  const { toast } = useToast()
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const { 
@@ -66,11 +64,7 @@ const RemoveEvents: React.FC<RemoveEventsProps> = ({ className, plans, setPlans 
       const selectedPlanIds = selectedPlans.map(p => p.id as string)
       setPlans(p => p.filter(({ id }) => !selectedPlanIds.includes(id as string)))
       setIsDialogOpen(false)
-      toast({
-        title: "Warning!",
-        description: "All selected plans successfully deleted.",
-        variant: "theme"
-      })
+      alert("All selected plans successfully deleted.")
     } catch (err: any) {
       console.error(err.message)
     }

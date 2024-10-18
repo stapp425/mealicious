@@ -28,7 +28,6 @@ import Spinner from "@/components/theme/Spinner"
 import Error from "@/components/theme/Error"
 import DragAndDrop from "./DragAndDrop"
 import { defaultPlan, type Plan } from "@/util/types/plan"
-import { useToast } from "@/components/ui/use-toast"
 import { Meal } from "@/util/types/meal"
 import { ReactHookFormTypes } from "@/util/types/form"
 import { Plus } from "lucide-react"
@@ -45,10 +44,7 @@ type CreateEventProps = {
   setPlans: React.Dispatch<React.SetStateAction<Plan[]>>
 }
 
-
-// TODO: Make drag-and-drop work on mobile
 const CreateEvent: React.FC<CreateEventProps> = ({ className, meals, setPlans }) => {
-  const { toast } = useToast()
   const { user, screenSizes: { lg } } = useContext(AppContext)
   const [date, setDate] = useState<Date>(minDate)
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
@@ -82,11 +78,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({ className, meals, setPlans })
         reset(defaultPlan)
         setIsDialogOpen(false)
       } catch (err: any) {
-        toast({
-          title: "Error!",
-          description: "Failed to add plan.",
-          variant: "destructive"
-        })
+        alert("Failed to add plan.")
       }
     }
   }

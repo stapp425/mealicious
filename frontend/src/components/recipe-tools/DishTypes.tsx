@@ -11,7 +11,7 @@ type DishTypesProps =
   React.HTMLAttributes<HTMLDivElement>
 
 const DishTypes: React.FC<DishTypesProps> = ({ className, control, setValue, ...props }) => {
-  const { input, handleChange } = useInputChange<{[key: string]: string}>({ dishType: "" })
+  const { input, setInput, handleChange } = useInputChange<{[key: string]: string}>({ dishType: "" })
   
   const dishTypes = useWatch({
     control,
@@ -19,8 +19,10 @@ const DishTypes: React.FC<DishTypesProps> = ({ className, control, setValue, ...
   })
 
   function addDishType(dishType: string) {
-    if(dishTypes && dishType)
+    if(dishTypes && dishType) {
       setValue("dishTypes", [...dishTypes, input.dishType])
+      setInput({ dishType: "" })
+    }
   }
   
   return (
@@ -38,9 +40,10 @@ const DishTypes: React.FC<DishTypesProps> = ({ className, control, setValue, ...
             className="text-lg py-5"
           />
           <button
-            type="button" 
+            type="button"
+            disabled={!input.dishType}
             onClick={() => addDishType(input.dishType)}
-            className="right-1.5 bg-orange-500 hover:bg-orange-700 text-white font-[600] px-6 rounded-md transition-colors"
+            className="right-1.5 bg-orange-500 hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-orange-300 text-white font-[600] px-6 rounded-md transition-colors"
           >
             Add
           </button>
@@ -50,7 +53,7 @@ const DishTypes: React.FC<DishTypesProps> = ({ className, control, setValue, ...
             <ScrollArea>
               <div className="grid grid-cols-2 gap-3">
                 { 
-                  dishTypes.map((dish: string, index: number) => (
+                  dishTypes.map((dish, index) => (
                     <button
                       type="button"
                       key={index}

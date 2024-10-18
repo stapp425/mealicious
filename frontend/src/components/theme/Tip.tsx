@@ -1,11 +1,12 @@
-import { Info } from "lucide-react"
+import { Info, Lightbulb } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
-type Props = {
-  children: React.ReactNode
-}
+type TipComponent = {
+  Label: React.FC<{ className?: string, children: React.ReactNode }>
+} & React.FC<{ children: React.ReactNode }>
 
-const Tip: React.FC<Props> = ({ children }) => (
+const Tip: TipComponent = ({ children }) => (
   <Popover>
     <PopoverTrigger className="print:hidden">
       <Info size={20}/>
@@ -18,5 +19,11 @@ const Tip: React.FC<Props> = ({ children }) => (
   </Popover>
 )
 
+Tip.Label = ({ className, children }) => (
+  <div className={cn("border bg-orange-200 border-orange-500 mt-2 p-3 rounded-sm", className)}>
+    <Lightbulb className="inline mr-2"/>
+    {children}
+  </div>
+)
 
 export default Tip

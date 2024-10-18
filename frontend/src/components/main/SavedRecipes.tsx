@@ -1,6 +1,6 @@
 
 
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Eye, Heart, SquareArrowUpRight, X } from "lucide-react"
 import { useFirestoreFetch } from "@/util/hooks"
 import { defaultRecipe, formatRecipes, type Recipe as RecipeType } from "@/util/types/recipe"
@@ -13,6 +13,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const SavedRecipes: React.FC = () => {
   const { user } = useContext(AppContext)
+  const navigate = useNavigate()
   const { data: recipes } = useFirestoreFetch<RecipeType>(
     createQuery(user as User, "recipes"), 
     formatRecipes, { initialData: [], defaultData: defaultRecipe }
@@ -35,7 +36,12 @@ const SavedRecipes: React.FC = () => {
             : <Placeholder icon={<X size={48}/>} className="w-full border-none">
                 <Placeholder.Message>No Recipes Found!</Placeholder.Message>
                 <Placeholder.Tip>Try creating some!</Placeholder.Tip>
-                <Placeholder.Action className="text-xs">Create recipe</Placeholder.Action>
+                <Placeholder.Action
+                  onClick={() => navigate("/recipes/create")}
+                  className="text-xs"
+                >
+                  Create Recipe
+                </Placeholder.Action>
               </Placeholder>
           }
         </div>

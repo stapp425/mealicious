@@ -1,14 +1,15 @@
+import { type Recipe } from "@/util/types/recipe"
 import { Trash2 } from "lucide-react"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 import Spinner from "../theme/Spinner"
 
 type DeleteProps = {
   isDeleting: boolean
-  deleteRecipe: (id: string) => void
-  id: string
+  deleteRecipe: (recipe: Recipe) => void
+  recipe: Recipe
 }
 
-const Delete: React.FC<DeleteProps> = ({ isDeleting, id, deleteRecipe }) => (
+const Delete: React.FC<DeleteProps> = ({ isDeleting, recipe, deleteRecipe }) => (
   <AlertDialog>
     <AlertDialogTrigger className="w-full" asChild>
       <button className="flex justify-between items-center gap-2 py-1 px-2 text-white bg-red-500 hover:bg-red-600 active:bg-red-700 transition rounded-md">
@@ -28,7 +29,7 @@ const Delete: React.FC<DeleteProps> = ({ isDeleting, id, deleteRecipe }) => (
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
         <AlertDialogAction 
-          onClick={() => deleteRecipe(id)}
+          onClick={() => deleteRecipe(recipe)}
           className="bg-red-500"
         >
           { 

@@ -3,7 +3,6 @@ import { ArrowDownToLine, Heart, Pencil } from "lucide-react"
 import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { useReactToPrint } from "react-to-print"
-import { useToast } from "@/components/ui/use-toast"
 import * as React from "react"
 import { RecipeDetailsContext } from "./RecipeDetails"
 import Spinner from "../theme/Spinner"
@@ -37,7 +36,6 @@ const Edit: React.FC = () => (
 
 const Favorite: React.FC = () => {
   const { data: { id, isFavorite }, setData: setRecipe } = useContext(RecipeDetailsContext)
-  const { toast } = useToast()
   const { isWorking, updateFirestoreDoc } = useFirestoreUpdate()
   
   async function toggleFavorite() {
@@ -45,11 +43,7 @@ const Favorite: React.FC = () => {
       setRecipe(r => ({ ...r, isFavorite: !isFavorite }))
       await updateFirestoreDoc("recipes", id as string, { isFavorite: !isFavorite })
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      alert(err.message)
     }
   }
 

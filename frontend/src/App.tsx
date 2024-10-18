@@ -2,9 +2,9 @@ import { useState, useEffect, createContext } from "react"
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
 // @ts-ignore
-import { auth, firestore } from "../firebaseConfig"
+import { auth } from "../firebaseConfig"
 import { useMediaQuery } from "usehooks-ts"
-import { type App, type CurrentUser, type Breakpoints, ActiveSection } from "@/util/types/app"
+import { type App, type CurrentUser, type Breakpoints } from "@/util/types/app"
 import Login from "./components/auth/Login"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./components/main/Dashboard"
@@ -21,8 +21,6 @@ import CreateMeal from "./components/meal-tools/CreateMeal"
 import EditMeal from "./components/meal-tools/EditMeal"
 
 export const AppContext = createContext<App>({
-  activeSection: "dashboard",
-  changeActiveSection: () => {},
   date: new Date(),
   user: null,
   screenSizes: {
@@ -33,9 +31,9 @@ export const AppContext = createContext<App>({
 })
 
 
-export default function App() {
+const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<CurrentUser>(null)
-  const [activeSection, setActiveSection] = useState<ActiveSection>("dashboard")
+
   const navigate = useNavigate()
   const location = useLocation()
   const matches: Breakpoints = {
@@ -47,13 +45,8 @@ export default function App() {
     xxl: useMediaQuery("(min-width: 1536px)")
   }
 
-  function changeActiveSection(section: ActiveSection) {
-    setActiveSection(section)
-  }
-
   useEffect(() => {
     document.title = "Mealicious"
-    changeActiveSection("dashboard")
     
     const unsubscribe = onAuthStateChanged(auth, user => {
       if(user?.uid) {
@@ -70,8 +63,6 @@ export default function App() {
   
   return (
     <AppContext.Provider value={{
-      activeSection,
-      changeActiveSection,
       date: new Date(),
       user: currentUser,
       screenSizes: matches,
@@ -103,3 +94,5 @@ export default function App() {
     </AppContext.Provider>
   )
 }
+
+export default App

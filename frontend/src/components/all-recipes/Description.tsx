@@ -15,7 +15,7 @@ import { AppContext } from "@/App"
 
 type DescriptionProps = {
   isDeleting: boolean
-  deleteRecipe: (id: string) => void
+  deleteRecipe: (recipe: Recipe) => void
   activeRecipe: Recipe
 }
 
@@ -24,8 +24,8 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
   const [count, setCount] = useState<number>(1)
   
   return (
-    <div className="md:h-site-container lg:h-screen flex-1 rounded-lg">
-      <div className="w-full md:w-auto md:h-1/2 flex justify-between">
+    <div className="md:flex-1 md:h-site-container lg:h-screen">
+      <div className=" md:w-auto md:h-1/2 flex justify-between">
         <div className="w-1/2 flex flex-col gap-2 p-4 pr-2">
           <h1 className="max-w-[200px] text-3xl font-bold truncate">{activeRecipe.title}</h1>
           <div className="flex flex-col md:flex-row gap-2 *:flex-1">
@@ -37,7 +37,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
             </button>
             <Delete
               isDeleting={isDeleting}
-              id={activeRecipe.id as string}
+              recipe={activeRecipe}
               deleteRecipe={deleteRecipe}
             />
           </div>
@@ -51,7 +51,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
             {
               activeRecipe.dishTypes && activeRecipe.dishTypes.length > 0
               ? activeRecipe.dishTypes.slice(0, md ? 4 : 3).map((dish, index) => (
-                  <div key={index} className="text-nowrap line-clamp-1 flex-1 md:only:flex-none md:only:h-[100px] text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 hover:bg-orange-500 hover:text-white transition">
+                  <div key={index} className="text-nowrap line-clamp-1 flex-1 md:only:flex-none md:only:h-[100px] text-center border border-slate-400 rounded-md flex justify-center items-center py-2 px-3 transition">
                     {dish}
                   </div>
                 ))
@@ -85,7 +85,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
           <TabsTrigger value="ingredients" className="text-xs md:text-base data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Ingredients</TabsTrigger>
           <TabsTrigger value="instructions" className="text-xs md:text-base data-[state=active]:border-b-[2px] data-[state=active]:border-b-orange-500 rounded-none">Instructions</TabsTrigger>
         </TabsList>
-        <TabsContent value="summary" className="w-full" asChild>
+        <TabsContent value="summary" asChild>
           <ScrollArea type="always" className="flex-1 w-full">
             <div className="px-4 pb-4">
               <h1 className="font-bold text-xl mb-2">Description</h1>
@@ -102,7 +102,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
                 <div className="flex justify-between items-center gap-3">
                   <button onClick={() => count > 1 && setCount(c => c - 1)} className="size-6 bg-orange-500 rounded-sm text-white flex justify-center items-center"><Minus size={14}/></button>
                   <span className="text-xl font-[600]">{count}</span>
-                  <button onClick={() => setCount(c => c + 1)} className="size-6 bg-orange-500 rounded-sm text-white flex justify-center items-center"><Plus/></button>
+                  <button onClick={() => setCount(c => c + 1)} className="size-6 bg-orange-500 rounded-sm text-white flex justify-center items-center"><Plus size={14}/></button>
                 </div>
               </div>
               <div>
@@ -119,7 +119,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
             <ScrollBar/>
           </ScrollArea>
         </TabsContent>
-        <TabsContent value="ingredients" className="w-full" asChild>
+        <TabsContent value="ingredients" asChild>
           <ScrollArea type="always" className="flex-1 w-full">
             <div className="px-4 pb-4 grid grid-cols-2 gap-2">
               {
@@ -135,7 +135,7 @@ const Description: React.FC<DescriptionProps> = ({ isDeleting, activeRecipe, del
             <ScrollBar/>
           </ScrollArea>
         </TabsContent>
-        <TabsContent value="instructions" className="w-full" asChild>
+        <TabsContent value="instructions" asChild>
           <ScrollArea type="always" className="flex-1 w-full">
             <div className="px-4 pb-4 space-y-2">
               {

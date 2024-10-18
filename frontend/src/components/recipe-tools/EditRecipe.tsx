@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { useFirestoreGet, useFirestoreUpdate, useStorageDelete, useStorageUpload } from "@/util/hooks"
 import { defaultRecipe, formatRecipe, type Recipe } from "@/util/types/recipe"
-import { useToast } from "@/components/ui/use-toast"
 import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
@@ -18,9 +17,9 @@ import Nutrition from "./Nutrition"
 import Container from "../theme/Container"
 import Button from "../theme/Button"
 import Spinner from "../theme/Spinner"
+import { getImageNameFromFirebaseURL } from "@/util/types/app"
 
 const EditRecipe: React.FC = () => {
-  const { toast } = useToast()
   const { user } = useContext(AppContext)
   const { recipeId } = useParams()
   const { data } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
@@ -42,9 +41,10 @@ const EditRecipe: React.FC = () => {
     clearErrors,
     reset,
     control,
-    formState: { 
+    formState: {
+      isDirty,
       errors,
-      isSubmitting,
+      isSubmitting
     }
   } = useForm<Recipe>({ defaultValues: defaultRecipe })
 
@@ -57,8 +57,8 @@ const EditRecipe: React.FC = () => {
 
         if(image.file) {
           imageRef = await uploadFile(image.file, `${image.name}-${nanoid()}`)
-          if(originalImageURL.current.includes("firebasestorage") && originalImageURL.current !== imageRef)
-            await deleteFile(getImageNameFromURL(originalImageURL.current))
+          if(originalImageURL.current !== imageRef)
+            await deleteFile(getImageNameFromFirebaseURL(originalImageURL.current))
         } else {
           imageRef = image.url
         }
@@ -70,27 +70,11 @@ const EditRecipe: React.FC = () => {
         }
   
         await updateFirestoreDoc("recipes", recipeId as string, editedRecipe)
-        toast({
-          title: "Success",
-          description: "Recipe successfully updated!",
-          variant: "success"
-        })
+        reset(data)
       } catch (err: any) {
-        toast({
-          title: "Error!",
-          description: err.message,
-          variant: "destructive"
-        })
+        alert(err.message)
       }
     }
-  }
-
-  function getImageNameFromURL(url: string) {
-    const decodedURL = decodeURIComponent(url)
-    const splitURL = decodedURL.split("/o/")
-    const imageName = splitURL[1].split("?")
-
-    return imageName[0]
   }
 
   useEffect(() => {
@@ -118,8 +102,7 @@ const EditRecipe: React.FC = () => {
         register={register}
         error={errors}
         setValue={setValue}
-        image={image}
-        setImage={setImage}
+        imageState={[image, setImage]}
         className="xl:row-span-2"
       />
       <Title 
@@ -175,9 +158,9 @@ const EditRecipe: React.FC = () => {
         className="xl:row-start-5 xl:col-start-3"
       />
       <Button
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isDirty}
         type="submit" 
-        className="h-fit text-xl disabled:cursor-not-allowed"
+        className="h-fit text-xl disabled:cursor-not-allowed disabled:bg-orange-300"
       >
         {isSubmitting ? <><Spinner className="inline mr-2"/> Working on it...</> : "Update Recipe"}
       </Button>

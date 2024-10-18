@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { type Recipe } from "@/util/types/recipe"
-import { type Image } from "@/util/types/app"
+import { type ReactState, type Image } from "@/util/types/app"
 import { type ReactHookFormTypes } from "@/util/types/form"
 import { cn } from "@/lib/utils"
 import { Plus } from "lucide-react"
@@ -9,12 +9,12 @@ import Error from "../theme/Error"
 import Placeholder from "../theme/Placeholder"
 
 type ImageProps = {
-  image: Image
-  setImage: React.Dispatch<React.SetStateAction<Image>>
+  imageState: ReactState<Image>
 } & Pick<ReactHookFormTypes<Recipe>, "name" | "register" | "error" | "setValue">
 & React.HTMLAttributes<HTMLDivElement>
 
-const Image: React.FC<ImageProps> = ({ className, name = "image", register, error, setValue, image, setImage, ...props }) => {
+const Image: React.FC<ImageProps> = ({ className, name = "image", register, error, setValue, imageState, ...props }) => {
+  const [image, setImage] = imageState
   const addImageButton = useRef<HTMLInputElement>(null)
 
   function getImageDetails(image: File) {

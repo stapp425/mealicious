@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef } from "react"
+import { createContext, useContext, useEffect, useRef } from "react"
 import { useFirestoreGet } from "@/util/hooks"
 import { useParams } from "react-router-dom"
 import { defaultRecipe, formatRecipe, type Recipe } from "@/util/types/recipe"
@@ -11,10 +11,12 @@ import Instructions from "./Instructions"
 import Options from "./Options"
 import Sections from "./Sections"
 import Container from "../theme/Container"
+import { AppContext } from "@/App"
 
 export const RecipeDetailsContext = createContext<{data: Recipe, setData: React.Dispatch<React.SetStateAction<Recipe>>}>({data: defaultRecipe, setData: () => {}})
 
-export default function RecipeDetails(): React.ReactElement {
+const RecipeDetails: React.FC = () => {
+  const { screenSizes: { lg } } = useContext(AppContext)
   const { recipeId } = useParams()
   const { data: recipe, setData: setRecipe } = useFirestoreGet<Recipe>("recipes", recipeId as string, formatRecipe, defaultRecipe)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -27,12 +29,22 @@ export default function RecipeDetails(): React.ReactElement {
   useEffect(() => {
     document.title = `${recipe.title} | Mealicious`
   }, [recipe])
+
+  useEffect(() => {
+    const scrollButton = document.getElementById("scroll-button") as HTMLElement
+    if(!lg)
+      scrollButton.style.bottom = "100px"
+    else
+      scrollButton.removeAttribute("style")
+
+    return () => scrollButton.removeAttribute("style")
+  }, [lg])
   
   return (
     <RecipeDetailsContext.Provider value={{data: recipe, setData: setRecipe}}>
       <Container className="mx-auto lg:flex">
-        <Options printContent={contentRef.current as HTMLDivElement} className="block lg:hidden lg:static sticky top-header-height left-0"/>
-        <div ref={contentRef} className="lg:w-[50vw] lg:max-w-[1000px] space-y-6 *:print:p-6 *:print:max-w-none *:print:w-full">
+        {!lg && <Options printContent={contentRef.current as HTMLDivElement} className="w-full fixed bottom-0 left-0 shadow-options"/>}
+        <div ref={contentRef} className="lg:w-[50vw] lg:max-w-[1000px] space-y-6 pb-[85px] lg:pb-0 *:print:p-6 *:print:max-w-none *:print:w-full">
           <Main ref={mainRef} className="lg:px-6 lg:pt-6">
             <Main.Image src={recipe.image} alt={recipe.title}/>
             <div className="space-y-2.5 px-3 lg:px-0">
@@ -60,18 +72,24 @@ export default function RecipeDetails(): React.ReactElement {
             className="px-3 pb-3 lg:px-6 lg:pb-6"
           />
         </div>
-        <div className="hidden lg:block w-1/4 max-w-[300px] h-fit sticky top-[24px] left-0 border border-slate-400 mt-6 rounded-md">
-          <Sections
-            main={mainRef.current as HTMLDivElement}
-            description={descriptionRef.current as HTMLDivElement}
-            nutrition={nutritionRef.current as HTMLDivElement}
-            ingredients={ingredientsRef.current as HTMLDivElement}
-            instructions={instructionsRef.current as HTMLDivElement}
-            className="hidden md:flex md:flex-col"
-          />
-          <Options printContent={contentRef.current as HTMLDivElement}/>
-        </div>
+        {
+          lg &&
+          <div className="block w-1/4 max-w-[300px] h-fit sticky top-[24px] left-0 border border-slate-400 mt-6 rounded-md">
+            <Sections
+              main={mainRef.current as HTMLDivElement}
+              description={descriptionRef.current as HTMLDivElement}
+              nutrition={nutritionRef.current as HTMLDivElement}
+              ingredients={ingredientsRef.current as HTMLDivElement}
+              instructions={instructionsRef.current as HTMLDivElement}
+              className="hidden md:flex md:flex-col"
+            />
+            <Options printContent={contentRef.current as HTMLDivElement}/>
+          </div>
+        }
+        
       </Container>
     </RecipeDetailsContext.Provider>
   )
 }
+
+export default RecipeDetails

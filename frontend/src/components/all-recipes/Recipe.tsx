@@ -49,7 +49,7 @@ const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
         <div className="flex justify-center items-center gap-2 my-1">
           <Zap/>
           <span>
-            <b>{Math.round(recipe.nutrition.find(n => n.name.toLowerCase() === "calories")?.amount || 0)}</b> cal
+            <b>{Math.round(recipe.nutrition.find(n => n.unit.toLowerCase() === "kcal")?.amount || 0)}</b> cal
           </span>
         </div>
         <div className="flex items-center gap-2 my-1">

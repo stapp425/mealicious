@@ -12,7 +12,7 @@ type InstructionsProps =
   React.HTMLAttributes<HTMLDivElement>
 
 const Instructions: React.FC<InstructionsProps> = ({ className, control, setValue, error, setError, clearErrors }) => {
-  const { input, isEditActive, setIsEditActive, handleChange } = useInputChange<{[key: string]: string}>({ step: "" })
+  const { input, isEditActive, setIsEditActive, handleChange } = useInputChange<{ step: string }>({ step: "" })
   
   const instructions = useWatch({
     control,
@@ -60,9 +60,10 @@ const Instructions: React.FC<InstructionsProps> = ({ className, control, setValu
               autoFocus
             />
             <button
-              type="button" 
+              type="button"
+              disabled={!input.step}
               onClick={() => input && setValue("instructions", [...instructions, input.step])}
-              className="aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+              className="aspect-square size-10 flex justify-center items-center bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-300 text-white py-1 rounded-md"
             >
               <Plus size={18}/>
             </button>
@@ -82,7 +83,7 @@ const Instructions: React.FC<InstructionsProps> = ({ className, control, setValu
         <div className="flex-1">
           <div className="flex flex-col gap-4 my-2">
             { 
-              instructions.map((instruction: string, index: number) => (
+              instructions.map((instruction, index) => (
                 <button
                   type="button" 
                   key={index}

@@ -68,7 +68,7 @@ const Ingredients: React.FC<IngredientsProps> = ({ className, control, setValue,
             />
             <Select onValueChange={(value: string) => setInput((i: Ingredient) => ({ ...i, unit: value }))}>
               <SelectTrigger className="w-1/4">
-                <SelectValue placeholder="unit" />
+                <SelectValue/>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -108,8 +108,9 @@ const Ingredients: React.FC<IngredientsProps> = ({ className, control, setValue,
             />
             <button
               type="button"
+              disabled={!input.name || !input.unit}
               onClick={() => (input.name && input.amount > 0 && input.unit) && setValue("ingredients", [...ingredients, input])}
-              className="aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+              className="aspect-square size-10 flex justify-center items-center bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-300 text-white py-1 rounded-md"
             >
               <Plus size={18}/>
             </button>
@@ -127,7 +128,7 @@ const Ingredients: React.FC<IngredientsProps> = ({ className, control, setValue,
         <div className="flex-1">
           <div className="grid grid-cols-2 gap-2 my-2">
             { 
-              ingredients.map((ingredient: Ingredient, index: number) => (
+              ingredients.map((ingredient, index) => (
                 <button
                   type="button"
                   key={index}

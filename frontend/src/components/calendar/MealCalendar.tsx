@@ -56,20 +56,20 @@ const MealCalendar: React.FC = () => {
       </div>
       {
         !lg &&
-        <div className="w-full fixed bottom-0 left-0 flex *:flex-1">
+        <div className="w-full h-options fixed bottom-0 left-0 flex items-center *:flex-1 shadow-options">
           <All
             plans={plans}
-            className="bg-white text-black rounded-none border border-slate-400 hover:border-slate-500 hover:text-white hover:bg-slate-500 active:bg-slate-600"
+            className="bg-white text-black rounded-none hover:text-white hover:bg-slate-500 active:bg-slate-600"
           />
           <CreateEvent
             meals={meals}
             setPlans={setPlans}
-            className="bg-white text-black rounded-none border border-slate-400 hover:border-orange-500 hover:text-white hover:bg-orange-500 active:bg-orange-600"
+            className="bg-white text-black rounded-none hover:text-white hover:bg-orange-500 active:bg-orange-600"
           />
           <RemoveEvent
             plans={plans}
             setPlans={setPlans}
-            className="bg-white text-black rounded-none border border-slate-400 hover:border-red-500 hover:text-white hover:bg-red-500 active:bg-red-600 disabled:bg-transparent disabled:text-slate-200 disabled:border-slate-200"
+            className="bg-white text-black rounded-none hover:text-white hover:bg-red-500 active:bg-red-600 disabled:bg-transparent disabled:text-slate-200 disabled:border-slate-200"
           />
         </div>
       }

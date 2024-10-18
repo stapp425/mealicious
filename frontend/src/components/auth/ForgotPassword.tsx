@@ -8,16 +8,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { resetPassword } from "@/util/auth"
-import { useToast } from "@/components/ui/use-toast"
 import { SubmitHandler, useForm } from "react-hook-form"
 import AuthInput from "./AuthInput"
 import Button from "../theme/Button"
 
 type EmailInput = { email: string }
 
-const ForgotPassword: React.FC = () => {
-  const { toast } = useToast()
-  
+const ForgotPassword: React.FC = () => {  
   const { 
     register,
     handleSubmit,
@@ -29,17 +26,9 @@ const ForgotPassword: React.FC = () => {
   const submitResetPassword: SubmitHandler<EmailInput> = async (data) => {
     try {
       await resetPassword(data.email)
-      toast({
-        title: "Success!",
-        description: "A prompt has been sent to your email.",
-        variant: "theme"
-      })
+      alert("A prompt has been sent to your email.")
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: "This email does not exist in our system.",
-        variant: "destructive"
-      })
+      alert("This email does not exist in our system.")
     }
   }
   

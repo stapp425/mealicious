@@ -55,8 +55,6 @@ export type Breakpoints = {
 }
 
 export type App = {
-  activeSection: ActiveSection
-  changeActiveSection: (value: ActiveSection) => void,
   date: Date,
   user: CurrentUser
   screenSizes: Breakpoints
@@ -69,6 +67,13 @@ export type Image = {
   url: string
 }
 
+export const defaultImage = {
+  file: undefined,
+  name: "",
+  type: "",
+  url: ""
+}
+
 export type FirestoreCollection = "recipes" | "meals" | "users" | "plans"
 
 export function createQuery(user: User, path: FirestoreCollection, options?: { limit?: number }): Query {
@@ -76,4 +81,20 @@ export function createQuery(user: User, path: FirestoreCollection, options?: { l
     return query(collection(firestore, path), where("userId", "==", user.uid), limit(options.limit))
   
   return query(collection(firestore, path), where("userId", "==", user.uid))
+}
+
+export function getImageNameFromFirebaseURL(url: string) {
+  if(url.includes("firebasestorage")) {
+    const decodedURL = decodeURIComponent(url)
+    const splitURL = decodedURL.split("/o/")
+    const imageName = splitURL[1].split("?")
+  
+    return imageName[0]
+  }
+
+  return ""
+}
+
+export function scrollToTop() {
+  scrollTo({ top: 0, behavior: "smooth" })
 }

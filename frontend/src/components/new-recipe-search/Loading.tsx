@@ -3,11 +3,11 @@ import { AppContext } from "@/App"
 import { type Layout } from "@/util/types/app"
 import { Skeleton } from "@/components/ui/skeleton"
 
-type Props = {
+type LoadingProps = {
   layout: Layout
 }
 
-export default function Loading({ layout }: Props) {
+const Loading: React.FC<LoadingProps> = ({ layout }) => {
   const { screenSizes: matches } = useContext(AppContext)
   
   switch(layout) {
@@ -97,3 +97,5 @@ function SquareSkeleton() {
     </div>
   )
 }
+
+export default Loading

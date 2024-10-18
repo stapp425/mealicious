@@ -1,6 +1,4 @@
-import { AppContext } from "@/App"
 import siteLogo from "@/img/logo/mealicious-logo.svg"
-import { useContext } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -28,9 +26,11 @@ import {
 } from "@/components/ui/sheet"
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Calendar, House, List, LogOut, LucideProps, Pencil, Search, Menu } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { signOut } from "@/util/auth"
 import { cn } from "@/lib/utils"
+import { useHeaderContext } from "./Header"
+import Button from "./Button"
 
 type NavBarProps = {
   className?: string
@@ -38,11 +38,11 @@ type NavBarProps = {
 
 const NavBar: React.FC<NavBarProps> = ({ className }) => {
   const navigate = useNavigate()
-  const { activeSection } = useContext(AppContext)
-  
-  const activeSectionStyle = {
-    backgroundColor: "#fed7aa",
-    borderRight: "5px solid #f97316"
+  const [_, setIsSheetOpen] = useHeaderContext()
+
+  function navigateToDashboard() {
+    navigate("/dashboard")
+    setIsSheetOpen(false)
   }
   
   return (
@@ -57,14 +57,13 @@ const NavBar: React.FC<NavBarProps> = ({ className }) => {
         <Section 
           label="Dashboard"
           Icon={House}
-          style={activeSection === "dashboard" ? activeSectionStyle : {}}
-          onClick={() => navigate("/dashboard")}
+          onClick={navigateToDashboard}
         />
         <Accordion type="single" collapsible>
           <AccordionSection accordionItem={1} title="Recipes">
             <SubSection label="All Recipes" Icon={List} to="/recipes"/>
             <SubSection label="Create Recipe" Icon={Pencil} to="recipes/create"/>
-            <SubSection label="Search Recipes" Icon={Search} to="recipes/search"/>
+            <SubSection label="Search New Recipes" Icon={Search} to="recipes/search"/>
           </AccordionSection>
           <AccordionSection accordionItem={2} title="Meals">
             <SubSection label="All Meals" Icon={List} to="/meals"/>
@@ -81,25 +80,29 @@ const NavBar: React.FC<NavBarProps> = ({ className }) => {
   )
 }
 
-const NavBarSheet: React.FC = () => (
-  <Sheet>
-    <SheetTrigger>
-      <Menu size={26}/>
-    </SheetTrigger>
-    <SheetContent side="left" className="p-0 w-fit">
-      <NavBar/>
-      <VisuallyHidden.Root>
-        <SheetHeader className="hidden">
-          <SheetTitle>Mealicious Navigation Menu</SheetTitle>
-          <SheetDescription className="hidden">
-            Allows the user to navigate to different pages of the website.
-            Open by default on large screen sizes and collapsible on smaller sizes.
-          </SheetDescription>
-        </SheetHeader>
-      </VisuallyHidden.Root>
-    </SheetContent>
-  </Sheet>
-)
+const NavBarSheet: React.FC = () => {
+  const [isSheetOpen, setIsSheetOpen] = useHeaderContext()
+  
+  return (
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+      <SheetTrigger>
+        <Menu size={26}/>
+      </SheetTrigger>
+      <SheetContent side="left" className="p-0 w-fit">
+        <NavBar/>
+        <VisuallyHidden.Root>
+          <SheetHeader className="hidden">
+            <SheetTitle>Mealicious Navigation Menu</SheetTitle>
+            <SheetDescription className="hidden">
+              Allows the user to navigate to different pages of the website.
+              Open by default on large screen sizes and collapsible on smaller sizes.
+            </SheetDescription>
+          </SheetHeader>
+        </VisuallyHidden.Root>
+      </SheetContent>
+    </Sheet>
+  )
+}
 
 type AccordionSectionProps = {
   title: string
@@ -131,12 +134,25 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({ title, accordionIte
   </AccordionItem>
 )
 
-const SubSection: React.FC<SectionProps> = ({ Icon, label, to }) => (
-  <Link className="h-[50px] flex justify-between items-center pl-8 pr-4 hover:bg-slate-300 transition-colors" to={to}>
-    <h3 className="font-[600]">{label}</h3>
-    <Icon size={16}/>
-  </Link>
-)
+const SubSection: React.FC<SectionProps> = ({ Icon, label, to }) => {
+  const navigate = useNavigate()
+  const [_, setIsSheetOpen] = useHeaderContext() 
+
+  function navigateTo() {
+    navigate(to)
+    setIsSheetOpen(false)
+  }
+  
+  return (
+    <Button 
+      onClick={navigateTo}
+      className="w-full h-[50px] flex justify-between items-center pl-8 pr-4 bg-transparent text-black hover:bg-slate-300 active:bg-slate-400 transition-colors rounded-none"
+    >
+      <h3 className="font-[600]">{label}</h3>
+      <Icon size={16}/>
+    </Button>
+  )
+}
 
 const SignOutButton: React.FC = () => (
   <AlertDialog>
