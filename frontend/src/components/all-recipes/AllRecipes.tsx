@@ -6,23 +6,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-// import Search from "./Search"
 import { defaultRecipe, formatRecipes, type RecipeSort, type Recipe as RecipeType } from "@/util/types/recipe"
 import Recipe from "./Recipe"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Clipboard, Plus, X } from "lucide-react"
+import { Clipboard, Plus } from "lucide-react"
 import Description from "./Description"
 import Loading from "./Loading"
 import { Link, useNavigate } from "react-router-dom"
 import { AppContext } from "@/App"
 import { User } from "firebase/auth"
-import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
-import { createQuery } from "@/util/types/app"
+import { useFirestoreDelete, useFirestoreFetch, useStorageDelete } from "@/util/hooks"
+import { createQuery, getImageNameFromFirebaseURL } from "@/util/types/app"
 import Placeholder from "@/components/theme/Placeholder"
 import Container from "../theme/Container"
 
-
-// TODO: Keep working on responsive design
 const AllRecipes: React.FC = () => {
   const navigate = useNavigate()
   const { user, screenSizes: { md } } = useContext(AppContext)
@@ -31,12 +28,13 @@ const AllRecipes: React.FC = () => {
     formatRecipes, { initialData: [], defaultData: defaultRecipe }
   )
   const { isWorking, deleteFirestoreDoc } = useFirestoreDelete()
+  const { deleteFile } = useStorageDelete()
   const [activeRecipe, setActiveRecipe] = useState<RecipeType>(defaultRecipe)
-  const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
+  const [isClean, setIsClean] = useState<boolean>(true)
   const [sortedRecipes, setSortedRecipes] = useState<RecipeType[]>(recipes)
   
   function invalidate(recipe: RecipeType) {
-    setIsFirstRender(false)
+    setIsClean(false)
     setActiveRecipe(recipe)
   }
 
@@ -57,10 +55,15 @@ const AllRecipes: React.FC = () => {
     }
   }
 
-  async function deleteRecipe(id: string) {
+  async function deleteRecipe(recipe: Recipe) {    
     try {
-      await deleteFirestoreDoc("recipes", id)
-      setSortedRecipes(sorted => sorted.filter(s => s.id !== id))
+      await Promise.all([
+        deleteFirestoreDoc("recipes", recipe.id as string), 
+        deleteFile(getImageNameFromFirebaseURL(recipe.image))
+      ])
+
+      setIsClean(true)
+      setSortedRecipes(sorted => sorted.filter(s => s.id !== recipe.id))
     } catch (err: any) {
       console.error(err.message)
     }
@@ -115,8 +118,8 @@ const AllRecipes: React.FC = () => {
                 )
             }
             {
-              recipes.length === 0 &&
-              <Placeholder icon={<X size={48}/>} className="2xl:col-span-2 py-[50px]">
+              sortedRecipes.length <= 0 &&
+              <Placeholder className="w-full flex-1">
                 <Placeholder.Message>No Recipes Found!</Placeholder.Message>
                 <Placeholder.Tip>Try creating one!</Placeholder.Tip>
                 <Placeholder.Action
@@ -132,7 +135,7 @@ const AllRecipes: React.FC = () => {
         </ScrollArea>
       </div>
       { 
-        isFirstRender
+        isClean
         ? <Placeholder 
             icon={<Clipboard size={96}/>}
             className="flex-1 text-slate-500 flex flex-col justify-center items-center gap-3 bg-slate-200 p-4 rounded-none"

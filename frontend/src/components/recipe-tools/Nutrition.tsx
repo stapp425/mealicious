@@ -63,7 +63,7 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, register, setV
         ? <div className="flex-1 border border-slate-400 flex flex-col gap-2 p-2 rounded-md">
             <Serving register={register}/>
             {
-              nutrition.map((nutrient: Nutrition, index: number) => (
+              nutrition.map((nutrient, index) => (
                 <button 
                   type="button"
                   key={index}
@@ -101,9 +101,9 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, register, setV
                     onChange={handleChange}
                     className="row-start-2 col-start-1"
                   />
-                  <Select onValueChange={(value: string) => setInput(n => ({ ...n, unit: value }))}>
+                  <Select onValueChange={value => setInput(n => ({ ...n, unit: value }))}>
                     <SelectTrigger className="row-start-2 col-start-2">
-                      <SelectValue placeholder="unit" />
+                      <SelectValue/>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="kcal">kcal</SelectItem>
@@ -115,8 +115,9 @@ const Nutrition: React.FC<NutritionProps> = ({ children, control, register, setV
                   </Select>
                   <button
                     type="button"
+                    disabled={!input.unit}
                     onClick={() => (input.name && input.unit) && setValue("nutrition", [ ...nutrition, input ])}
-                    className="row-start-2 col-start-3 aspect-square size-10 flex justify-center items-center bg-orange-500 text-white py-1 rounded-md"
+                    className="row-start-2 col-start-3 aspect-square size-10 flex justify-center items-center bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-300 text-white py-1 rounded-md"
                   >
                     <Plus size={18}/>
                   </button>

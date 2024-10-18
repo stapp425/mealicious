@@ -11,7 +11,7 @@ type DietsProps =
   React.HTMLAttributes<HTMLDivElement>
 
 const Diets: React.FC<DietsProps> = ({ className, control, setValue, ...props }) => {
-  const { input, handleChange } = useInputChange<{[key: string]: string}>({ diet: "" })
+  const { input, setInput, handleChange } = useInputChange<{ diet: string }>({ diet: "" })
   
   const diets = useWatch({
     control,
@@ -19,8 +19,11 @@ const Diets: React.FC<DietsProps> = ({ className, control, setValue, ...props })
   })
 
   function addDiet(diet: string) {
-    if(diets && diet)
+    if(diets && diet) {
       setValue("diets", [...diets, input.diet])
+      setInput({ diet: "" })
+    }
+      
   }
 
   return (
@@ -38,9 +41,10 @@ const Diets: React.FC<DietsProps> = ({ className, control, setValue, ...props })
             className="text-lg py-5"
           />
           <button
-            type="button" 
+            type="button"
+            disabled={!input.diet}
             onClick={() => addDiet(input.diet)}
-            className="right-1.5 bg-orange-500 hover:bg-orange-700 text-white font-[600] px-6 rounded-md transition-colors"
+            className="right-1.5 bg-orange-500 hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-orange-300 text-white font-[600] px-6 rounded-md transition-colors"
           >
             Add
           </button>
@@ -50,7 +54,7 @@ const Diets: React.FC<DietsProps> = ({ className, control, setValue, ...props })
             <ScrollArea>
               <div className="flex flex-wrap gap-x-1 gap-y-2">
                 { 
-                  diets.map((diet: string, index: number) => (
+                  diets.map((diet, index) => (
                     <button
                       type="button"
                       key={index}

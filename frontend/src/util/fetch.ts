@@ -9,20 +9,20 @@ export default async function fetchFromAPI(httpMethod: string, path: string, que
 
   try {
     const response = httpMethod === "GET"
-      ? await fetch(`${backendURL}${path}${passedQueries && "?" + passedQueries}`, {
-          headers: {
-            "Content-Type": "application/json",
-            ...headers
-          },
-        })
-      : await fetch(`${backendURL}${path}${passedQueries && "?" + passedQueries}`, {
-          method: httpMethod,
-          headers: {
-            "Content-Type": "application/json",
-            ...headers
-          },
-          body: JSON.stringify(body)
-        })
+    ? await fetch(`${backendURL}${path}${passedQueries && "?" + passedQueries}`, {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+      })
+    : await fetch(`${backendURL}${path}${passedQueries && "?" + passedQueries}`, {
+        method: httpMethod,
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        body: JSON.stringify(body)
+      })
 
     return response.json()
   } catch (err: any) {

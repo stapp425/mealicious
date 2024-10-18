@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { createUser, type UserInput } from "@/util/auth"
-import { toast } from "@/components/ui/use-toast"
 import siteLogo from "@/img/logo/mealicious-logo.svg"
 import registerImage from "@/img/register-page.jpg"
 import { SubmitHandler, useForm, useWatch } from "react-hook-form"
@@ -55,11 +54,7 @@ const Register: React.FC = () => {
     try {
       await createUser(data)
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message || "Something went wrong.",
-        variant: "destructive"
-      })
+      alert(err.message || "Something went wrong.")
     }
   }
 

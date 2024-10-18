@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Search as SearchIcon } from "lucide-react"
 import { type Query } from "@/util/types/recipe"
 
-type Props = {
+type SearchProps = {
   searchRecipes: (query: Query) => void
 }
 
-const Search: React.FC<Props> = ({ searchRecipes }) =>  {
+const Search: React.FC<SearchProps> = ({ searchRecipes }) =>  {
   const [searchInput, setSearchInput] = useState<Query>({ query: "" })
   const searchRef = useRef<HTMLButtonElement>(null)
 
@@ -23,8 +23,8 @@ const Search: React.FC<Props> = ({ searchRecipes }) =>  {
   }
 
   return (
-    <div className="overflow-hidden relative flex flex-col gap-4 justify-between items-center w-full">
-      <h1 className="font-bold text-4xl">New Recipe Search</h1>
+    <div className="relative w-full h-fit flex flex-col justify-between items-center gap-4 p-4">
+      <h1 className="font-bold text-4xl text-center sm:text-left">New Recipe Search</h1>
       <p className="text-muted-foreground mb-2 text-center">
         Search over 5,000+ Recipes with <Link to="https://spoonacular.com/" target="_blank" className="text-orange-500">Spoonacular</Link>
       </p>

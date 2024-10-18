@@ -3,7 +3,6 @@ import { getDoc, getDocs, updateDoc, type QuerySnapshot, type Query, doc, addDoc
 import { type FirestoreCollection, type Obj } from "@/util/types/app"
 import { firestore, storage } from "../../firebaseConfig"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
-import { useToast } from "@/components/ui/use-toast"
 import * as dateFns from "date-fns"
 import { isTimestamp } from "@/util/types/plan"
 
@@ -164,18 +163,13 @@ export function useFirestoreGet<T>(path: FirestoreCollection, id: string, format
 }
 
 export function useFirestoreUpdate<T extends Obj>() {
-  const { toast } = useToast()
   const [isWorking, setIsWorking] = useState<boolean>(false)
   
   async function updateFirestoreDoc(path: FirestoreCollection, id: string, data: T) {
     try {
       setIsWorking(true)
       await updateDoc(doc(firestore, path, id), data)
-      toast({
-        title: "Success!",
-        description: "Document successfully updated.",
-        variant: "success"
-      })
+      alert("Document successfully updated.")
     } catch (err: any) {
       throw err
     } finally {
@@ -188,18 +182,13 @@ export function useFirestoreUpdate<T extends Obj>() {
 
 export function useFirestorePost<T extends Obj>() {
   const [isWorking, setIsWorking] = useState<boolean>(false)
-  const { toast } = useToast()
 
   async function addFirestoreDoc(path: FirestoreCollection, data: T) {
     try {
       setIsWorking(true)
       const docRef = await addDoc(collection(firestore, path), data)
       const docData = await getDoc(docRef)
-      toast({
-        title: "Success!",
-        description: "Successfully added document.",
-        variant: "success"
-      })
+      alert("Document successfully added.")
 
       return docData
     } catch (err: any) {
@@ -213,18 +202,13 @@ export function useFirestorePost<T extends Obj>() {
 }
 
 export function useFirestoreDelete() {
-  const { toast } = useToast()
   const [isWorking, setIsWorking] = useState<boolean>(false)
   
   async function deleteFirestoreDoc(path: FirestoreCollection, id: string) {
     try {
       setIsWorking(true)
       await deleteDoc(doc(firestore, path, id))
-      toast({
-        title: "Alert!",
-        description: "Document successfully deleted.",
-        variant: "destructive"
-      })
+      alert("Document successully deleted.")
     } catch (err: any) {
       throw err
     } finally {
@@ -259,15 +243,17 @@ export function useStorageDelete() {
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
   async function deleteFile(fileName: string) {
-    try {
-      const imageRef = ref(storage, fileName)
-
-      setIsDeleting(true)
-      await deleteObject(imageRef)
-    } catch (err: any) {
-      throw err
-    } finally {
-      setIsDeleting(false)
+    if(fileName) {
+      try {
+        const imageRef = ref(storage, fileName)
+  
+        setIsDeleting(true)
+        await deleteObject(imageRef)
+      } catch (err: any) {
+        throw err
+      } finally {
+        setIsDeleting(false)
+      }
     }
   }
 

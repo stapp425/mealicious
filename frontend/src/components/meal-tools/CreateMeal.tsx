@@ -6,7 +6,6 @@ import { useFirestoreFetch, useFirestorePost } from "@/util/hooks"
 import { defaultRecipe, formatRecipes, type Recipe } from "@/util/types/recipe"
 import { createQuery } from "@/util/types/app"
 import { AppContext } from "@/App"
-import { useToast } from "@/components/ui/use-toast"
 import AddWindow from "./AddWindow"
 import Container from "../theme/Container"
 import Title from "./Title"
@@ -18,7 +17,6 @@ import RecipeList from "./RecipeList"
 import Spinner from "../theme/Spinner"
 
 const CreateMeal: React.FC = () => {
-  const { toast } = useToast()
   const { user }  = useContext(AppContext)
   const { data: recipes } = useFirestoreFetch<Recipe>(
     createQuery(user as User, "recipes"), 
@@ -55,11 +53,7 @@ const CreateMeal: React.FC = () => {
       
       await addMeal("meals", addedData)
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      alert(err.message)
     }
   }
 

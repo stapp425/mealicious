@@ -5,8 +5,9 @@ import Search from "@/components/new-recipe-search/Search"
 import SearchResults from "@/components/new-recipe-search/SearchResults"
 import { Toaster } from "@/components/ui/toaster"
 import fetchFromAPI from "@/util/fetch"
+import Container from "../theme/Container"
 
-export default function NewRecipeSearch() {
+const NewRecipeSearch: React.FC = () => {
   const { toast } = useToast()
   const [searchResults, setSearchResults] = useState<Recipe[]>([])
   const [isFetching, setIsFetching] = useState<boolean>(false)
@@ -16,12 +17,10 @@ export default function NewRecipeSearch() {
     originalSearchQuery.current = searchParams.query
     setSearchResults([])
 
-    if(!searchParams.query)
-      return toast({
-        title: "Error!",
-        description: "Search query is empty.",
-        variant: "destructive"
-      })
+    if(!searchParams.query) {
+      alert("Search query is empty.")
+      return
+    }
 
     try {
       setIsFetching(true)
@@ -44,7 +43,7 @@ export default function NewRecipeSearch() {
   }, [])
 
   return (
-    <div className="flex-1 flex flex-col justify-start items-center *:p-6">
+    <Container className="space-y-6">
       <Search searchRecipes={searchRecipes}/>
       <SearchResults
         results={searchResults}
@@ -54,6 +53,8 @@ export default function NewRecipeSearch() {
       <div className="absolute bottom-0 right-0">
         <Toaster/>
       </div>
-    </div>
+    </Container>
   )
 }
+
+export default NewRecipeSearch

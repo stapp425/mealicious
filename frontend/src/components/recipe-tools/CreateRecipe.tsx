@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 import { useFirestorePost, useStorageUpload } from "@/util/hooks"
 import { defaultRecipe, type Recipe } from "@/util/types/recipe"
-import { useToast } from "@/components/ui/use-toast"
 import { AppContext } from "@/App"
 import { type SubmitHandler, useForm } from "react-hook-form"
+import { defaultImage, type Image as ImageType } from "@/util/types/app"
 import { nanoid } from "nanoid"
 import Title from "./Title"
 import Description from "./Description"
@@ -19,14 +19,8 @@ import Button from "../theme/Button"
 import Spinner from "../theme/Spinner"
 
 const CreateRecipe: React.FC = () => {
-  const { toast } = useToast()
   const { user } = useContext(AppContext)
-  const [image, setImage] = useState<Image>({
-    file: undefined,
-    name: "",
-    type: "",
-    url: ""
-  })
+  const [image, setImage] = useState<ImageType>(defaultImage)
   const { addFirestoreDoc } = useFirestorePost()
   const { uploadFile } = useStorageUpload()
 
@@ -39,11 +33,12 @@ const CreateRecipe: React.FC = () => {
     reset,
     control,
     formState: { 
+      isDirty,
       errors,
       isSubmitting,
       isSubmitSuccessful
     }
-  } = useForm<Recipe>({ defaultValues: defaultRecipe })  
+  } = useForm<Recipe>({ defaultValues: defaultRecipe, mode: "all" })  
   
   const submitRecipe: SubmitHandler<Recipe> = async(data: Recipe) => {     
     if(user && image.file) {
@@ -56,17 +51,9 @@ const CreateRecipe: React.FC = () => {
         }
 
         await addFirestoreDoc("recipes", addedRecipe)
-        toast({
-          title: "Success",
-          description: "Recipe successfully added!",
-          variant: "success"
-        })
+        alert("Recipe successfully added!")
       } catch (err: any) {
-        toast({
-          title: "Error!",
-          description: err.message,
-          variant: "destructive"
-        })
+        alert(err.message)
       }
     }
   }
@@ -77,6 +64,7 @@ const CreateRecipe: React.FC = () => {
 
   useEffect(() => {
     reset()
+    setImage(defaultImage)
   }, [isSubmitSuccessful])
   
   return (
@@ -89,8 +77,7 @@ const CreateRecipe: React.FC = () => {
         register={register}
         error={errors}
         setValue={setValue}
-        image={image}
-        setImage={setImage}
+        imageState={[image, setImage]}
         className="xl:row-span-2"
       />
       <Title 
@@ -146,9 +133,9 @@ const CreateRecipe: React.FC = () => {
         className="xl:row-start-5 xl:col-start-3"
       />
       <Button
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isDirty}
         type="submit" 
-        className="h-fit text-xl disabled:cursor-not-allowed"
+        className="h-fit text-xl disabled:cursor-not-allowed disabled:bg-orange-300"
       >
         {isSubmitting ? <><Spinner className="inline mr-2"/> Working on it...</> : "Create Recipe"}
       </Button>

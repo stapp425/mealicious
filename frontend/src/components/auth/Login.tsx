@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
-import { toast } from "@/components/ui/use-toast"
 import { signIn } from "@/util/auth"
 import siteLogo from "@/img/logo/mealicious-logo.svg"
 import loginImage from "@/img/login-page.jpg"
@@ -28,11 +27,7 @@ const Login: React.FC = () => {
     try {
       await signIn(email, password)
     } catch (err: any) {
-      toast({
-        title: "Uh Oh!",
-        description: err.message || "Invalid username/password.",
-        variant: "destructive"
-      })
+      alert(err.message || "Invalid username/password.")
     }
   }
 

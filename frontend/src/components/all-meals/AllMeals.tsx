@@ -4,7 +4,6 @@ import { type User } from "@firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery, ReactState } from "@/util/types/app"
 import { defaultMeal, formatMeals, type Meal as MealEntry } from "@/util/types/meal"
-import { useToast } from "@/components/ui/use-toast"
 import { X } from "lucide-react"
 import { Link } from "react-router-dom"
 import Meal from "./Meal"
@@ -17,7 +16,6 @@ export const AllMealsContext = createContext<{state: ReactState<MealEntry[]>, re
 
 const AllMeals: React.FC = () => {
   const { user, screenSizes: { xxl } } = useContext(AppContext)
-  const { toast } = useToast()
   const { deleteFirestoreDoc } = useFirestoreDelete()
   const { data: fetchedMeals, setData: setMeals, isFetching } = useFirestoreFetch<MealEntry>(
     createQuery(user as User, "meals"), 
@@ -50,11 +48,7 @@ const AllMeals: React.FC = () => {
       await deleteFirestoreDoc("meals", targetMeal.id as string)
       setMeals(meals => meals.filter(m => m.id !== targetMeal.id))
     } catch (err: any) {
-      toast({
-        title: "Error!",
-        description: err.message,
-        variant: "destructive"
-      })
+      alert(err.message)
     }
   }  
 

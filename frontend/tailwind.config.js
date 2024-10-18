@@ -22,6 +22,7 @@ module.exports = {
 			},
 			height: {
 				'site-container': 'calc(100vh - 100px)',
+				'options': '75px'
 			},
   		width: {
 				'exclude-navbar': 'calc(100% - 325px)'
@@ -31,6 +32,9 @@ module.exports = {
 			},
 			inset: {
 				'header-height': '100px'
+			},
+			boxShadow: {
+				'options': '0 -3px 10px rgba(0, 0, 0, 0.15)'
 			},
   		colors: {
   			border: 'hsl(var(--border))',
