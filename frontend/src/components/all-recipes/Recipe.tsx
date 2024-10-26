@@ -1,11 +1,10 @@
 import { useContext } from "react"
 import { Badge } from "../ui/badge"
 import { AppContext } from "@/App"
-import { Ingredient, type Recipe } from "@/util/types/recipe"
+import { type Recipe } from "@/util/types/recipe"
 import { Clock, Earth, Zap } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { Link } from "react-router-dom"
-import { nanoid } from "nanoid"
 
 type RecipeProps = {
   recipe: Recipe
@@ -21,7 +20,7 @@ const Recipe: React.FC<RecipeProps> = (props) => {
 }
 
 const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
-  <label className={`max-h-[200px] w-full overflow-hidden border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
+  <label className={`w-full overflow-hidden border ${recipe.isFavorite ? "bg-rose-100 border-rose-400" : "border-slate-400"} flex justify-between rounded-lg hover:cursor-pointer hover:bg-slate-100 has-[:checked]:border-2 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-100 transition-all`}>
     <input
       type="radio"
       name="recipe"
@@ -42,7 +41,7 @@ const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
       {
         recipe.diets && recipe.diets.length > 0 && 
         <div className="flex gap-[6px]">
-          {recipe.diets.slice(0, 3).map((diet: string) => <Badge key={nanoid()} className="pointer-events-none bg-orange-500">{diet}</Badge>)}
+          {recipe.diets.slice(0, 3).map((diet, index) => <Badge key={index} className="pointer-events-none bg-orange-500">{diet}</Badge>)}
         </div>
       }            
       <div className="flex gap-2 items-center">
@@ -70,8 +69,8 @@ const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {
-          recipe.ingredients.slice(0, 3).map((ingredient: Ingredient) => (
-            <div key={nanoid()} className="max-w-[150px] line-clamp-1 pointer-events-none min-w-8 text-sm p-2 border border-slate-300 bg-white rounded-md">
+          recipe.ingredients.slice(0, 3).map((ingredient, index) => (
+            <div key={index} className="max-w-[150px] line-clamp-1 pointer-events-none min-w-8 text-sm p-2 border border-slate-300 bg-white rounded-md">
               {ingredient.name}
             </div>
           ))
@@ -84,8 +83,12 @@ const List: React.FC<RecipeProps> = ({ recipe, onChange, activeRecipe }) => (
           recipe.source &&
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
-                <Link to={recipe.source?.url as string} target="_blank">
+              <TooltipTrigger asChild>
+                <Link 
+                  to={recipe.source?.url as string}
+                  target="_blank"
+                  className="absolute bottom-3 right-4"
+                >
                   <Earth color="#1e293b"/>
                 </Link>
               </TooltipTrigger>

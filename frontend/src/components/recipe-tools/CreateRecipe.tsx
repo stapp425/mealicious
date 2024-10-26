@@ -33,7 +33,6 @@ const CreateRecipe: React.FC = () => {
     reset,
     control,
     formState: { 
-      isDirty,
       errors,
       isSubmitting,
       isSubmitSuccessful
@@ -60,6 +59,11 @@ const CreateRecipe: React.FC = () => {
 
   useEffect(() => {
     document.title = "Create Recipe | Mealicious"
+
+    
+    return () => {
+
+    }
   }, [])
 
   useEffect(() => {
@@ -91,13 +95,14 @@ const CreateRecipe: React.FC = () => {
         error={errors}
         className="xl:row-start-2 xl:col-start-2 xl:col-span-2"
       />
-      <Description 
+      <Description
         name="description"
         register={register}
         error={errors}
         className="xl:row-start-3 xl:col-start-2 xl:col-span-2"
       />
       <Nutrition
+        id="recipe-tools-nutrition"
         register={register}
         control={control}
         setError={setError}
@@ -133,7 +138,7 @@ const CreateRecipe: React.FC = () => {
         className="xl:row-start-5 xl:col-start-3"
       />
       <Button
-        disabled={isSubmitting || !isDirty}
+        disabled={isSubmitting}
         type="submit" 
         className="h-fit text-xl disabled:cursor-not-allowed disabled:bg-orange-300"
       >

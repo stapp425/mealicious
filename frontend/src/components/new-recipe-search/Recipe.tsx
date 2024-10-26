@@ -12,15 +12,17 @@ import Details from "./Details"
 import { useFirestorePost } from "@/util/hooks"
 import { useContext } from "react"
 import { AppContext } from "@/App"
+import Spinner from "../theme/Spinner"
 
 type VariantProps = {
   recipe: RecipeType
+  isSubmitting: boolean
   saveRecipe: () => void
 }
 
 const Recipe: React.FC<{ recipe: RecipeType, layout?: Layout }> = ({ layout = "list", recipe }) => {
   const { user } = useContext(AppContext)
-  const { addFirestoreDoc } = useFirestorePost()
+  const { addFirestoreDoc, isWorking } = useFirestorePost()
 
   async function saveRecipe(recipe: RecipeType) {
     try {
@@ -39,10 +41,15 @@ const Recipe: React.FC<{ recipe: RecipeType, layout?: Layout }> = ({ layout = "l
 
   const Variant = layoutMap[layout]
 
-  return <Variant recipe={recipe} saveRecipe={() => saveRecipe(recipe)}/>
+  return (
+    <Variant
+      recipe={recipe}
+      saveRecipe={() => saveRecipe(recipe)}
+      isSubmitting={isWorking}
+    />)
 }
 
-const List: React.FC<VariantProps> = ({ recipe, saveRecipe }) => (
+const List: React.FC<VariantProps> = ({ recipe, saveRecipe, isSubmitting }) => (
   <div className="overflow-hidden min-h-[225px] w-full flex justify-between rounded-lg border-2 border-slate-200">
     <div className="relative group overflow-hidden flex justify-center items-center basis-1/3 shadow-lg">
       <Dialog>
@@ -59,8 +66,16 @@ const List: React.FC<VariantProps> = ({ recipe, saveRecipe }) => (
             <ScrollBar/>
           </ScrollArea>
           <div className="p-3 border-t border-t-slate-300">
-            <ThemeButton className="w-full h-fit" onClick={saveRecipe}>
-              <Bookmark className="inline mr-1.5"/> <span>Save</span>
+            <ThemeButton 
+              disabled={isSubmitting}
+              onClick={saveRecipe}
+              className="w-full h-10 disabled:cursor-not-allowed disabled:bg-orange-300"
+            >
+              {
+                isSubmitting
+                ? <><Spinner className="inline mr-1.5"/> <span>Saving...</span></>
+                : <><Bookmark className="inline mr-1.5"/> <span>Save</span></>
+              }
             </ThemeButton>
           </div>
         </DialogContent>

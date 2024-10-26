@@ -22,6 +22,8 @@ import { Badge } from "@/components/ui/badge"
 import Button from "@/components/theme/Button"
 import Spinner from "@/components/theme/Spinner"
 import Error from "@/components/theme/Error"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import Placeholder from "../theme/Placeholder"
 
 type RemoveEventsProps = {
   className?: string
@@ -86,7 +88,7 @@ const RemoveEvents: React.FC<RemoveEventsProps> = ({ className, plans, setPlans 
           <X className="inline"/> <span className="text-xs md:text-base">{lg ? "Remove" : "Remove Events"}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[90vw] md:w-[500px] h-[min(650px,90vh)] flex flex-col justify-between gap-3 p-6">
+      <DialogContent className="w-[90vw] md:w-[500px] h-[min(650px,90vh)] flex flex-col justify-between gap-3 p-4 md:p-6">
         <DialogHeader>
           <DialogTitle className="font-bold text-3xl">
             Remove Events
@@ -109,8 +111,9 @@ const RemoveEvents: React.FC<RemoveEventsProps> = ({ className, plans, setPlans 
           }
           <Button
             type="submit"
+            disabled={isWorking}
             form="removeEventsForm"
-            className="bg-red-500 hover:bg-red-600 active:bg-red-700 only:ml-auto"
+            className="bg-red-500 disabled:cursor-not-allowed disabled:bg-red-300 hover:bg-red-600 active:bg-red-700 only:ml-auto"
           >
             { 
               isWorking
@@ -151,21 +154,25 @@ const Plans: React.FC<PlansProps> = ({ className, control, setError, clearErrors
   }, [allPlans])
   
   return (
-    <form 
-      className={cn("overflow-y-auto space-y-4", className)}
-      {...props}
-    >
-      {
-        plans.map((plan, index) => 
-          <Plan
-            key={index}
-            register={register}
-            plan={plan}
-            index={index}
-          />
-        )
-      }
-    </form>
+    <ScrollArea type="always">
+      <form 
+        className={cn("overflow-y-auto space-y-4 pr-4", className)}
+        {...props}
+      >
+        {
+          plans.map((plan, index) => 
+            <Plan
+              key={index}
+              register={register}
+              plan={plan}
+              index={index}
+            />
+          )
+        }
+      </form>
+      <ScrollBar/>
+    </ScrollArea>
+    
   )
 }
 
@@ -182,7 +189,7 @@ const Plan: React.FC<PlanProps> = ({ plan, register, index }) => {
     <button 
       type="button"
       onClick={clickCheckbox}
-      className="text-left has-[:checked]:bg-red-100 border border-slate-400 has-[:checked]:border-red-500 p-4 rounded-md"
+      className="w-full text-left has-[:checked]:bg-red-100 border border-slate-400 has-[:checked]:border-red-500 p-4 rounded-md"
     >
       <div>
         <h1 className="font-bold text-2xl">{title}</h1>
@@ -224,7 +231,7 @@ const Meal: React.FC<{ meal: Meal }> = ({ meal }) => {
   return (
     <div className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-slate-400 [&:not(:last-child)]:pb-3 space-y-3">
       <div className="flex justify-between items-center">
-        <h1 className="font-bold text-lg">{title}</h1>
+        <h1 className="font-bold text-lg max-w-[100px] sm:max-w-none truncate">{title}</h1>
         <h1 className="bg-orange-500 text-white font-[600] px-4 rounded-md">
           {time}
         </h1>
@@ -245,7 +252,12 @@ const Meal: React.FC<{ meal: Meal }> = ({ meal }) => {
           }
         </div>
       }
-      {contents.map((content, index) => <Recipe key={index} recipe={content.recipe}/>)}
+      {
+        contents.map((content, index) => content.recipe.title 
+          ? <Recipe key={index} recipe={content.recipe}/>
+          : <RecipeNotFound key={index}/>
+        )
+      }
     </div>
   )
 }
@@ -264,5 +276,11 @@ const Recipe: React.FC<{ recipe: RecipeType }> = ({ recipe }) => {
     </div>
   )
 }
+
+const RecipeNotFound: React.FC = () => (
+  <Placeholder className="h-[75px]">
+    <Placeholder.Message>Recipe Not Found.</Placeholder.Message>
+  </Placeholder>
+)
 
 export default RemoveEvents

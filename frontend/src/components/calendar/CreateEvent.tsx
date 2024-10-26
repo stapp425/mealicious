@@ -103,77 +103,84 @@ const CreateEvent: React.FC<CreateEventProps> = ({ className, meals, setPlans })
           <Plus className="inline"/> <span className="text-xs md:text-base">{lg ? "Create" : "Create an Event"}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent w-[90vw] md:w-[500px] h-[min(650px,90vh)] p-4 md:p-6">
-        <DialogHeader>
-          <DialogTitle className="font-bold text-3xl">
-            Create an Event
-          </DialogTitle>
-          <DialogDescription className="font-[600] text-xs sm:text-base">
-            Add a plan to your calendar here! Click "Submit Event" when you are finished.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(submitEvent)} className="space-y-3">
-          <div className="flex justify-between items-center gap-2 *:flex-1">
+      <DialogContent className="p-0">
+        <ScrollArea className="w-[90vw] md:w-[500px] h-[min(650px,90vh)] p-4 md:p-6">
+          <DialogHeader>
+            <DialogTitle className="font-bold text-3xl">
+              Create an Event
+            </DialogTitle>
+            <DialogDescription className="font-[600] text-xs sm:text-base">
+              Add a plan to your calendar here! Click "Submit Event" when you are finished.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(submitEvent)} className="w-full space-y-3">
+            <div className="w-full flex justify-between items-center gap-2 *:flex-1">
+              <Label className="space-y-1">
+                <h2 className="text-lg after:content-['*'] after:text-red-500">Date</h2>
+                <Input
+                  type="date"
+                  value={format(date, dateFormat)}
+                  min={format(minDate, dateFormat)}
+                  max={format(maxDate, dateFormat)}
+                  onKeyDown={handleKeyDown}
+                  onChange={handleChange}
+                />
+              </Label>
+              <Label className="space-y-1">
+                <h2 className="text-lg after:content-['*'] after:text-red-500">Title</h2>
+                <Input
+                  type="text"
+                  {
+                    ...register("title", {
+                      required: "A title is required before submitting."
+                    })
+                  }
+                  placeholder="Title..."
+                />
+              </Label>
+            </div>
+            {
+              errors.title &&
+              <Error>
+                {errors.title.message}
+              </Error>
+            }
+            <Tags control={control} setValue={setValue}/>
             <Label className="space-y-1">
-              <h2 className="text-lg after:content-['*'] after:text-red-500">Date</h2>
-              <Input
-                type="date"
-                value={format(date, dateFormat)}
-                min={format(minDate, dateFormat)}
-                max={format(maxDate, dateFormat)}
-                onKeyDown={handleKeyDown}
-                onChange={handleChange}
+              <h2 className="text-lg after:content-['_(optional)'] after:text-xs after:text-muted-foreground">Description</h2>
+              <Textarea
+                {...register("description")}
+                placeholder="Description..."
+                className="border-dashed border-slate-400"
               />
             </Label>
-            <Label className="space-y-1">
-              <h2 className="text-lg after:content-['*'] after:text-red-500">Title</h2>
-              <Input
-                type="text"
-                {
-                  ...register("title", {
-                    required: "A title is required before submitting."
-                  })
-                }
-                placeholder="Title..."
-              />
-            </Label>
-          </div>
-          {
-            errors.title &&
-            <Error>
-              {errors.title.message}
-            </Error>
-          }
-          <Tags control={control} setValue={setValue}/>
-          <Label className="space-y-1">
-            <h2 className="text-lg after:content-['_(optional)'] after:text-xs after:text-muted-foreground">Description</h2>
-            <Textarea
-              {...register("description")}
-              placeholder="Description..."
-              className="border-dashed border-slate-400"
+            <DragAndDrop
+              meals={meals}
+              control={control}
+              setValue={setValue}
+              error={errors}
+              setError={setError}
+              clearErrors={clearErrors}
             />
-          </Label>
-          <DragAndDrop
-            meals={meals}
-            control={control}
-            setValue={setValue}
-            error={errors}
-            setError={setError}
-            clearErrors={clearErrors}
-          />
-          <DialogFooter>
-            <Button type="submit" className="bg-orange-500 text-white rounded-sm py-2 px-4 font-[600]">
-              {isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Event"}
-            </Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-300 text-white rounded-sm py-2 px-4 font-[600]"
+              >
+                {isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Event"}
+              </Button>
+            </DialogFooter>
+          </form>
+          <ScrollBar/>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   )
 }
 
 const Tags: React.FC<Pick<ReactHookFormTypes<Plan>, "control" | "setValue">> = ({ control, setValue }) => {
-  const { input, handleChange } = useInputChange({ tag: "" })
+  const { input, setInput, handleChange } = useInputChange({ tag: "" })
   const tags = useWatch({
     control,
     name: "tags"
@@ -184,7 +191,10 @@ const Tags: React.FC<Pick<ReactHookFormTypes<Plan>, "control" | "setValue">> = (
   }
 
   function addTag(tag: string) {
-    tag && tags && setValue("tags", [...tags, tag])
+    if(tag && tags) {
+      setValue("tags", [...tags, tag])
+      setInput({ tag: "" })
+    }
   }
 
   return (
@@ -201,8 +211,9 @@ const Tags: React.FC<Pick<ReactHookFormTypes<Plan>, "control" | "setValue">> = (
           />
           <Button 
             type="button"
+            disabled={!input.tag}
             onClick={() => addTag(input.tag)}
-            className="size-10 flex justify-center items-center p-0"
+            className="disabled:cursor-not-allowed disabled:bg-orange-300 size-10 flex justify-center items-center p-0"
           >
             <Plus size={16}/>
           </Button>

@@ -96,7 +96,12 @@ const CreateMeal: React.FC = () => {
             setError={setError}
             clearErrors={clearErrors}
           />
-          <Button>{ isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Meal"}</Button>
+          <Button
+            disabled={isSubmitting}
+            className="disabled:cursor-not-allowed disabled:bg-orange-300"
+          >
+            { isSubmitting ? <><Spinner className="inline"/> Working on it...</> : "Submit Meal"}
+          </Button>
         </div>
         <AddWindow className="w-full" recipes={recipes} error={errors} setValue={setValue} getValues={getValues}/>
         <RecipeList

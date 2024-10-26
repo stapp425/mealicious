@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useState } from "react"
 import { AppContext } from "@/App"
 import { Calendar, Clock, Heart, LayoutGrid, LucideProps, Pencil, X } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
@@ -24,6 +24,8 @@ import { Badge } from "../ui/badge"
 
 const CurrentMealsContext = createContext<ReactState<Plan[]>>([[defaultPlan], () => {}])
 
+
+// TODO: Update logic for deleting non-existent meals from plans
 const DailyMeals: React.FC = () => (
   <div className="relative pt-6 flex flex-col gap-2">
     <h1 className="px-6 text-3xl font-bold">Daily Meals</h1>
@@ -72,13 +74,13 @@ const CurrentMeals: React.FC = () => {
   const { user } = useContext(AppContext)
   const { data: plans, setData: setPlans, isFetching } = useFirestoreFetch<PlanType>(createQuery(user as User, "plans"), formatPlans, { initialData: [], defaultData: defaultPlan })
   const { currentEvents: { day } } = useEventCalendar<PlanType>(plans)
-
+  
   return (
     <CurrentMealsContext.Provider value={[plans, setPlans]}>
       <div className="flex flex-col">
         {
           !isFetching
-          ? <Meals meals={day.map(d => d.meals).flat()} className="px-6 pb-4"/>          
+          ? <Meals meals={day.map(d => d.meals).flat()} className="px-6 pb-4"/>
           : <Spinner/>
         }
       </div>
@@ -87,7 +89,19 @@ const CurrentMeals: React.FC = () => {
 }
 
 const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className, meals }) => {
+  const [plans, setPlans] = useContext(CurrentMealsContext)
   const navigate = useNavigate()
+  const { updateFirestoreDoc } = useFirestoreUpdate()
+  
+  async function deleteMealFromPlans(id: string) {
+    try {
+      const plansWithRemovedMeals = plans.filter(p => p.meals.some(m => m.id === id))
+      setPlans(plans => plans.map(p => p.meals.every(m => m.id !== id) ? p : ({ ...p, meals: p.meals.filter(m => m.id !== id) })))
+      await Promise.all(plansWithRemovedMeals.map(p => updateFirestoreDoc("plans", p.id as string, { ...p, meals: p.meals.filter(m => m.id !== id).map(f => f.id) })))
+    } catch (err: any) {
+      console.error(err.message)
+    }
+  }
   
   return (
     meals.length > 0
@@ -95,8 +109,8 @@ const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className,
         <div className={cn("flex gap-6", className)}>
           {
             meals.map((meal, index) => meal.title 
-            ? <Meal key={index} meal={meal}/>
-            : <NotFound key={index} id={meal.id as string}/>)}
+            ? <Meal key={index} fetchedMeal={meal}/>
+            : <MealNotFound key={index} onMealDelete={() => deleteMealFromPlans(meal.id as string)}/>)}
         </div>
         <ScrollBar orientation="horizontal"/>
       </ScrollArea>
@@ -118,25 +132,49 @@ const Meals: React.FC<{ className?: string, meals: MealType[] }> = ({ className,
   )
 }
 
-const Meal: React.FC<{ className?: string, meal: MealType }> = ({ className, meal }) => (
-  <div className={cn("w-[325px] h-[450px] flex flex-col gap-2 border border-slate-400 p-4 rounded-lg", className)}>
-    <h1 className="font-bold text-2xl">{meal.title}</h1>
-    {
-      meal.tags &&
-      <div className="flex flex-wrap gap-2">
-        {meal.tags.map((tag, index) => <Badge key={index} className="bg-orange-500">{tag}</Badge>)}
-      </div>
-    }
-    <ScrollArea className="flex-1">
-      <div className="overflow-hidden space-y-2">
-        {meal.contents.map(({ recipe }, index) => <Recipe key={index} recipe={recipe}/>)}
-      </div>
-      <ScrollBar/>
-    </ScrollArea>
-    <h1 className="tracking-wider text-center font-bold text-lg text-muted-foreground">
-      — {meal.time.toUpperCase()} —
-    </h1>
-  </div>
+const Meal: React.FC<{ className?: string, fetchedMeal: MealType }> = ({ className, fetchedMeal }) => {
+  const [meal, setMeal] = useState<MealType>(fetchedMeal)
+  const { updateFirestoreDoc } = useFirestoreUpdate()
+  
+  async function removeRecipeFromMeal(id: string) {
+    const updatedMeal: MealType = { ...meal, contents: meal.contents.filter(content => content.recipe.id != id) }
+    
+    setMeal(updatedMeal)
+    await updateFirestoreDoc("meals", meal.id as string, updatedMeal)
+  }
+  
+  return (
+    <div className={cn("w-[325px] h-[450px] flex flex-col gap-2 border border-slate-400 p-4 rounded-lg", className)}>
+      <h1 className="font-bold text-2xl">{meal.title}</h1>
+      {
+        meal.tags &&
+        <div className="flex flex-wrap gap-2">
+          {meal.tags.map((tag, index) => <Badge key={index} className="bg-orange-500">{tag}</Badge>)}
+        </div>
+      }
+      <ScrollArea className="flex-1">
+        <div className="overflow-hidden space-y-2">
+          {
+            meal.contents.map((content, index) => content.recipe.title
+              ? <Recipe key={index} recipe={content.recipe}/>
+              : <RecipeNotFound onRecipeDelete={() => removeRecipeFromMeal(content.recipe.id as string)}/>
+            )
+          }
+        </div>
+        <ScrollBar/>
+      </ScrollArea>
+      <h1 className="tracking-wider text-center font-bold text-lg text-muted-foreground">
+        — {meal.time.toUpperCase()} —
+      </h1>
+    </div>
+  )
+}
+
+const MealNotFound: React.FC<{ onMealDelete: () => void }> = ({ onMealDelete }) => (  
+  <Placeholder className="w-[325px] h-[450px]">
+    <Placeholder.Message>Meal does not exist.</Placeholder.Message>
+    <Placeholder.Action onClick={onMealDelete} className="text-sm bg-red-500 hover:bg-red-600">Delete</Placeholder.Action>
+  </Placeholder>
 )
 
 const Recipe: React.FC<{ recipe: RecipeType }> = ({ recipe }) => (
@@ -153,26 +191,11 @@ const Recipe: React.FC<{ recipe: RecipeType }> = ({ recipe }) => (
   </div>
 )
 
-const NotFound: React.FC<{ id: string }> = ({ id }) => {
-  const [plans, setPlans] = useContext(CurrentMealsContext)
-  const { updateFirestoreDoc } = useFirestoreUpdate()
-
-  async function deleteRemovedMealFromPlans() {
-    try {
-      const plansWithRemovedMeals = plans.filter(p => p.meals.some(m => m.id === id))
-      setPlans(plans => plans.map(p => p.meals.every(m => m.id !== id) ? p : ({ ...p, meals: p.meals.filter(m => m.id !== id) })))
-      await Promise.all(plansWithRemovedMeals.map(p => updateFirestoreDoc("plans", p.id as string, { ...p, meals: p.meals.filter(m => m.id !== id) })))
-    } catch (err: any) {
-      console.error(err.message)
-    }
-  }
-  
-  return (
-    <Placeholder icon={<X size={64}/>} className="w-[325px] h-[450px]">
-      <Placeholder.Message>Meal does not exist.</Placeholder.Message>
-      <Placeholder.Action onClick={deleteRemovedMealFromPlans} className="text-sm bg-red-500 hover:bg-red-600">Delete</Placeholder.Action>
-    </Placeholder>
-  )
-}
+const RecipeNotFound: React.FC<{ onRecipeDelete: () => void }> = ({ onRecipeDelete }) => (
+  <Placeholder icon={<X size={18}/>} className="w-full h-fit gap-1">
+    <Placeholder.Message className="text-sm">Recipe does not exist.</Placeholder.Message>
+    <Placeholder.Action onClick={onRecipeDelete} className="text-xs bg-red-500 hover:bg-red-600">Delete</Placeholder.Action>
+  </Placeholder>
+)
 
 export default DailyMeals

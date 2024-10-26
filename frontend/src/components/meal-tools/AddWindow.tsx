@@ -122,6 +122,13 @@ const Recipe: React.FC<{ onClick: React.MouseEventHandler<HTMLButtonElement>, re
 const SelectedRecipe: React.FC<SelectedRecipeProps> = ({ onReturn, recipe, setValue, getValues }) => {
   const { input, handleChange } = useInputChange<Type>({ type: "" })
   
+  function addSelectedRecipe() {
+    if(input.type) {
+      setValue("contents", [...getValues("contents"), { type: input.type, recipe: recipe }])
+      onReturn()
+    }
+  }
+  
   return (
     <>
     <ScrollArea type="always" className="relative h-full">
@@ -170,9 +177,10 @@ const SelectedRecipe: React.FC<SelectedRecipeProps> = ({ onReturn, recipe, setVa
         className="flex-1"
       />
       <button
-        onClick={() => { input.type && setValue("contents", [...getValues("contents"), { type: input.type, recipe: recipe }])}}
         type="button"
-        className="size-10 flex justify-center items-center bg-orange-500 rounded-md hover:bg-orange-700 active:bg-orange-800 transition-colors"
+        disabled={!input.type}
+        onClick={addSelectedRecipe}
+        className="size-10 flex justify-center items-center bg-orange-500 hover:bg-orange-700 active:bg-orange-800 disabled:cursor-not-allowed disabled:bg-orange-300 rounded-md transition-colors"
       >
         <Plus size={18} className="text-white"/>
       </button>

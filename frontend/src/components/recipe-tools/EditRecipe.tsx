@@ -42,7 +42,6 @@ const EditRecipe: React.FC = () => {
     reset,
     control,
     formState: {
-      isDirty,
       errors,
       isSubmitting
     }
@@ -158,7 +157,7 @@ const EditRecipe: React.FC = () => {
         className="xl:row-start-5 xl:col-start-3"
       />
       <Button
-        disabled={isSubmitting || !isDirty}
+        disabled={isSubmitting}
         type="submit" 
         className="h-fit text-xl disabled:cursor-not-allowed disabled:bg-orange-300"
       >

@@ -111,8 +111,8 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({ meals, control, setValue, set
       </ScrollArea>
       {
         isAllMealsVisible &&
-        <ScrollArea type="always" className="w-full h-fit">
-          <div className="h-[175px] flex gap-3">
+        <ScrollArea type="always">
+          <div className="w-[25px] h-[175px] flex gap-3">
             {
               meals.length > 0 && meals[0].title
               ? meals.map((meal, index) => 
