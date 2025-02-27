@@ -1,6 +1,6 @@
 import { AppContext } from "@/App"
 import { useContext, useEffect } from "react"
-import { type User } from "@firebase/auth"
+import { type User } from "firebase/auth"
 import { useFirestoreDelete, useFirestoreFetch } from "@/util/hooks"
 import { createQuery } from "@/util/types/app"
 import { defaultMeal, formatMeals, type Meal as MealEntry } from "@/util/types/meal"
