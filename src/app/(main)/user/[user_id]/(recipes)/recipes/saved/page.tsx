@@ -1,10 +1,11 @@
+import { auth } from "@/auth";
 import Pagination from "@/components/user/recipes/pagination";
 import SavedRecipesResult from "@/components/user/recipes/saved-recipes-result";
 import { db } from "@/db";
 import { diet, nutrition, recipe, recipeToDiet, recipeToNutrition, savedRecipe, user } from "@/db/schema";
 import { MAX_USER_RECIPE_DISPLAY_LIMIT } from "@/lib/utils";
 import { CountSchema } from "@/lib/zod";
-import { sql, and, eq, exists, count, not } from "drizzle-orm";
+import { sql, and, eq, exists, count, or } from "drizzle-orm";
 import { SearchX } from "lucide-react";
 import { createLoader, parseAsIndex } from "nuqs/server";
 
@@ -20,6 +21,9 @@ const loadSearchParams = createLoader({
 export default async function Page({ params, searchParams }: PageProps<"/user/[user_id]/recipes/saved">) {
   const { user_id: userId } = await params;
   const { page } = await loadSearchParams(searchParams);
+
+  const session = await auth();
+  const sessionUserId = session?.user?.id;
 
   const caloriesSubQuery = db.select({
     recipeId: recipeToNutrition.recipeId,
@@ -66,15 +70,18 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
   const savedRecipesCountQuery = db.select({ count: count() })
     .from(recipe)
     .where(and(
-      not(eq(recipe.createdBy, userId)),
-      eq(recipe.isPublic, true),
       exists(
         db.select()
           .from(savedRecipe)
           .where(and(
-            eq(savedRecipe.recipeId, recipe.id),
-            eq(savedRecipe.userId, userId)
+            eq(savedRecipe.userId, userId),
+            eq(savedRecipe.recipeId, recipe.id)
           ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId === userId ? sql`true` : undefined,
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
       )
     ));
 
@@ -93,18 +100,22 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
       name: userSubQuery.name,
       email: userSubQuery.email,
       image: userSubQuery.image
-    }
+    },
+    isPublic: recipe.isPublic
   }).from(recipe)
     .where(and(
-      not(eq(recipe.createdBy, userId)),
-      eq(recipe.isPublic, true),
       exists(
         db.select()
           .from(savedRecipe)
           .where(and(
-            eq(savedRecipe.recipeId, recipe.id),
-            eq(savedRecipe.userId, userId)
+            eq(savedRecipe.userId, userId),
+            eq(savedRecipe.recipeId, recipe.id)
           ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId === userId ? sql`true` : undefined,
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
       )
     ))
     .leftJoinLateral(caloriesSubQuery, sql`true`)
@@ -114,7 +125,7 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
     .offset(page * MAX_USER_RECIPE_DISPLAY_LIMIT);
 
   const [savedRecipesCount, savedRecipes] = await Promise.all([
-    savedRecipesCountQuery.then((val) => CountSchema.parse(val)),
+    savedRecipesCountQuery.then(CountSchema.parse),
     savedRecipesQuery
   ]);
 

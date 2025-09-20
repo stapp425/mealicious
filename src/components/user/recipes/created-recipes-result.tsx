@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import { tz } from "@date-fns/tz";
 import { format, isSameDay } from "date-fns";
-import { Clock, Flame } from "lucide-react";
+import { Clock, EyeOff, Flame } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -18,6 +18,7 @@ type CreatedRecipesResultProps = {
       id: string;
       name: string;
     }[];
+    isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
   };
@@ -25,6 +26,7 @@ type CreatedRecipesResultProps = {
 
 export default function CreatedRecipesResult({ recipe }: CreatedRecipesResultProps) {
   const { push } = useRouter();
+  
   return (
     <div 
       onClick={() => push(`/recipes/${recipe.id}`)}
@@ -39,6 +41,14 @@ export default function CreatedRecipesResult({ recipe }: CreatedRecipesResultPro
         />
       </div>
       <h2 className="font-bold line-clamp-2 hyphens-auto text-lg -mb-1 overflow-hidden">{recipe.title}</h2>
+      {
+        !recipe.isPublic && (
+          <div className="flex items-center gap-2 text-red-500 text-sm mb-1.25 font-semibold">
+            <EyeOff size={16}/>
+            Private
+          </div>
+        )
+      }
       <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2 empty:hidden">
         {
           recipe.diets.map((d) => (

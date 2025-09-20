@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Clock, Flame } from "lucide-react";
+import { Clock, EyeOff, Flame } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import defaultProfilePicture from "@/img/default/default-pfp.jpg";
 
@@ -23,6 +23,7 @@ type FavoritedRecipesResultProps = {
       email: string;
       image: string | null;
     } | null;
+    isPublic: boolean;
   };
 };
 
@@ -43,6 +44,14 @@ export default function FavoritedRecipesResult({ recipe }: FavoritedRecipesResul
         />
       </div>
       <h2 className="font-bold line-clamp-2 hyphens-auto text-lg -mb-1 overflow-hidden">{recipe.title}</h2>
+      {
+        !recipe.isPublic && (
+          <div className="flex items-center gap-2 text-red-500 text-sm mb-1.25 font-semibold">
+            <EyeOff size={16}/>
+            Private
+          </div>
+        )
+      }
       <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2 empty:hidden">
         {
           recipe.diets.map((d) => (

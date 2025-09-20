@@ -1,8 +1,7 @@
 import { db } from "@/db";
 import { recipe, recipeFavorite, savedRecipe } from "@/db/schema";
-import { getCachedData } from "@/lib/actions/redis";
 import { CountSchema } from "@/lib/zod";
-import { and, count, eq, exists, not } from "drizzle-orm";
+import { and, count, eq, exists, or } from "drizzle-orm";
 import { ArrowDownToLine, Eye, Heart, Pencil } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,51 +12,48 @@ type RecipeCountProps = {
 };
 
 export default async function RecipeCount({ userId }: RecipeCountProps) {
-  const createdRecipesCountQuery = getCachedData({
-    cacheKey: `user_${userId}_created_recipes_count`,
-    schema: CountSchema,
-    timeToLive: 60 * 10, // 10 minutes
-    call: () => db.select({ count: count() })
-      .from(recipe)
-      .where(eq(recipe.createdBy, userId))
-  });
+  const createdRecipesCountQuery = db.select({ count: count() })
+    .from(recipe)
+    .where(eq(recipe.createdBy, userId));
 
-  const savedRecipesCountQuery = getCachedData({
-    cacheKey: `user_${userId}_saved_recipes_count`,
-    schema: CountSchema,
-    timeToLive: 60 * 10, // 10 minutes
-    call: () => db.select({ count: count() })
-      .from(recipe)
-      .where(and(
-        not(eq(recipe.createdBy, userId)),
-        exists(
-          db.select()
-            .from(savedRecipe)
-            .where(and(
-              eq(savedRecipe.recipeId, recipe.id),
-              eq(savedRecipe.userId, userId)
-            )) // exclude created recipes
-        )
-      ))
-  });
+  const savedRecipesCountQuery = db.select({ count: count() })
+    .from(recipe)
+    .where(and(
+      exists(
+        db.select()
+          .from(savedRecipe)
+          .where(and(
+            eq(savedRecipe.userId, userId),
+            eq(savedRecipe.recipeId, recipe.id),
+          ))
+      )
+    ));
 
-  const favoritedRecipesCountQuery = getCachedData({
-    cacheKey: `user_${userId}_favorited_recipes_count`,
-    schema: CountSchema,
-    timeToLive: 60 * 10, // 10 minutes
-    call: () => db.select({ count: count() })
-      .from(recipeFavorite)
-      .where(eq(recipeFavorite.userId, userId))
-  });
+  const favoritedRecipesCountQuery = db.select({ count: count() })
+    .from(recipeFavorite)
+    .where(and(
+      eq(recipeFavorite.userId, userId),
+      exists(
+        db.select()
+          .from(recipe)
+          .where(and(
+            eq(recipe.id, recipeFavorite.recipeId),
+            or(
+              eq(recipe.createdBy, userId),
+              eq(recipe.isPublic, true)
+            )
+          ))
+      )
+    ));
 
   const [
     createdRecipesCount,
     savedRecipesCount,
     favoritedRecipesCount
   ] = await Promise.all([
-    createdRecipesCountQuery,
-    savedRecipesCountQuery,
-    favoritedRecipesCountQuery
+    createdRecipesCountQuery.then(CountSchema.parse),
+    savedRecipesCountQuery.then(CountSchema.parse),
+    favoritedRecipesCountQuery.then(CountSchema.parse)
   ]);
 
   const recipesCount = [
@@ -66,21 +62,21 @@ export default async function RecipeCount({ userId }: RecipeCountProps) {
       label: "Created Recipes",
       icon: Pencil,
       count: createdRecipesCount,
-      href: "/recipes?filters=created"
+      href: `/user/${userId}/recipes/created`
     },
     {
       id: "saved-recipes-count",
       label: "Saved Recipes",
       icon: ArrowDownToLine,
       count: savedRecipesCount,
-      href: "/recipes"
+      href: `/user/${userId}/recipes/saved`
     },
     {
       id: "favorited-recipes-count",
       label: "Favorited Recipes",
       icon: Heart,
       count: favoritedRecipesCount,
-      href: "/recipes?filters=favorited"
+      href: `/user/${userId}/recipes/favorited`
     }
   ];
   

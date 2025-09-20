@@ -1,10 +1,11 @@
+import { auth } from "@/auth";
 import CreatedRecipesResult from "@/components/user/recipes/created-recipes-result";
 import Pagination from "@/components/user/recipes/pagination";
 import { db } from "@/db";
 import { diet, nutrition, recipe, recipeToDiet, recipeToNutrition } from "@/db/schema";
 import { MAX_USER_RECIPE_DISPLAY_LIMIT } from "@/lib/utils";
 import { CountSchema } from "@/lib/zod";
-import { sql, and, eq, count, desc } from "drizzle-orm";
+import { sql, and, eq, count, desc, or } from "drizzle-orm";
 import { SearchX } from "lucide-react";
 import { createLoader, parseAsIndex } from "nuqs/server";
 
@@ -20,6 +21,9 @@ const loadSearchParams = createLoader({
 export default async function Page({ params, searchParams }: PageProps<"/user/[user_id]/recipes/created">) {
   const { user_id: userId } = await params;
   const { page } = await loadSearchParams(searchParams);
+
+  const session = await auth();
+  const sessionUserId = session?.user?.id;
   
   const caloriesSubQuery = db.select({
     recipeId: recipeToNutrition.recipeId,
@@ -64,10 +68,17 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
       id: string;
       name: string;
     }[]>`coalesce(${recipeToDietSubQuery.diets}, '[]'::json)`,
+    isPublic: recipe.isPublic,
     createdAt: recipe.createdAt,
     updatedAt: recipe.updatedAt
   }).from(recipe)
-    .where(and(eq(recipe.createdBy, userId), eq(recipe.isPublic, true)))
+    .where(and(
+      eq(recipe.createdBy, userId),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
+      )
+    ))
     .leftJoinLateral(caloriesSubQuery, sql`true`)
     .leftJoinLateral(recipeToDietSubQuery, sql`true`)
     .orderBy(desc(recipe.createdAt))
@@ -76,10 +87,16 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
 
   const createdRecipesCountQuery = db.select({ count: count() })
     .from(recipe)
-    .where(and(eq(recipe.createdBy, userId), eq(recipe.isPublic, true)));
+    .where(and(
+      eq(recipe.createdBy, userId),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined,
+      )
+    ));
 
   const [createdRecipesCount, createdRecipes] = await Promise.all([
-    createdRecipesCountQuery.then((val) => CountSchema.parse(val)),
+    createdRecipesCountQuery.then(CountSchema.parse),
     createdRecipesQuery
   ]);
 

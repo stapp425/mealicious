@@ -1,10 +1,11 @@
+import { auth } from "@/auth";
 import FavoritedRecipesResult from "@/components/user/recipes/favorited-recipes-result";
 import Pagination from "@/components/user/recipes/pagination";
 import { db } from "@/db";
 import { diet, nutrition, recipe, recipeFavorite, recipeToDiet, recipeToNutrition, user } from "@/db/schema";
 import { MAX_USER_RECIPE_DISPLAY_LIMIT } from "@/lib/utils";
 import { CountSchema } from "@/lib/zod";
-import { sql, and, eq, exists, count } from "drizzle-orm";
+import { sql, and, eq, exists, count, or } from "drizzle-orm";
 import { SearchX } from "lucide-react";
 import { createLoader, parseAsIndex } from "nuqs/server";
 
@@ -20,6 +21,9 @@ const loadSearchParams = createLoader({
 export default async function Page({ params, searchParams }: PageProps<"/user/[user_id]/recipes/favorited">) {
   const { user_id: userId } = await params;
   const { page } = await loadSearchParams(searchParams);
+
+  const session = await auth();
+  const sessionUserId = session?.user?.id;
 
   const caloriesSubQuery = db.select({
     recipeId: recipeToNutrition.recipeId,
@@ -78,10 +82,10 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
       name: userSubQuery.name,
       email: userSubQuery.email,
       image: userSubQuery.image
-    }
+    },
+    isPublic: recipe.isPublic
   }).from(recipe)
     .where(and(
-      eq(recipe.isPublic, true),
       exists(
         db.select()
           .from(recipeFavorite)
@@ -89,6 +93,10 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
             eq(recipeFavorite.recipeId, recipe.id),
             eq(recipeFavorite.userId, userId)
           ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
       )
     ))
     .leftJoinLateral(caloriesSubQuery, sql`true`)
@@ -100,19 +108,22 @@ export default async function Page({ params, searchParams }: PageProps<"/user/[u
   const favoritedRecipesCountQuery = db.select({ count: count() })
     .from(recipe)
     .where(and(
-      eq(recipe.isPublic, true),
       exists(
         db.select()
           .from(recipeFavorite)
           .where(and(
-            eq(recipeFavorite.recipeId, recipe.id),
-            eq(recipeFavorite.userId, userId)
+            eq(recipeFavorite.userId, userId),
+            eq(recipeFavorite.recipeId, recipe.id)
           ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
       )
     ));
   
   const [favoritedRecipesCount, favoritedRecipes] = await Promise.all([
-    favoritedRecipesCountQuery.then((val) => CountSchema.parse(val)),
+    favoritedRecipesCountQuery.then(CountSchema.parse),
     favoritedRecipesQuery
   ]);
 

@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { recipe, recipeFavorite, savedRecipe } from "@/db/schema";
-import { and, count, eq, exists, not } from "drizzle-orm";
+import { and, count, eq, exists, or, sql } from "drizzle-orm";
 import { ArrowDownToLine, Calendar, Heart, Pencil } from "lucide-react";
 import { Metadata } from "next";
 import { cache, Suspense } from "react";
@@ -54,12 +54,11 @@ export default async function Page({ params }: PageProps<"/user/[user_id]">) {
   const { user_id: userId } = await params;
   const foundUser = await getUserDetails(userId);
 
-  const session = await auth();
-  const sessionUserId = session?.user?.id;
-
   if (!foundUser.user) notFound();
   const { id, image, name, about, createdAt } = foundUser.user;
   const { created, favorited, saved } = foundUser.counts;
+
+  const sessionUserId = (await getSessionUser())?.user?.id;
 
   const statistics = [
     {
@@ -145,7 +144,11 @@ export default async function Page({ params }: PageProps<"/user/[user_id]">) {
   );
 }
 
+const getSessionUser = cache(auth);
+
 const getUserDetails = cache(async (userId: string) => {
+  const sessionUserId = (await getSessionUser())?.user?.id;
+  
   const userQuery = db.query.user.findFirst({
     where: (user, { eq }) => eq(user.id, userId),
     columns: {
@@ -161,37 +164,58 @@ const getUserDetails = cache(async (userId: string) => {
     .from(recipe)
     .where(and(
       eq(recipe.createdBy, userId),
-      eq(recipe.isPublic, true)
-    ))
-    .then((val) => CountSchema.parse(val));
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
+      )
+    ));
 
   const favoritedRecipeCountQuery = db.select({ count: count() })
-    .from(recipeFavorite)
-    .where(eq(recipeFavorite.userId, userId))
-    .then((val) => CountSchema.parse(val));
+    .from(recipe)
+    .where(and(
+      exists(
+        db.select()
+          .from(recipeFavorite)
+          .where(and(
+            eq(recipeFavorite.userId, userId),
+            eq(recipeFavorite.recipeId, recipe.id)
+          ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
+      )
+    ));
 
   const savedRecipeCountQuery = db.select({ count: count() })
     .from(recipe)
     .where(and(
-      not(eq(recipe.createdBy, userId)),
-      eq(recipe.isPublic, true),
       exists(
         db.select()
           .from(savedRecipe)
           .where(and(
-            eq(savedRecipe.recipeId, recipe.id),
-            eq(savedRecipe.userId, userId)
+            eq(savedRecipe.userId, userId),
+            eq(savedRecipe.recipeId, recipe.id)
           ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId === userId ? sql`true` : undefined,
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
       )
-    ))
-    .then((val) => CountSchema.parse(val));
+    ));
 
   const [
     user,
     createdRecipeCount,
     favoritedRecipeCount,
     savedRecipeCount
-  ] = await Promise.all([userQuery, createdRecipeCountQuery, favoritedRecipeCountQuery, savedRecipeCountQuery]);
+  ] = await Promise.all([
+    userQuery,
+    createdRecipeCountQuery.then(CountSchema.parse),
+    favoritedRecipeCountQuery.then(CountSchema.parse),
+    savedRecipeCountQuery.then(CountSchema.parse)
+  ]);
 
   return {
     user,

@@ -49,9 +49,8 @@ export default function RecipeSearchBar({
 
   const closeSearch = useCallback(() => {
     setOpen(false);
-    setQuery("");
-    setTouched(false);
-  }, [setOpen, setQuery, setTouched]);
+    setSearchQuery("");
+  }, [setOpen, setSearchQuery]);
   
   if (mode === "dialog") {
     return (
@@ -112,7 +111,6 @@ export default function RecipeSearchBar({
     <Popover
       open={open}
       onOpenChange={setOpen}
-      modal
     >
       <PopoverTrigger asChild>
         <div

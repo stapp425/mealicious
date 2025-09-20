@@ -131,7 +131,6 @@ export const createRecipe = authActionClient
     }
 
     await Promise.all([
-      removeCacheKeys(`user_${user.id}_created_recipes_count`),
       removeCacheKeys(`user_${user.id}_saved_recipes*`)
     ]);
 
@@ -319,7 +318,6 @@ export const deleteRecipe = authActionClient
 
     await Promise.all([
       deleteMealsQuery.then(() => deletePlansQuery),
-      removeCacheKeys(`user_${user.id}_created_recipes_count`),
       removeCacheKeys(`user_${user.id}_upcoming_plan`),
       removeCacheKeys(`user_${user.id}_meals*`),
       removeCacheKeys(`user_${user.id}_saved_recipes*`)
@@ -393,7 +391,6 @@ export const toggleRecipeFavorite = authActionClient
     }
 
     await Promise.all([
-      removeCacheKeys(`user_${user.id}_favorited_recipes_count`),
       removeCacheKeys(`user_${user.id}_saved_recipes*`)
     ]);
 

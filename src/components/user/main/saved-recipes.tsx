@@ -1,9 +1,10 @@
 import { db } from "@/db";
 import { diet, nutrition, recipe, recipeToDiet, recipeToNutrition, savedRecipe, user } from "@/db/schema";
-import { sql, eq, and, not, exists } from "drizzle-orm";
+import { sql, eq, and, exists, or } from "drizzle-orm";
 import UserInfoCarousel from "@/components/user/main/user-info-carousel";
 import SavedRecipesResult from "@/components/user/main/saved-recipes-result";
 import { Route } from "next";
+import { auth } from "@/auth";
 
 type SavedRecipesProps = {
   userId: string;
@@ -13,6 +14,9 @@ type SavedRecipesProps = {
 const MAX_DIET_DISPLAY_LIMIT = 3;
 
 export default async function SavedRecipes({ userId, limit }: SavedRecipesProps) {
+  const session = await auth();
+  const sessionUserId = session?.user?.id;
+  
   const caloriesSubQuery = db.select({
     recipeId: recipeToNutrition.recipeId,
     calories: sql`coalesce(${recipeToNutrition.amount}, 0)`.as("calories")
@@ -70,18 +74,22 @@ export default async function SavedRecipes({ userId, limit }: SavedRecipesProps)
       name: userSubQuery.name,
       email: userSubQuery.email,
       image: userSubQuery.image
-    }
+    },
+    isPublic: recipe.isPublic
   }).from(recipe)
     .where(and(
-      not(eq(recipe.createdBy, userId)),
-      eq(recipe.isPublic, true),
       exists(
         db.select()
           .from(savedRecipe)
           .where(and(
-            eq(savedRecipe.recipeId, recipe.id),
-            eq(savedRecipe.userId, userId)
+            eq(savedRecipe.userId, userId),
+            eq(savedRecipe.recipeId, recipe.id)
           ))
+      ),
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId === userId ? sql`true` : undefined,
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
       )
     ))
     .leftJoinLateral(caloriesSubQuery, sql`true`)

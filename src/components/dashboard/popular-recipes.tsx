@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { cuisine, diet, nutrition, recipe, recipeToDiet, recipeToNutrition, savedRecipe } from "@/db/schema";
+import { cuisine, diet, nutrition, recipe, recipeToDiet, recipeToNutrition, savedRecipe, user } from "@/db/schema";
 import { tz } from "@date-fns/tz";
 import { endOfDay, startOfDay } from "date-fns";
 import { and, count, desc, eq, gte, lt, sql } from "drizzle-orm";
@@ -56,6 +56,14 @@ export default async function PopularRecipes() {
     diets: sql`coalesce(json_agg(${dietSubQuery.diet}), '[]'::json)`.as("diets")
   }).from(dietSubQuery)
     .as("recipe_to_diet_sub");
+
+  const userSubQuery = db.select({
+    id: user.id,
+    name: user.name,
+    image: user.image
+  }).from(user)
+    .where(eq(user.id, recipe.createdBy))
+    .as("user_sub");
   
   const popularRecipes = await db.select({
     id: recipe.id,
@@ -80,15 +88,23 @@ export default async function PopularRecipes() {
         'icon', ${cuisineSubQuery.icon},
         'adjective', ${cuisineSubQuery.adjective}
       )
-    `
+    `,
+    creator: {
+      id: userSubQuery.id,
+      name: userSubQuery.name,
+      image: userSubQuery.image
+    }
   }).from(recipe)
     .where(eq(recipe.isPublic, true))
     .leftJoinLateral(caloriesSubQuery, sql`true`)
     .leftJoinLateral(savedRecipeSubQuery, sql`true`)
     .leftJoinLateral(cuisineSubQuery, sql`true`)
     .leftJoinLateral(recipeToDietSubQuery, sql`true`)
+    .innerJoinLateral(userSubQuery, sql`true`)
     .orderBy(desc(savedRecipeSubQuery.count))
     .limit(MAX_RECIPE_DISPLAY_LIMIT);
+  
+  if (popularRecipes.length <= 0) return null;
   
   return (
     <div className="flex flex-col">

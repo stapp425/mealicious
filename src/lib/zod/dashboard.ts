@@ -171,6 +171,17 @@ export const PopularRecipeSchema = z.object({
       : "Expected a number, but received an invalid type."
   }).nonnegative({
     error: "Calories cannot be negative."
+  }),
+  creator: z.object({
+    id: IdSchema,
+    name: z.string({
+      error: (issue) => typeof issue.input === "undefined"
+        ? "A creator name is required."
+        : "Expected a string, but received an invalid type."
+    }).nonempty({
+      error: "Creator name cannot be empty."
+    }),
+    image: z.nullable(UrlSchema)
   })
 });
 

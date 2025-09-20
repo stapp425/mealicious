@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { remToPx } from "@/lib/utils";
+import defaultProfilePicture from "@/img/default/default-pfp.jpg";
 
 type PopularRecipesInfoProps = {
   popularRecipes: PopularRecipe[];
@@ -43,6 +44,22 @@ export default function PopularRecipesInfo({ popularRecipes }: PopularRecipesInf
               <div className="min-h-75 max-w-full h-full dark:bg-sidebar/50 border border-border flex flex-col-reverse @min-2xl:flex-row rounded-md overflow-hidden">
                 <div className="flex-auto @min-2xl:flex-1 flex flex-col gap-2 p-4 overflow-hidden">
                   <h2 className="font-bold text-xl hyphens-auto line-clamp-2 @min-6xl:line-clamp-1">{r.title}</h2>
+                  <Link 
+                    href={`/user/${r.creator.id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    prefetch={false}
+                    className="group/user flex items-center gap-3"
+                  >
+                    <div className="relative size-8 rounded-full overflow-hidden">
+                      <Image 
+                        src={r.creator.image || defaultProfilePicture}
+                        alt={`Profile picture of ${r.creator.name}`}
+                        fill
+                        className="object-cover object-center bg-slate-100"
+                      />
+                    </div>
+                    <span className="font-semibold group-hover/user:underline text-sm">{r.creator.name}</span>
+                  </Link>
                   <div className="flex flex-wrap items-center gap-2 empty:hidden">
                     {
                       r.diets.map((d) => (

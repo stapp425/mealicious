@@ -1,9 +1,10 @@
 import { db } from "@/db";
 import { diet, nutrition, recipe, recipeToDiet, recipeToNutrition } from "@/db/schema";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, or, sql } from "drizzle-orm";
 import UserInfoCarousel from "@/components/user/main/user-info-carousel";
 import CreatedRecipesResult from "@/components/user/main/created-recipes-result";
 import { Route } from "next";
+import { auth } from "@/auth";
 
 type CreatedRecipesProps = {
   userId: string;
@@ -13,6 +14,9 @@ type CreatedRecipesProps = {
 const MAX_DIET_DISPLAY_LIMIT = 3;
 
 export default async function CreatedRecipes({ userId, limit }: CreatedRecipesProps) {
+  const session = await auth();
+  const sessionUserId = session?.user?.id;
+  
   const caloriesSubQuery = db.select({
     recipeId: recipeToNutrition.recipeId,
     calories: recipeToNutrition.amount
@@ -56,12 +60,16 @@ export default async function CreatedRecipes({ userId, limit }: CreatedRecipesPr
       id: string;
       name: string;
     }[]>`coalesce(${recipeToDietSubQuery.diets}, '[]'::json)`,
+    isPublic: recipe.isPublic,
     createdAt: recipe.createdAt,
     updatedAt: recipe.updatedAt
   }).from(recipe)
     .where(and(
       eq(recipe.createdBy, userId),
-      eq(recipe.isPublic, true)
+      or(
+        eq(recipe.isPublic, true),
+        sessionUserId ? eq(recipe.createdBy, sessionUserId) : undefined
+      )
     ))
     .leftJoinLateral(caloriesSubQuery, sql`true`)
     .leftJoinLateral(recipeToDietSubQuery, sql`true`)
