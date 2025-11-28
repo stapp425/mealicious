@@ -22,9 +22,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Separator } from "@/components/ui/separator";
-import { DetailedPlan } from "@/lib/zod/plan";
 import Link from "next/link";
 import Image from "next/image";
+import { DetailedPlanSchema } from "@/lib/zod/plan";
+import { z } from "zod/v4";
 
 const inUtc = { in: tz("UTC") };
 
@@ -344,7 +345,7 @@ const MorePlansResult = memo(({
   plan
 }: {
   view: MorePlansView;
-  plan: DetailedPlan;
+  plan: z.infer<typeof DetailedPlanSchema.element>;
 }) => {
   const queryClient = useQueryClient();
   const [collapsibleOpen, setCollapsibleOpen] = useState(false);

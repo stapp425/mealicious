@@ -1,4 +1,4 @@
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { Unit, units } from "@/lib/types";
 
 export const maxFileSize = {

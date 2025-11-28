@@ -8,7 +8,7 @@ import { and, count, desc, eq, exists, ilike, notExists, sql } from "drizzle-orm
 import { ActionError } from "@/lib/types";
 import { CountSchema, IdSchema, UrlSchema } from "@/lib/zod";
 import { removeCacheKeys } from "@/lib/actions/redis";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 export const createMeal = authActionClient
   .inputSchema(CreateMealFormSchema)

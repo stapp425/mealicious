@@ -7,7 +7,7 @@ import { authActionClient } from "@/safe-action";
 import { eq } from "drizzle-orm";
 import { PasswordSchema } from "@/lib/zod/auth";
 import bcrypt from "bcryptjs";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 export const editProfileAbout = authActionClient
   .inputSchema(z.nullable(z.string("Expected a string, but received an invalid type.")))

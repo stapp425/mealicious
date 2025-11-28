@@ -13,7 +13,7 @@ import { ArrowDown, ArrowUp, Clock, Info, Pencil, Plus, Trash2 } from "lucide-re
 import { ComponentProps, memo, useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useFormState } from "react-hook-form";
 import { useEditRecipeFormContext } from "@/components/recipes/edit/edit-recipe-form";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 const InstructionInputSchema = EditRecipeFormSchema.shape.instructions.element;
 type Instruction = z.infer<typeof InstructionInputSchema>;

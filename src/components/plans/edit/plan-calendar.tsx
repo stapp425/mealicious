@@ -10,7 +10,7 @@ import { format, isAfter, isBefore, isSameDay } from "date-fns";
 import { CalendarDayButton } from "@/components/ui/calendar";
 import { tz } from "@date-fns/tz";
 import { Separator } from "@/components/ui/separator";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { useQuery } from "@tanstack/react-query";
 import { getPreviewPlansInTimeFrame } from "@/lib/actions/plan";
 import { UTCDate } from "@date-fns/utc";

@@ -6,7 +6,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Separator } from "@/components/ui/separator";
 import { getDetailedPlansInTimeFrame } from "@/lib/actions/plan";
 import { cn } from "@/lib/utils";
-import { DetailedPlan } from "@/lib/zod/plan";
 import { tz } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
 import { addWeeks, eachDayOfInterval, endOfWeek, format, isSameDay, startOfWeek } from "date-fns";
@@ -17,6 +16,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { mealTypes } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { DetailedPlanSchema } from "@/lib/zod/plan";
+import { z } from "zod/v4";
+
+type DetailedPlan = z.infer<typeof DetailedPlanSchema.element>;
 
 export default function CalendarWeek() {
   const { userId, date, setDate } = usePlanCalendarContext();

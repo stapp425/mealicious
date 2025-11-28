@@ -16,10 +16,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { filters as filtersEnum, Sort, sorts } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { SavedRecipeSearch } from "@/lib/zod/recipe";
+import { SavedRecipeSearchSchema } from "@/lib/zod/recipe";
 import { ChevronDown, Funnel } from "lucide-react";
 import { ComponentProps } from "react";
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
+import { z } from "zod/v4";
+
+type SavedRecipeSearch = z.infer<typeof SavedRecipeSearchSchema>;
 
 export default function SearchOptions({
   control,

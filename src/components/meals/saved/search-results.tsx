@@ -5,7 +5,7 @@ import { and, eq, ilike, lte, sql, sum } from "drizzle-orm";
 import { MAX_MEAL_DISPLAY_LIMIT } from "@/lib/utils";
 import { SearchX } from "lucide-react";
 import MealResult from "@/components/meals/saved/meal-result";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { IdSchema, UrlSchema } from "@/lib/zod";
 import { cache } from "react";
 

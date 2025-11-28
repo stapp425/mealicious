@@ -1,4 +1,4 @@
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { getMatchingEmail, getMatchingName } from "@/lib/functions/auth";
 import { comparePasswordResetOTPValues, compareValues, getMatchingUserInfo } from "@/lib/functions/verification";
 
@@ -59,8 +59,6 @@ export const SignInFormSchema = z.object({
   })
 });
 
-export type SignInForm = z.infer<typeof SignInFormSchema>;
-
 export const SignUpFormSchema = z.object({
   name: UsernameSchema,
   email: EmailSchema.transform((val) => val.toLowerCase()),
@@ -102,8 +100,6 @@ export const SignUpFormSchema = z.object({
     }
   });
 
-export type SignUpForm = z.infer<typeof SignUpFormSchema>;
-
 export const CredentialsSchema = z.object({
   email: EmailSchema,
   password: z.string({
@@ -115,8 +111,6 @@ export const CredentialsSchema = z.object({
   })
 });
 
-export type Credentials = z.infer<typeof CredentialsSchema>;
-
 export const EmailVerificationFormSchema = z.object({
   email: EmailSchema,
   code: z.string({
@@ -125,8 +119,6 @@ export const EmailVerificationFormSchema = z.object({
     message: "Verification code cannot be negative."
   })
 });
-
-export type EmailVerificationForm = z.infer<typeof EmailVerificationFormSchema>;
 
 export const ResetPasswordFormSchema = z.object({
   email: EmailSchema,
@@ -212,8 +204,6 @@ export const ResetPasswordFormSchema = z.object({
   }
 });
 
-export type ResetPasswordForm = z.infer<typeof ResetPasswordFormSchema>;
-
 export const ReCaptchaResultSchema = z.object({
   data: z.discriminatedUnion("success", [
     z.object({
@@ -260,5 +250,3 @@ export const ReCaptchaResultSchema = z.object({
     })
   ])
 }).transform((val) => val.data);
-
-export type ReCaptchaResult = z.infer<typeof ReCaptchaResultSchema>;

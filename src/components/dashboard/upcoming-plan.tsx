@@ -7,7 +7,7 @@ import { startOfDay } from "date-fns";
 import { eq, sql, asc, and, gte } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import UpcomingPlanInfo from "@/components/dashboard/upcoming-plan-info";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { SearchX } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UpcomingPlanSchema } from "@/lib/zod/dashboard";

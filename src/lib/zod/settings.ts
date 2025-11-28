@@ -1,4 +1,4 @@
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { EmailSchema, PasswordSchema, UsernameSchema } from "@/lib/zod/auth";
 import { getMatchingEmail, getMatchingName } from "@/lib/functions/auth";
 import { IdSchema, UrlSchema } from "@/lib/zod";
@@ -34,8 +34,6 @@ export const ChangeProfilePictureFormSchema = z.object({
   image: ImageSchema
 });
 
-export type ChangeProfilePictureForm = z.infer<typeof ChangeProfilePictureFormSchema>;
-
 export const ChangeUsernameFormSchema = z.object({
   username: UsernameSchema.check(async (ctx) => {
     const foundName = await getMatchingName(ctx.value);
@@ -50,8 +48,6 @@ export const ChangeUsernameFormSchema = z.object({
   })
 });
 
-export type ChangeUsernameForm = z.infer<typeof ChangeUsernameFormSchema>;
-
 export const ChangeEmailFormSchema = z.object({
   email: EmailSchema.check(async (ctx) => {
     const foundEmail = await getMatchingEmail(ctx.value);
@@ -64,8 +60,6 @@ export const ChangeEmailFormSchema = z.object({
     }
   })
 });
-
-export type ChangeEmailForm = z.infer<typeof ChangeEmailFormSchema>;
 
 export const ChangePasswordFormSchema = z.object({
   currentPassword: z.string({
@@ -110,8 +104,6 @@ export const ChangePasswordFormSchema = z.object({
   }
 });
 
-export type ChangePasswordForm = z.infer<typeof ChangePasswordFormSchema>;
-
 export const ChangeDietPreferencesFormSchema = z.object({
   preferences: z.array(z.object({
     id: IdSchema,
@@ -145,8 +137,6 @@ export const ChangeDietPreferencesFormSchema = z.object({
     })
   }))
 });
-
-export type ChangeDietPreferencesForm = z.infer<typeof ChangeDietPreferencesFormSchema>;
 
 export const ChangeDishTypePreferencesFormSchema = z.object({
   preferences: z.array(z.object({
@@ -182,8 +172,6 @@ export const ChangeDishTypePreferencesFormSchema = z.object({
   }))
 });
 
-export type ChangeDishTypePreferencesForm = z.infer<typeof ChangeDishTypePreferencesFormSchema>;
-
 export const ChangeCuisinePreferencesFormSchema = z.object({
   preferences: z.array(z.object({
     id: IdSchema,
@@ -216,5 +204,3 @@ export const ChangeCuisinePreferencesFormSchema = z.object({
     })
   }))
 });
-
-export type ChangeCuisinePreferencesForm = z.infer<typeof ChangeCuisinePreferencesFormSchema>;

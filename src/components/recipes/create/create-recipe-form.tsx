@@ -1,7 +1,7 @@
 "use client";
 
 import { diet, dishType, nutrition } from "@/db/schema/recipe";
-import { type CreateRecipeForm, CreateRecipeFormSchema } from "@/lib/zod/recipe";
+import { CreateRecipeFormSchema } from "@/lib/zod/recipe";
 import { InferSelectModel } from "drizzle-orm";
 import { LoaderCircle } from "lucide-react";
 import { Control, useForm, UseFormRegister, UseFormSetValue } from "react-hook-form";
@@ -28,8 +28,11 @@ import { useContainerQuery } from "@/hooks/use-container-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useHydration } from "@/hooks/use-hydration";
 import { remToPx } from "@/lib/utils";
+import { z } from "zod/v4";
 
 const CONTAINER_4XL_BREAKPOINT = 52;
+
+type CreateRecipeForm = z.infer<typeof CreateRecipeFormSchema>;
 
 type CreateRecipeFormProps = {
   readonly nutrition: Omit<InferSelectModel<typeof nutrition>, "description">[];

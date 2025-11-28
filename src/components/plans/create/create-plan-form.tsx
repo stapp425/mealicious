@@ -1,6 +1,6 @@
 "use client";
 
-import { type CreatePlanForm, CreatePlanFormSchema } from "@/lib/zod/plan";
+import { CreatePlanFormSchema } from "@/lib/zod/plan";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useContext, useEffect, useMemo } from "react";
 import { Control, useForm, UseFormRegister, UseFormSetValue } from "react-hook-form";
@@ -19,11 +19,13 @@ import PlanMeals from "@/components/plans/create/plan-meals";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { remToPx } from "@/lib/utils";
+import { z } from "zod/v4";
 
 type CreatePlanFormProps = {
   userId: string;
 };
 
+type CreatePlanForm = z.infer<typeof CreatePlanFormSchema>;
 type CreatePlanFormContextProps<T extends CreatePlanForm = CreatePlanForm> = {
   now: Date;
   startDate: Date;

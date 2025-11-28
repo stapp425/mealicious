@@ -1,6 +1,6 @@
 "use client";
 
-import { type EditPlanForm, DetailedPlan, EditPlanFormSchema } from "@/lib/zod/plan";
+import { DetailedPlanSchema, EditPlanFormSchema } from "@/lib/zod/plan";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useContext, useEffect, useMemo } from "react";
 import { Control, useForm, UseFormRegister, UseFormSetValue } from "react-hook-form";
@@ -20,12 +20,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useHydration } from "@/hooks/use-hydration";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { remToPx } from "@/lib/utils";
+import { z } from "zod/v4";
+
+type DetailedPlan = z.infer<typeof DetailedPlanSchema.element>;
 
 type EditPlanFormProps = {
   userId: string;
   planToEdit: DetailedPlan;
 };
 
+type EditPlanForm = z.infer<typeof EditPlanFormSchema>;
 type EditPlanFormContextProps<T extends EditPlanForm = EditPlanForm> = {
   now: Date;
   startDate: Date;

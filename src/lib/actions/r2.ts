@@ -1,16 +1,24 @@
 "use server";
 
-import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { ImageDataSchema } from "@/lib/zod";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { r2 } from "@/lib/r2";
 
-export async function generatePresignedUrlForImageUpload(params: { name: string; type: string; size: number; }) {
-  const parsedBody = ImageDataSchema.safeParse(params);
+const r2 = new S3Client({
+  region: "auto",
+  endpoint: process.env.IMAGE_BUCKET_URL!,
+  credentials: {
+    accessKeyId: process.env.IMAGE_BUCKET_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.IMAGE_BUCKET_ACCESS_KEY_SECRET!
+  }
+});
 
-  if (!parsedBody.success) throw new Error(parsedBody.error.message);
-  
-  const { name, type, size } = parsedBody.data;
+export async function generatePresignedUrlForImageUpload(params: {
+  name: string;
+  type: string;
+  size: number;
+}) {
+  const { name, type, size } = ImageDataSchema.parse(params);
   const putCommand = new PutObjectCommand({
     Bucket: process.env.NEXT_PUBLIC_IMAGE_BUCKET_NAME!,
     Key: name,

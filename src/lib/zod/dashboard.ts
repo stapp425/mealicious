@@ -1,4 +1,4 @@
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { IdSchema, UrlSchema } from "@/lib/zod";
 import { MealTypeSchema } from "@/lib/zod/meal";
 
@@ -110,8 +110,6 @@ export const UpcomingPlanSchema = z.object({
   }))
 });
 
-export type UpcomingPlan = z.infer<typeof UpcomingPlanSchema>;
-
 export const PopularRecipeSchema = z.object({
   id: IdSchema,
   title: z.string({
@@ -185,8 +183,6 @@ export const PopularRecipeSchema = z.object({
   })
 });
 
-export type PopularRecipe = z.infer<typeof PopularRecipeSchema>;
-
 export const MostRecentSavedRecipeSchema = z.object({
   id: IdSchema,
   title: z.string({
@@ -219,5 +215,3 @@ export const MostRecentSavedRecipeSchema = z.object({
       : "Expected a date, but received an invalid type."
   })
 });
-
-export type MostRecentSavedRecipe = z.infer<typeof MostRecentSavedRecipeSchema>;

@@ -15,7 +15,7 @@ import { AuthError, CredentialsSignin } from "next-auth";
 import { actionClient } from "@/safe-action";
 import { eq } from "drizzle-orm";
 import { ActionError } from "@/lib/types";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import axios from "axios";
 import { UrlSchema } from "@/lib/zod";
 import { Route } from "next";

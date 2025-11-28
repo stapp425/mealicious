@@ -8,7 +8,7 @@ import { ActionError, MealType } from "@/lib/types";
 import { DetailedPlanSchema, CreatePlanFormSchema, EditPlanFormSchema, PreviewPlanSchema } from "@/lib/zod/plan";
 import { authActionClient } from "@/safe-action";
 import { UTCDate } from "@date-fns/utc";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { CountSchema } from "@/lib/zod";
 
 export const createPlan = authActionClient

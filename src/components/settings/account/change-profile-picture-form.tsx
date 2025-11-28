@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeProfilePictureFormSchema, ImageSchema, maxFileSize, type ChangeProfilePictureForm } from "@/lib/zod/settings";
+import { ChangeProfilePictureFormSchema, ImageSchema, maxFileSize } from "@/lib/zod/settings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";

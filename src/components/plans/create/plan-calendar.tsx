@@ -14,7 +14,7 @@ import { UTCDate } from "@date-fns/utc";
 import { getPreviewPlansInTimeFrame } from "@/lib/actions/plan";
 import { useCreatePlanFormContext } from "@/components/plans/create/create-plan-form";
 import { cn } from "@/lib/utils";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 type PlanCalendarProps = {
   userId: string;

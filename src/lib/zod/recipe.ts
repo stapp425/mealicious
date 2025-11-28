@@ -1,5 +1,5 @@
 import { IdSchema, UnitSchema, UrlSchema } from "@/lib/zod";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { filters, Sort, sorts } from "@/lib/types";
 
 export const MAX_RECIPE_TITLE_LENGTH = 100;
@@ -297,14 +297,10 @@ export const CreateRecipeFormSchema = RecipeFormSchema.extend({
   image: ImageSchema,
 });
 
-export type CreateRecipeForm = z.infer<typeof CreateRecipeFormSchema>;
-
 export const EditRecipeFormSchema = RecipeFormSchema.extend({
   id: IdSchema,
   image: z.nullable(ImageSchema),
 });
-
-export type EditRecipeForm = z.infer<typeof EditRecipeFormSchema>;
 
 export const SavedRecipeSearchSchema = z.object({
   query: z.string("Expected a string, but received an invalid type."),
@@ -320,8 +316,6 @@ export const SavedRecipeSearchSchema = z.object({
     "Expected an array, but received an invalid type."
   ).transform((val) => [...new Set(val)])
 });
-
-export type SavedRecipeSearch = z.infer<typeof SavedRecipeSearchSchema>;
 
 export const RecipeSearchSchema = z.object({
   query: z.string("Expected a string, but received an invalid type."),
@@ -357,8 +351,6 @@ export const RecipeSearchSchema = z.object({
   isUsingDietPreferences: z.boolean("Expected a boolean, but received an invalid type.")
 });
 
-export type RecipeSearch = z.infer<typeof RecipeSearchSchema>;
-
 export const RecipeSearchIndexSchema = z.object({
   results: z.array(z.object({
     hits: z.array(z.object({
@@ -382,8 +374,6 @@ export const RecipeSearchIndexSchema = z.object({
   })
 }).transform((val) => val.results[0].hits);
 
-export type RecipeSearchIndex = z.infer<typeof RecipeSearchIndexSchema>[number];
-
 export const RecipeSearchIndexInsertionSchema = z.object({
   objectID: z.string({
     error: (issue) => typeof issue.input === "undefined"
@@ -405,10 +395,7 @@ export const RecipeSearchIndexDeletionSchema = RecipeSearchIndexInsertionSchema.
   title: true
 });
 
-export type RecipeSearchIndexInsertion = z.infer<typeof RecipeSearchIndexInsertionSchema>;
-export type RecipeSearchIndexDeletion = z.infer<typeof RecipeSearchIndexDeletionSchema>;
-
-export const RecentRecipeSearch = z.array(
+export const RecentRecipeSearchSchema = z.array(
   z.object({
     id: IdSchema,
     label: z.string({
@@ -427,8 +414,6 @@ export const RecentRecipeSearch = z.array(
   }),
   "Expected an array, but received an invalid type."
 );
-
-export type RecentRecipeSearch = z.infer<typeof RecentRecipeSearch>[number];
 
 export const CreateReviewFormSchema = z.object({
   rating: z.number({
@@ -451,5 +436,3 @@ export const CreateReviewFormSchema = z.object({
       })
   )
 });
-
-export type CreateReviewForm = z.infer<typeof CreateReviewFormSchema>;

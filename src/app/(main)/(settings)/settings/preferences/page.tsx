@@ -10,7 +10,7 @@ import { MAX_CUISINE_SCORE, MAX_DIET_SCORE, MAX_DISH_TYPE_SCORE } from "@/lib/zo
 import { asc, eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { cache } from "react";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 export default async function Page() {
   const session = await auth();

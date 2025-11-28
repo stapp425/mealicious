@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { updateUsername } from "@/lib/actions/settings";
-import { type ChangeUsernameForm, ChangeUsernameFormSchema } from "@/lib/zod/settings";
+import { ChangeUsernameFormSchema } from "@/lib/zod/settings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Info, LoaderCircle, SquarePen, X } from "lucide-react";
 import { useSession } from "next-auth/react";

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: "An application where you can save recipes, meals, and recipes",
   openGraph: {
     type: "website",
-    images: "https://shawntapp.com/mealicious-logo.jpg"
+    images: `${process.env.NEXT_PUBLIC_IMAGE_BUCKET_URL!}/mealicious-logo.jpg`
   }
 };
 

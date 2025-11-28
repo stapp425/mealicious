@@ -5,15 +5,15 @@ import AppSidebar from "@/components/main/app-sidebar";
 import ScrollToTopButton from "@/components/main/scroll-to-top-button";
 import RecipeSearchBar from "@/components/main/recipe-search-bar";
 import { SessionProvider } from "next-auth/react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import siteLogo from "@/img/logo/mealicious-logo.svg";
 import Image from "next/image";
 import ProfileInfo from "@/components/main/profile-info";
 import { useContainerQuery } from "@/hooks/use-container-query";
-import { queryClient } from "@/lib/queryClient";
 import { remToPx } from "@/lib/utils";
 
 const CONTAINER_3XL_BREAKPOINT = 48;
+const queryClient = new QueryClient();
 
 export default function Layout({ children }: LayoutProps<"/">) {
   const [ref, matches] = useContainerQuery({

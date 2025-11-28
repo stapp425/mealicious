@@ -7,7 +7,7 @@ import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { SquarePen } from "lucide-react";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 type AboutSectionProps = {
   isSessionUser: boolean;

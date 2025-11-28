@@ -20,7 +20,7 @@ import { Info, Pencil, Plus, Trash2 } from "lucide-react";
 import { ComponentProps, memo, useCallback, useEffect, useRef, useState } from "react";
 import { useFieldArray, useFormState } from "react-hook-form";
 import { useCreateRecipeFormContext } from "@/components/recipes/create/create-recipe-form";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 const IngredientInputSchema = CreateRecipeFormSchema.shape.ingredients.element;
 type Ingredient = z.infer<typeof IngredientInputSchema>;

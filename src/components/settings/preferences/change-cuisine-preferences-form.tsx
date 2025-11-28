@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, MAX_CUISINE_RESULT_DISPLAY_LIMIT } from "@/lib/utils";
-import { ChangeCuisinePreferencesFormSchema, MAX_CUISINE_SCORE, type ChangeCuisinePreferencesForm } from "@/lib/zod/settings";
+import { ChangeCuisinePreferencesFormSchema, MAX_CUISINE_SCORE } from "@/lib/zod/settings";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight, Info, Loader2, LoaderCircle, Trash2, X } from "lucide-react";
@@ -20,6 +20,9 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { usePagination } from "@/hooks/use-pagination";
+import { z } from "zod/v4";
+
+type ChangeCuisinePreferencesForm = z.infer<typeof ChangeCuisinePreferencesFormSchema>;
 
 type ChangeCuisinePreferencesFormProps = {
   cuisinePreferences: {

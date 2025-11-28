@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { createReview } from "@/lib/actions/recipe";
 import { cn } from "@/lib/utils";
-import { type CreateReviewForm, CreateReviewFormSchema, MAX_REVIEW_CONTENT_LENGTH } from "@/lib/zod/recipe";
+import { CreateReviewFormSchema, MAX_REVIEW_CONTENT_LENGTH } from "@/lib/zod/recipe";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Info, Loader2, Star } from "lucide-react";

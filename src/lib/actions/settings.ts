@@ -16,7 +16,7 @@ import { ActionError } from "@/lib/types";
 import bcrypt from "bcryptjs";
 import { generatePresignedUrlForImageDelete } from "@/lib/actions/r2";
 import axios from "axios";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { removeCacheKeys } from "@/lib/actions/redis";
 import { CountSchema } from "@/lib/zod";
 

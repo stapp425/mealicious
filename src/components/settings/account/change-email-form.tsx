@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEmailFormSchema, type ChangeEmailForm } from "@/lib/zod/settings";
+import { ChangeEmailFormSchema } from "@/lib/zod/settings";
 import { Root as VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useRef, useState, useTransition } from "react";

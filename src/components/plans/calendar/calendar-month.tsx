@@ -17,11 +17,11 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { mealTypes } from "@/lib/types";
-import { PreviewPlan } from "@/lib/zod/plan";
 import Image from "next/image";
 import { Flame, Info } from "lucide-react";
 import Link from "next/link";
-
+import { PreviewPlanSchema } from "@/lib/zod/plan";
+import { z } from "zod/v4";
 
 const inUtc = { in: tz("UTC") };
 const defaultClassNames = getDefaultClassNames();
@@ -115,7 +115,7 @@ const CalendarDayButton = memo(({
   plans,
   ...props
 }: ComponentProps<typeof DayButton> & {
-  plans?: PreviewPlan[];
+  plans?: z.infer<typeof PreviewPlanSchema.element>[];
 }) => {
   const { userId } = usePlanCalendarContext();
   const [open, setOpen] = useState(false);

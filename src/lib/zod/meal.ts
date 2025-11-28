@@ -1,6 +1,6 @@
 import { MealType, mealTypes } from "@/lib/types";
 import { IdSchema, UrlSchema } from "@/lib/zod";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 export const MAX_MEAL_TITLE_LENGTH = 100;
 export const MAX_MEAL_DESCRIPTION_LENGTH = 250;
@@ -78,9 +78,6 @@ export const EditMealFormSchema = MealFormSchema.extend({
   id: IdSchema
 });
 
-export type CreateMealForm = z.infer<typeof CreateMealFormSchema>;
-export type EditMealForm = z.infer<typeof EditMealFormSchema>;
-
 export const MealSearchSchema = z.object({
   query: z.optional(z.string("Expected a string, but received an invalid type.")),
   mealType: z.optional(MealTypeSchema),
@@ -98,5 +95,3 @@ export const MealSearchSchema = z.object({
       error: `Amount must be at most ${MAX_MEAL_SEARCH_CALORIES}`
     })
 });
-
-export type MealSearch = z.infer<typeof MealSearchSchema>;

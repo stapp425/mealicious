@@ -2,11 +2,12 @@
 
 import { db } from "@/db";
 import { emailVerification, passwordReset } from "@/db/schema";
-import { resend } from "@/lib/resend";
 import bcrypt from "bcryptjs";
 import { addMilliseconds, getTime, isAfter } from "date-fns";
 import { getDateDifference } from "@/lib/utils";
-import { CreateEmailOptions } from "resend";
+import { CreateEmailOptions, Resend } from "resend";
+
+const resend = new Resend(process.env.EMAIL_API_KEY!);
 
 // to be used client-side
 export async function generateCode(codeLength: number = 6) {

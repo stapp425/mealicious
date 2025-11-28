@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Control, useForm, UseFormRegister, UseFormSetValue, useFormState, UseFormTrigger, UseFormWatch, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ResetPasswordForm, ResetPasswordFormSchema } from "@/lib/zod/auth";
+import { ResetPasswordFormSchema } from "@/lib/zod/auth";
 import { ChevronRight, CirclePlus, LoaderCircle, LucideProps, Mail, ShieldCheck } from "lucide-react";
 import { resetPassword, verifyCaptcha } from "@/lib/actions/auth";
 import { useAction } from "next-safe-action/hooks";
@@ -29,10 +29,12 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import PasswordInput from "@/components/auth/password-input";
+import { z } from "zod/v4";
 
 const formSections = ["email", "otp", "password"] as const;
 type FormSection = typeof formSections[number];
 
+type ResetPasswordForm = z.infer<typeof ResetPasswordFormSchema>;
 type FormSectionProps<T extends ResetPasswordForm = ResetPasswordForm> = {
   loading: boolean;
   next: (condition: () => boolean | Promise<boolean>) => void;

@@ -1,6 +1,6 @@
 "use client";
 
-import { PopularRecipe } from "@/lib/zod/dashboard";
+import { PopularRecipeSchema } from "@/lib/zod/dashboard";
 import {
   Carousel,
   CarouselApi,
@@ -15,9 +15,10 @@ import { Separator } from "@/components/ui/separator";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { remToPx } from "@/lib/utils";
 import defaultProfilePicture from "@/img/default/default-pfp.jpg";
+import { z } from "zod/v4";
 
 type PopularRecipesInfoProps = {
-  popularRecipes: PopularRecipe[];
+  popularRecipes: z.infer<typeof PopularRecipeSchema>[];
 };
 
 const CONTAINER_2XL_BREAKPOINT = 32;

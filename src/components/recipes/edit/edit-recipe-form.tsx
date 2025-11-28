@@ -2,7 +2,7 @@
 
 import { Unit } from "@/lib/types";
 import { diet, dishType, nutrition } from "@/db/schema";
-import { type EditRecipeForm, EditRecipeFormSchema } from "@/lib/zod/recipe";
+import { EditRecipeFormSchema } from "@/lib/zod/recipe";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InferSelectModel } from "drizzle-orm";
 import { LoaderCircle } from "lucide-react";
@@ -29,8 +29,11 @@ import { useContainerQuery } from "@/hooks/use-container-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useHydration } from "@/hooks/use-hydration";
 import { remToPx } from "@/lib/utils";
+import { z } from "zod/v4";
 
 const CONTAINER_4XL_BREAKPOINT = 52;
+
+type EditRecipeForm = z.infer<typeof EditRecipeFormSchema>;
 
 type EditRecipeFormProps = {
   readonly cuisines: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { type EditMealForm, EditMealFormSchema } from "@/lib/zod/meal";
+import { EditMealFormSchema } from "@/lib/zod/meal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import { Loader2 } from "lucide-react";
 import { updateMeal } from "@/lib/actions/meal";
 import { createContext, useContext, useEffect, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { z } from "zod/v4";
 
 type EditMealFormProps = {
   userId: string;
@@ -34,6 +35,7 @@ type EditMealFormProps = {
   };
 };
 
+type EditMealForm = z.infer<typeof EditMealFormSchema>;
 type EditMealFormContextProps<T extends EditMealForm = EditMealForm> = {
   control: Control<T>;
   register: UseFormRegister<T>;

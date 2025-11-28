@@ -1,6 +1,6 @@
 "use client";
 
-import { type SignInForm, SignInFormSchema } from "@/lib/zod/auth";
+import { SignInFormSchema } from "@/lib/zod/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,9 @@ import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { z } from "zod/v4";
+
+type SignInForm = z.infer<typeof SignInFormSchema>;
 
 export default function SignInForm() {
   const { replace } = useRouter();

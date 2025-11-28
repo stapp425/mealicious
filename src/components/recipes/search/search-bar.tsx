@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { RecipeSearch, RecipeSearchSchema } from "@/lib/zod/recipe";
+import { RecipeSearchSchema } from "@/lib/zod/recipe";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronDown, Info, Plus, Search, X } from "lucide-react";
 import { parseAsBoolean, parseAsIndex, parseAsString, useQueryStates } from "nuqs";
@@ -16,6 +16,9 @@ import { memo, useCallback, useMemo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { useHydration } from "@/hooks/use-hydration";
+import { z } from "zod/v4";
+
+type RecipeSearch = z.infer<typeof RecipeSearchSchema>;
 
 type SearchBarProps = {
   cuisines: {

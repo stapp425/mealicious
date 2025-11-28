@@ -9,14 +9,17 @@ import { Slider } from "@/components/ui/slider";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { useHydration } from "@/hooks/use-hydration";
 import { remToPx } from "@/lib/utils";
-import { MAX_MEAL_SEARCH_CALORIES, MealSearch, MealSearchSchema } from "@/lib/zod/meal";
+import { MAX_MEAL_SEARCH_CALORIES, MealSearchSchema } from "@/lib/zod/meal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Search } from "lucide-react";
 import { parseAsIndex, parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import { memo, useMemo } from "react";
 import { Control, useForm, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
+import { z } from "zod/v4";
 
 const FORM_BREAKPOINT = 36;
+
+type MealSearch = z.infer<typeof MealSearchSchema>;
 
 export default function SearchBar() {
   const hydrated = useHydration();

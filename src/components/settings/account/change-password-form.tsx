@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangePasswordFormSchema, type ChangePasswordForm } from "@/lib/zod/settings";
+import { ChangePasswordFormSchema } from "@/lib/zod/settings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";

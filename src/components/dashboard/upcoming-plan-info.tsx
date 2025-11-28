@@ -1,6 +1,6 @@
 "use client";
 
-import { UpcomingPlan } from "@/lib/zod/dashboard";
+import { UpcomingPlanSchema } from "@/lib/zod/dashboard";
 import { useEffect, useState } from "react";
 import { CarouselApi } from "@/components/ui/carousel";
 import {
@@ -19,9 +19,10 @@ import Link from "next/link";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { useHydration } from "@/hooks/use-hydration";
 import { cn, remToPx } from "@/lib/utils";
+import { z } from "zod/v4";
 
 type UpcomingPlanInfoProps = {
-  upcomingPlan: UpcomingPlan;
+  upcomingPlan: z.infer<typeof UpcomingPlanSchema>;
 };
 
 const CONTAINER_BREAKPOINT = 32;

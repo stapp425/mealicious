@@ -35,7 +35,7 @@ import { generatePresignedUrlForImageDelete } from "@/lib/actions/r2";
 import { getRatingKey, MAX_GRID_RECIPE_DISPLAY_LIMIT } from "@/lib/utils";
 import axios from "axios";
 import { removeCacheKeys } from "@/lib/actions/redis";
-import z from "zod/v4";
+import { z } from "zod/v4";
 import { IdSchema } from "@/lib/zod";
 
 export const createRecipe = authActionClient

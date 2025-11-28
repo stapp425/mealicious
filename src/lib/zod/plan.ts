@@ -1,7 +1,7 @@
 import { mealTypes } from "@/lib/types";
 import { IdSchema, UrlSchema } from "@/lib/zod";
 import { MAX_MEAL_TITLE_LENGTH, MealTypeSchema } from "@/lib/zod/meal";
-import z from "zod/v4";
+import { z } from "zod/v4";
 
 export const MAX_PLAN_TITLE_LENGTH = 100;
 export const MAX_PLAN_DESCRIPTION_LENGTH = 100;
@@ -91,9 +91,6 @@ export const EditPlanFormSchema = PlanFormSchema.extend({
   id: IdSchema
 });
 
-export type CreatePlanForm = z.infer<typeof CreatePlanFormSchema>;
-export type EditPlanForm = z.infer<typeof EditPlanFormSchema>;
-
 export const PreviewPlanSchema = z.array(z.object({
   id: IdSchema,
   title: z.string({
@@ -109,8 +106,6 @@ export const PreviewPlanSchema = z.array(z.object({
       : "Expected a string, but received an invalid type."
   })
 }));
-
-export type PreviewPlan = z.infer<typeof PreviewPlanSchema.element>;
 
 export const DetailedPlanSchema = z.array(z.object({
   id: IdSchema,
@@ -193,5 +188,3 @@ export const DetailedPlanSchema = z.array(z.object({
     })
   )
 }));
-
-export type DetailedPlan = z.infer<typeof DetailedPlanSchema.element>;

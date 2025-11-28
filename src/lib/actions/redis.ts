@@ -1,8 +1,10 @@
 "use server";
 
-import { redis } from "@/lib/redis";
 import { differenceInSeconds } from "date-fns";
-import z from "zod/v4";
+import Redis from "ioredis";
+import { z } from "zod/v4";
+
+const redis = new Redis(process.env.CACHE_URL!);
 
 export async function getCachedData<T extends z.ZodType>({
   schema,

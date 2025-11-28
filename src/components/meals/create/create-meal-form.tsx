@@ -1,6 +1,6 @@
 "use client";
 
-import { type CreateMealForm, CreateMealFormSchema } from "@/lib/zod/meal";
+import { CreateMealFormSchema } from "@/lib/zod/meal";
 import { Control, useForm, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import MealRecipeSearch from "@/components/meals/create/meal-recipes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,11 +14,13 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createContext, useContext, useEffect, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { z } from "zod/v4";
 
 type CreateMealFormProps = {
   userId: string;
 };
 
+type CreateMealForm = z.infer<typeof CreateMealFormSchema>;
 type CreateMealFormContextProps<T extends CreateMealForm = CreateMealForm> = {
   control: Control<T>;
   register: UseFormRegister<T>;

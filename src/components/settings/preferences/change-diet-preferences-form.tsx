@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeDietPreferencesFormSchema, MAX_DIET_SCORE, type ChangeDietPreferencesForm } from "@/lib/zod/settings";
+import { ChangeDietPreferencesFormSchema, MAX_DIET_SCORE } from "@/lib/zod/settings";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -15,6 +15,9 @@ import { useAction } from "next-safe-action/hooks";
 import { updateDietPreferences } from "@/lib/actions/settings";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { z } from "zod/v4";
+
+type ChangeDietPreferencesForm = z.infer<typeof ChangeDietPreferencesFormSchema>;
 
 type ChangeDietPreferencesFormProps = {
   dietPreferences: {

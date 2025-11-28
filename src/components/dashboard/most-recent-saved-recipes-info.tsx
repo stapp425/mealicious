@@ -1,6 +1,6 @@
 "use client";
 
-import { MostRecentSavedRecipe } from "@/lib/zod/dashboard";
+import { MostRecentSavedRecipeSchema } from "@/lib/zod/dashboard";
 import {
   Carousel,
   CarouselContent,
@@ -16,9 +16,10 @@ import { Button } from "@/components/ui/button";
 import { useHydration } from "@/hooks/use-hydration";
 import { useContainerQuery } from "@/hooks/use-container-query";
 import { remToPx } from "@/lib/utils";
+import { z } from "zod/v4";
 
 type MostRecentSavedRecipesInfoProps = {
-  savedRecipes: MostRecentSavedRecipe[];
+  savedRecipes: z.infer<typeof MostRecentSavedRecipeSchema>[];
 };
 
 const CAROUSEL_BREAKPOINT = 32;

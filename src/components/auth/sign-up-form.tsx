@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { type SignUpForm, SignUpFormSchema } from "@/lib/zod/auth";
+import { SignUpFormSchema } from "@/lib/zod/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp, verifyCaptcha } from "@/lib/actions/auth";
 import PasswordInput from "@/components/auth/password-input";
@@ -13,7 +13,9 @@ import { HTMLInputAutoCompleteAttribute, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { z } from "zod/v4";
 
+type SignUpForm = z.infer<typeof SignUpFormSchema>;
 type SignUpField = {
   id: keyof SignUpForm,
   label: string,

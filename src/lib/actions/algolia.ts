@@ -1,11 +1,21 @@
 "use server";
 
-import { searchClient, writeClient } from "@/lib/algolia";
 import { 
   RecipeSearchIndexDeletionSchema,
   RecipeSearchIndexInsertionSchema,
   RecipeSearchIndexSchema
 } from "@/lib/zod/recipe";
+import { algoliasearch } from "algoliasearch";
+
+const searchClient = algoliasearch(
+  process.env.SEARCH_INDEXING_APP_ID!,
+  process.env.SEARCH_INDEXING_SEARCH_API_KEY!
+);
+
+const writeClient = algoliasearch(
+  process.env.SEARCH_INDEXING_APP_ID!,
+  process.env.SEARCH_INDEXING_WRITE_API_KEY!
+);
 
 export async function searchForRecipesQueryIndices(query: string) {
   const response = await searchClient.search({

@@ -21,14 +21,18 @@ import { ComponentProps, memo, useCallback, useMemo, useState } from "react"
 import { useDebounce } from "use-debounce";
 import { useRouter } from "next/navigation";
 import { nanoid } from "nanoid";
-import { RecentRecipeSearch, RecipeSearchIndex } from "@/lib/zod/recipe";
+import { RecentRecipeSearchSchema, RecipeSearchIndexSchema } from "@/lib/zod/recipe";
 import Link from "next/link";
 import { useLocalStorage } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { searchForRecipesQueryIndices } from "@/lib/actions/algolia";
+import { z } from "zod/v4";
 
 const MAX_RECENT_RECIPE_SEARCH_AMOUNT = 4;
+
+type RecipeSearchIndex = z.infer<typeof RecipeSearchIndexSchema>[number];
+type RecentRecipeSearch = z.infer<typeof RecentRecipeSearchSchema.element>;
 
 export default function RecipeSearchBar({
   className,
